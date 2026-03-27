@@ -232,20 +232,368 @@ typing `/` followed by the file name. For example, this project includes
 `/generate-test-cases` and `/summarize-tasks` (prompts) and `/task-report`
 (skill).
 
-### 🧪 Try It — Exercises
+### 🧪 Try It — Interactive Exercises
 
-1. Open `src/task_utils.py` in the editor.
-2. Select the `count_overdue` function.
-3. In Chat, type: `/explain`
-   - **Expected**: Copilot explains the function's logic, parameters, and edge cases.
-4. With the same selection, type: `/tests`
-   - **Expected**: Copilot generates pytest-style test cases for `count_overdue`.
-5. Type: `/plan Add a function to find tasks assigned to a specific person`
-   - **Expected**: A structured plan with steps, not immediate code.
-6. Type: `/debug`
-   - **Expected**: The Chat Debug view opens, showing the system prompt and loaded context.
-7. After several messages, type: `/compact`
-   - **Expected**: The conversation is summarized, freeing context window space.
+#### Exercise 1 · Explain then test a function
+
+**What you'll do**: Use `/explain` and `/tests` on a real function in this project.
+
+**Step 1 — Open the file**
+- In VS Code, press **Ctrl+P** (Windows/Linux) or **Cmd+P** (macOS).
+- Type `task_utils.py` and press **Enter**.
+
+**Step 2 — Select the function**
+- Scroll to the `count_overdue` function (around line 30).
+- Click the function name, then press **Ctrl+Shift+K** to select the whole block,
+  or click and drag to highlight the entire function body.
+
+**Step 3 — Explain it**
+- Open Chat: **Ctrl+Alt+I** (Windows/Linux) or **Cmd+Alt+I** (macOS).
+- Type `/explain` and press **Enter**.
+- **What you see**: Copilot describes what `count_overdue` does, what parameters
+  it takes, what it returns, and any edge cases (e.g., what happens if the date
+  is malformed).
+
+**Step 4 — Generate tests**
+- Keep the same selection in the editor.
+- In Chat, type `/tests` and press **Enter**.
+- **What you see**: Copilot generates a `test_count_overdue.py` file (or inline
+  code) with at least three pytest test cases: a happy path, an empty list
+  case, and an edge case with a malformed date.
+
+> **Why it works**: `/explain` and `/tests` use the current editor *selection* as
+> context. If nothing is selected, Copilot uses the entire active file.
+
+---
+
+#### Exercise 2 · Plan before coding
+
+**What you'll do**: Use `/plan` to get a structured implementation plan.
+
+**Step 1** — In Chat, type exactly:
+```
+/plan Add a function to find tasks assigned to a specific person
+```
+Press **Enter**.
+
+**Step 2 — Read the plan**
+- **What you see**: Copilot returns a numbered list of steps — e.g.,
+  *"1. Define function signature with type hints"*, *"2. Filter tasks list by
+  assignee field"*, *"3. Handle case-insensitive matching"*, etc. — without
+  writing any code yet.
+- Notice that `/plan` **does not modify any files**. It only plans.
+
+**Step 3 — Approve and implement**
+- Reply in Chat: `Looks good, implement it.`
+- **What you see**: Copilot now writes the function into `task_utils.py`,
+  following the plan it just outlined.
+
+---
+
+#### Exercise 3 · Inspect what Copilot sees
+
+**What you'll do**: Use `/debug` to see the exact context injected into each request.
+
+**Step 1** — In Chat, type `/debug` and press **Enter**.
+- **What you see**: The Chat Debug view opens — a panel showing the full system
+  prompt, which instruction files were loaded, and what tools are available.
+
+**Step 2 — Look for workspace instructions**
+- Scroll through the debug output until you find a section labelled
+  `copilot-instructions.md` or similar. This is the project-level context
+  from `.github/copilot-instructions.md`.
+
+---
+
+#### Exercise 4 · Free up context window space
+
+**What you'll do**: Use `/compact` after a long conversation.
+
+**Step 1** — Send 4–5 messages in the same chat session (e.g., ask a few
+questions about `tasks.json`).
+
+**Step 2** — In Chat, type `/compact` and press **Enter**.
+- **What you see**: Copilot summarises the conversation history into a short
+  paragraph and replaces the raw history with the summary.
+- The token count shown in the debug view drops significantly.
+
+> **When to use this**: Use `/compact` when you notice Copilot forgetting earlier
+> context in a long session. It is the fastest way to reclaim context window
+> space without ending the session.
+
+---
+
+#### Exercise 5 · Fix an error with `/fix` and add docs with `/doc`
+
+**What you'll do**: Use `/fix` to resolve a real error and `/doc` to generate a
+docstring through inline chat.
+
+**Step 1 — Introduce an error**
+- Open `src/task_utils.py`.
+- Temporarily break a function: delete the `:` at the end of any `def` line
+  and save (**Ctrl+S**).
+- The Problems panel (View → Problems) will show a red error.
+
+**Step 2 — Fix it with `/fix`**
+- In Chat, type `/fix` and press **Enter**.
+- **What you see**: Copilot reads the Problems panel, identifies the syntax
+  error, and proposes the corrected line. Accept the suggestion to restore
+  the file.
+
+**Step 3 — Add a docstring with `/doc`**
+- Select any function that has no docstring.
+- Press **Ctrl+I** (Windows/Linux) or **Cmd+I** (macOS) to open **inline chat**.
+- Type `/doc` and press **Enter**.
+- **What you see**: Copilot inserts a docstring directly above the function body
+  — in-place in the editor, not in the chat panel.
+
+---
+
+#### Exercise 6 · Scaffold with `/new`, `/newNotebook`, and `/setupTests`
+
+**What you'll do**: Create new files and scaffold a test framework without
+writing boilerplate.
+
+**Step 1 — Create a new utility script**
+- In Chat, type:
+  ```
+  /new Python script that reads tasks.json and prints a summary table
+  ```
+  Press **Enter**.
+- **What you see**: Copilot creates a new `.py` file with boilerplate imports,
+  argument parsing, and the core logic sketched out. A file picker may ask
+  where to save it.
+
+**Step 2 — Create a Jupyter notebook**
+- In Chat, type:
+  ```
+  /newNotebook analyze tasks.json — show status distribution as a bar chart
+  ```
+  Press **Enter**.
+- **What you see**: A new `.ipynb` file opens with cells for loading the JSON,
+  computing counts, and plotting with matplotlib.
+
+**Step 3 — Scaffold a test framework**
+- In Chat, type `/setupTests` and press **Enter**.
+- **What you see**: Copilot detects the project uses Python and generates a
+  `pytest.ini` (or `pyproject.toml` section), installs pytest, and creates
+  an example test file. If pytest is already configured it reports that.
+
+---
+
+#### Exercise 7 · Manage sessions — `/clear`, `/fork`, and `/rename`
+
+**What you'll do**: Organise your chat sessions so you can find them later and
+work in parallel without losing context.
+
+**Step 1 — Rename the current session**
+- In Chat, type:
+  ```
+  /rename Chapter 1 slash commands practice
+  ```
+  Press **Enter**.
+- **What you see**: The session tab or title updates to *"Chapter 1 slash
+  commands practice"*. Useful for finding sessions in Chat history.
+
+**Step 2 — Fork a session**
+- In Chat, type `/fork` and press **Enter**.
+- **What you see**: A **new** chat session opens containing a copy of the
+  current conversation. Changes in the fork don't affect the original.
+- Use this when you want to try a risky or experimental approach while
+  preserving the current thread.
+
+**Step 3 — Clear and start fresh**
+- In the forked session, type `/clear` and press **Enter**.
+- **What you see**: The current session is archived and a blank new session
+  opens. The previous conversation is still accessible in Chat history.
+
+---
+
+#### Exercise 8 · Search and debug — `/search` and `/startDebugging`
+
+**What you'll do**: Find code semantically and set up a debug configuration.
+
+**Step 1 — Semantic search**
+- In Chat, type:
+  ```
+  /search where is task status validated
+  ```
+  Press **Enter**.
+- **What you see**: Copilot searches the workspace and returns file paths and
+  line references — likely pointing to `scripts/validate.sh` and
+  `docs/task-tracker-spec.md`. Click a result to jump to that location.
+
+**Step 2 — Generate a debug configuration**
+- In Chat, type `/startDebugging` and press **Enter**.
+- **What you see**: Copilot creates a `.vscode/launch.json` with a Python
+  configuration targeting `src/task_utils.py`, then starts a debug session.
+  The Run & Debug panel opens with a breakpoint-ready environment.
+
+---
+
+#### Exercise 9 · Create customization files — the `/create-*` commands
+
+**What you'll do**: Use the creator commands to scaffold each customization
+primitive directly from chat.
+
+**Step 1 — Generate workspace instructions**
+- In a **fresh project** (or a temp folder), type:
+  ```
+  /init
+  ```
+  - **What you see**: Copilot scans the project structure (files, folders,
+    languages detected) and generates a `.github/copilot-instructions.md`
+    with a project summary, folder table, and inferred conventions. In
+    *this* project it will note the file already exists.
+
+**Step 2 — Create a prompt file**
+- In Chat, type:
+  ```
+  /create-prompt Generate a changelog from recent git commits
+  ```
+  Press **Enter**.
+- **What you see**: Copilot creates
+  `.github/prompts/generate-changelog.prompt.md` with appropriate
+  frontmatter and a body describing the task. You can now invoke it with
+  `/generate-changelog`.
+
+**Step 3 — Create an instruction file**
+- In Chat, type:
+  ```
+  /create-instruction for all TypeScript files — enforce strict null checks and no-any rule
+  ```
+  Press **Enter**.
+- **What you see**: A new `.instructions.md` file is created with
+  `applyTo: "**/*.ts"` and the rules you described.
+
+**Step 4 — Create an agent**
+- In Chat, type:
+  ```
+  /create-agent security-reviewer — read-only, focuses on OWASP Top 10 issues
+  ```
+  Press **Enter**.
+- **What you see**: `.github/agents/security-reviewer.agent.md` is created
+  with `tools: [read, search]` and a body describing the security review role.
+
+**Step 5 — Create a hook**
+- In Chat, type:
+  ```
+  /create-hook to block any edit that produces invalid JSON
+  ```
+  Press **Enter**.
+- **What you see**: A `.github/hooks/*.json` file is created with a
+  `PostToolUse` event and a shell command stub for JSON validation.
+
+**Step 6 — Create a skill**
+- In Chat, type:
+  ```
+  /create-skill data-quality — audits tasks.json for schema violations
+  ```
+  Press **Enter**.
+- **What you see**: The folder `.github/skills/data-quality/` is created with
+  a `SKILL.md` frontmatter and a stub body.
+
+**Step 7 — Open the guided setup**
+- In Chat, type `/agent-customization` and press **Enter**.
+- **What you see**: An interactive guided workflow opens, asking questions
+  about what you want to build. Useful when you're unsure which primitive
+  to use.
+
+---
+
+#### Exercise 10 · Browse configuration — the management `/` commands
+
+**What you'll do**: Use the management commands to inspect everything that is
+currently configured in this project.
+
+**Step 1** — Type each command below in Chat and press **Enter** after each one.
+Observe what each panel shows.
+
+| Command | What to look for |
+|---------|-----------------|
+| `/agents` | Lists `task-analyst` and `doc-writer` — note their tool sets |
+| `/hooks` | Shows `validate-json.json` with its `PostToolUse` event |
+| `/instructions` | Lists all three `.instructions.md` files and their `applyTo` globs |
+| `/prompts` | Lists `generate-test-cases` and `summarize-tasks` with descriptions |
+| `/skills` | Lists `task-report` — note the `argument-hint` displayed |
+| `/tools` | Lists every tool currently available — including MCP tools |
+| `/models` | Opens the model picker — note the model currently selected |
+| `/plugins` | Lists any chat extensions installed |
+
+**Step 2 — Spot something unexpected?**
+- If a file you created in an earlier exercise doesn't appear in the
+  corresponding panel, the file likely has a YAML syntax error. Open it and
+  check for unquoted colons or tabs.
+
+---
+
+#### Exercise 11 · Control permissions — `/autoApprove`, `/yolo`, and their undos
+
+**What you'll do**: Experience how permission modes change the approval flow.
+
+> **Safety note**: Run these exercises in a sandbox. `/yolo` removes *all*
+> confirmation prompts. Revert any unintended changes with `git checkout .`
+
+**Step 1 — Enable auto-approve**
+- In Chat, type `/autoApprove` and press **Enter**.
+- Now ask Copilot to make a small edit:
+  ```
+  Add a comment at the top of src/task_utils.py saying "# reviewed"
+  ```
+- **What you see**: Copilot makes the edit **without** showing a confirmation
+  dialog. No "Apply" button appears.
+
+**Step 2 — Disable auto-approve**
+- Type `/disableAutoApprove` and press **Enter**.
+- Ask for the same small edit again.
+- **What you see**: The confirmation dialog returns — you must click **Apply**
+  before the change is made.
+
+**Step 3 — Enable yolo mode**
+- Type `/yolo` and press **Enter**.
+- Ask Copilot a multi-step task:
+  ```
+  Add a function get_tasks_by_priority, generate a test for it, then run the test
+  ```
+- **What you see**: Copilot completes all three steps back-to-back — edit,
+  create test, run terminal — without any confirmation or clarification prompts.
+
+**Step 4 — Return to normal**
+- Type `/disableYolo` and press **Enter**.
+- Confirmation prompts are restored.
+- **Clean up**: Run `git checkout src/task_utils.py` in the terminal to revert
+  the practice edits.
+
+---
+
+#### Exercise 12 · Troubleshoot unexpected behaviour — `/troubleshoot` and `/fixTestFailure`
+
+**What you'll do**: Use the diagnostic commands to investigate problems.
+
+**Step 1 — /troubleshoot**
+- After running several agent tasks (the earlier exercises work well), type:
+  ```
+  /troubleshoot
+  ```
+  Press **Enter**.
+- **What you see**: Copilot analyses the current session's debug log and
+  summarises any anomalies — missed tool calls, instruction files that
+  weren't loaded, hooks that fired unexpectedly, etc.
+
+**Step 2 — /fixTestFailure**
+- First, introduce a failing test. In the terminal run:
+  ```powershell
+  python -m pytest --tb=short 2>&1
+  ```
+  If there are no tests yet, create a deliberately failing one:
+  ```powershell
+  echo "def test_fail(): assert 1 == 2" > test_temp.py
+  python -m pytest test_temp.py --tb=short 2>&1
+  ```
+- Switch to Chat and type `/fixTestFailure`.
+- **What you see**: Copilot reads the pytest output from the terminal, identifies
+  the failing assertion, and proposes a fix. Accept or reject as appropriate.
+- **Clean up**: Delete `test_temp.py` after the exercise.
 
 ---
 
@@ -282,14 +630,119 @@ Extensions can add their own `@` participants. To discover them:
 Examples: Docker extensions may add `@docker`, database extensions may add
 `@database`, etc.
 
-### 🧪 Try It — Exercises
+### 🧪 Try It — Interactive Exercises
 
-1. In Chat, type: `@vscode how do I change the font size?`
-   - **Expected**: Instructions specific to VS Code settings, not general advice.
-2. Type: `@terminal what command shows disk usage on Windows?`
-   - **Expected**: PowerShell or cmd commands, not bash.
-3. Type: `@vscode what's the keyboard shortcut for multi-cursor?`
-   - **Expected**: Platform-specific keybinding (Ctrl+Alt+↓ on Windows).
+#### Exercise 1 · Ask `@vscode` a settings question
+
+**What you'll do**: Use the `@vscode` participant to get VS Code-specific help.
+
+**Step 1** — Open Chat (**Ctrl+Alt+I** / **Cmd+Alt+I**).
+
+**Step 2** — Type exactly:
+```
+@vscode how do I change the font size?
+```
+Press **Enter**.
+
+- **What you see**: Copilot responds with instructions specific to VS Code's
+  `editor.fontSize` setting — with the exact setting path and how to open
+  Settings UI. It does **not** give a generic "go to preferences" answer.
+- **Why the difference matters**: Without `@vscode`, Copilot might answer about
+  font size in general editors. The participant scopes the answer to VS Code.
+
+---
+
+#### Exercise 2 · Ask `@terminal` for a shell command
+
+**What you'll do**: Use `@terminal` to get a shell command without leaving chat.
+
+**Step 1** — In Chat, type:
+```
+@terminal what command shows disk usage on Windows?
+```
+Press **Enter**.
+
+- **What you see**: Copilot returns a PowerShell or `cmd` command
+  (e.g., `Get-PSDrive` or `dir`), not a bash command. The `@terminal`
+  participant is aware of your OS and active shell.
+
+**Step 2** — Click **Insert into Terminal** (if the button appears) to run
+the command without copy-pasting.
+
+---
+
+#### Exercise 3 · Spot the difference
+
+**What you'll do**: Compare `@vscode` vs plain chat to see scoping in action.
+
+**Step 1** — In a fresh chat, type (no `@`):
+```
+What's the keyboard shortcut for multi-cursor?
+```
+
+**Step 2** — Then type:
+```
+@vscode What's the keyboard shortcut for multi-cursor?
+```
+
+- **What you see**: The `@vscode` version returns the exact platform-specific
+  keybinding for *this* installation (**Ctrl+Alt+↓** on Windows, **Opt+Cmd+↓**
+  on macOS). The plain version may give a generic answer or multiple options.
+
+---
+
+#### Exercise 4 · Use `@github` for repository information
+
+**What you'll do**: Query GitHub directly from chat using the `@github`
+participant.
+
+> **Prerequisite**: Install the [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
+> extension and sign in to GitHub. If you are not signed in, VS Code will
+> prompt you when you first use `@github`.
+
+**Step 1** — In Chat, type:
+```
+@github what are my open pull requests?
+```
+Press **Enter**.
+
+- **What you see**: A list of your open PRs across GitHub repositories —
+  titles, repo names, and links — fetched live from the GitHub API.
+
+**Step 2** — Try a search query:
+```
+@github show recent issues labelled "bug" in this repo
+```
+- **What you see**: GitHub issues matching the filter, with titles and links.
+  You can click through to open them in a browser.
+
+**Step 3 — Discover participant capabilities**
+- Type `@github ` (with a trailing space) in the chat input and pause.
+- **What you see**: A tooltip or autocomplete list showing the sub-commands
+  `@github` supports (e.g., `/search`, `/pr`, `/issue`).
+
+> **If `@github` is not in your list**: Type `@` in chat — if it's missing,
+> install the GitHub Pull Requests extension from the Extensions view
+> (**Ctrl+Shift+X**) and reload VS Code.
+
+---
+
+#### Exercise 5 · Discover extension-contributed participants
+
+**What you'll do**: See all `@` participants available in your VS Code
+installation, including any contributed by extensions.
+
+**Step 1** — In Chat, type `@` and **pause** (do not press Enter).
+- **What you see**: An autocomplete dropdown listing every available
+  participant — built-ins (`@vscode`, `@terminal`, `@github`) and any added
+  by installed extensions.
+
+**Step 2** — Open the Command Palette (**Ctrl+Shift+P**) and run:
+```
+Chat: List Participants
+```
+- **What you see**: The full list of registered participants with their
+  descriptions — a reliable inventory if the dropdown list is hard to read.
 
 ---
 
@@ -347,19 +800,220 @@ You can also add context without `#` mentions:
 - **Drag problems** from the Problems panel.
 - **Attach images** — screenshots, mockups, or diagrams.
 
-### 🧪 Try It — Exercises
+### 🧪 Try It — Interactive Exercises
 
-1. In Chat, type: `Explain #file:src/task_utils.py`
-   - **Expected**: Copilot explains the entire file with full context.
-2. Type: `What tasks are overdue based on #file:data/tasks.json`
-   - **Expected**: Analysis specifically using the tasks data.
-3. Type: `What are the validation rules? #codebase`
-   - **Expected**: Copilot searches the entire project and finds rules in the spec and validate scripts.
-4. After running `python src/task_utils.py` in the terminal, type:
-   `Explain the output #terminalLastCommand`
-   - **Expected**: Copilot reads the terminal output and explains the summary.
-5. Type: `Summarize #fetch https://code.visualstudio.com/updates`
-   - **Expected**: Copilot fetches the page and summarizes the latest VS Code release notes.
+#### Exercise 1 · Attach a file with `#file`
+
+**What you'll do**: Give Copilot the full context of `task_utils.py` using `#file`.
+
+**Step 1** — Open Chat.
+
+**Step 2** — Type exactly (do **not** open the file first):
+```
+Explain #file:src/task_utils.py
+```
+Press **Enter**.
+
+- **What you see**: Copilot explains *every* function in the file — it has read
+  the entire file, not just a selection. You did not need to open the file.
+- **Why this is useful**: `#file` attaches the file to the request without
+  making it the active editor. Great for referencing related files while
+  working in a different file.
+
+---
+
+#### Exercise 2 · Answer a data question with `#file`
+
+**Step 1** — In Chat, type:
+```
+What tasks are overdue based on #file:data/tasks.json
+```
+Press **Enter**.
+
+- **What you see**: Copilot reads the JSON and lists any tasks whose `due_date`
+  is in the past (relative to today). It identifies them by `id` and `title`.
+
+---
+
+#### Exercise 3 · Search the whole project with `#codebase`
+
+**What you'll do**: Find where validation rules are defined — without knowing
+which file to open.
+
+**Step 1** — In Chat, type:
+```
+What are the validation rules? #codebase
+```
+Press **Enter**.
+
+- **What you see**: Copilot searches across all project files and cites the
+  specific files where validation rules appear — likely
+  `docs/task-tracker-spec.md` and `scripts/validate.sh`.
+- **How to verify**: Click the file names in Copilot's response to jump to
+  those locations in your editor.
+
+---
+
+#### Exercise 4 · Use `#terminalLastCommand` to diagnose output
+
+**What you'll do**: Run a Python script, then ask Copilot to explain the output.
+
+**Step 1** — Open the integrated terminal: **Ctrl+`** (backtick).
+
+**Step 2** — Run:
+```powershell
+python src/task_utils.py
+```
+
+**Step 3** — Switch back to Chat and type:
+```
+Explain the output #terminalLastCommand
+```
+- **What you see**: Copilot reads the exact terminal output (it does not ask
+  you to paste it) and explains what the task summary means — counts, overdue
+  items, or any errors.
+
+---
+
+#### Exercise 5 · Fetch external content with `#fetch`
+
+**Step 1** — In Chat, type:
+```
+Summarize #fetch https://code.visualstudio.com/updates
+```
+Press **Enter**.
+
+- **What you see**: Copilot fetches the remote page and returns a bullet-point
+  summary of the latest VS Code release notes — without you leaving VS Code.
+- **Note**: This requires the MCP `fetch` server configured in
+  `.vscode/mcp.json` (see Chapter 10).
+
+---
+
+#### Exercise 6 · Reference a folder with `#folder` and a symbol with `#symbol`
+
+**What you'll do**: Attach an entire directory and a single named symbol as
+context.
+
+**Step 1 — `#folder`**
+- In Chat, type:
+  ```
+  Review all files in #folder:src for any missing type hints
+  ```
+  Press **Enter**.
+- **What you see**: Copilot reads every file inside `src/` and reports
+  functions that are missing type annotations — without you opening each
+  file individually.
+
+**Step 2 — `#symbol`**
+- In Chat, type:
+  ```
+  Document #symbol:count_overdue
+  ```
+  Press **Enter**.
+- **What you see**: Copilot generates a docstring for `count_overdue` using
+  only that function's source, not the whole file. The response is more
+  focused than attaching the entire `task_utils.py`.
+
+---
+
+#### Exercise 7 · Use `#selection` for in-place context
+
+**What you'll do**: Reference your current editor selection so Copilot does not
+need you to copy-paste code into chat.
+
+**Step 1** — Open `src/task_utils.py` and highlight any multi-line block
+(e.g., the body of `filter_by_status`).
+
+**Step 2** — In Chat, type:
+```
+What edge cases are not handled in #selection?
+```
+Press **Enter**.
+
+- **What you see**: Copilot analyses specifically the selected lines and lists
+  edge cases — e.g., empty list input, case-sensitive string comparison,
+  `None` values.
+- **Why use this instead of `/explain`**: `#selection` works mid-sentence in
+  any prompt; `/explain` is a standalone command. Use `#selection` when you
+  want to compose a more specific question.
+
+---
+
+#### Exercise 8 · Summarise uncommitted changes with `#changes`
+
+**What you'll do**: Use `#changes` to generate a commit message from your
+current git diff.
+
+**Step 1** — Make a small edit anywhere in the project (e.g., add a comment to
+`src/task_utils.py`) and save the file. **Do not commit yet.**
+
+**Step 2** — In Chat, type:
+```
+Write a conventional commit message for #changes
+```
+Press **Enter**.
+
+- **What you see**: Copilot reads your uncommitted diff from source control and
+  produces a commit message following the Conventional Commits format (e.g.,
+  `docs(task_utils): add inline comment explaining overdue logic`).
+- **How to verify**: Open the Source Control panel (**Ctrl+Shift+G**) — the
+  diff Copilot read is the same as what appears there.
+
+---
+
+#### Exercise 9 · Diagnose a terminal selection with `#terminalSelection`
+
+**What you'll do**: Read a specific portion of terminal output without running
+a new command.
+
+**Step 1** — Open the integrated terminal (**Ctrl+`**) and run:
+```powershell
+python src/task_utils.py
+```
+
+**Step 2** — In the terminal, **click and drag** to select a portion of the
+output — for example, just the line that shows the overdue count.
+
+**Step 3** — In Chat, type:
+```
+Explain #terminalSelection
+```
+Press **Enter**.
+
+- **What you see**: Copilot explains only the lines you selected in the
+  terminal — not the full output. Use this when the terminal output is long
+  and you only need one section explained.
+- **Difference from `#terminalLastCommand`**: `#terminalLastCommand` captures
+  the entire last command + output. `#terminalSelection` captures only what
+  you highlighted.
+
+---
+
+#### Exercise 10 · Fix all Problems panel errors with `#problems`
+
+**What you'll do**: Feed the entire Problems panel into Copilot in a single
+request.
+
+**Step 1 — Introduce some problems**
+- Open `src/task_utils.py` and make two small syntax errors (e.g., remove
+  two closing parentheses on separate lines). Save the file.
+- Open the Problems panel: **View → Problems** (or **Ctrl+Shift+M**).
+  You should see at least two errors listed.
+
+**Step 2** — In Chat, type:
+```
+Fix these errors #problems
+```
+Press **Enter**.
+
+- **What you see**: Copilot reads *all* errors in the Problems panel at once
+  and proposes fixes for each one in a single response — not just the error
+  in the active editor.
+
+**Step 3 — Apply and verify**
+- Accept the proposed changes.
+- Check that the Problems panel is now empty (or reduced).
 
 ---
 
@@ -414,21 +1068,86 @@ project root. The key difference:
 - `copilot-instructions.md` is the recommended cross-editor format.
 - **Use only one** — not both.
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. Open Chat and ask: `What are the coding conventions for this project?`
-   - **Expected**: Copilot references conventions from `copilot-instructions.md`
-     without you explicitly attaching the file.
-2. Ask: `How do I validate the task data?`
-   - **Expected**: Copilot mentions the validate scripts from the Quick Start section.
-3. Use `/debug` to inspect the system prompt — you should see the workspace
-   instructions injected.
+#### Exercise 1 · Verify it loads automatically
 
-### 📝 Exercise
+**What you'll do**: Confirm that workspace instructions load without any explicit
+attachment on your part.
 
-Edit `.github/copilot-instructions.md` to add a new convention: "All JSON files
-must use 2-space indentation." Then ask Copilot to create a new JSON file —
-verify it uses 2-space indentation.
+**Step 1** — Open a **new** chat session: type `/clear` or click the **+** icon
+in the Chat panel.
+
+**Step 2** — Type (do **not** attach any file):
+```
+What are the coding conventions for this project?
+```
+Press **Enter**.
+
+- **What you see**: Copilot describes the conventions from
+  `.github/copilot-instructions.md` — snake_case Python, 2-space JSON
+  indentation, Markdown docs, no secrets. You never attached the file.
+- **Why it works**: VS Code injects `copilot-instructions.md` automatically at
+  the top of every request's system prompt.
+
+---
+
+#### Exercise 2 · Verify the quick-start command
+
+**Step 1** — In Chat, type:
+```
+How do I validate the task data?
+```
+- **What you see**: Copilot mentions the `bash scripts/validate.sh` and
+  `powershell scripts/validate.ps1` commands from the Quick Start section —
+  quoting the file path exactly as written in the instructions file.
+
+---
+
+#### Exercise 3 · Inspect with `/debug`
+
+**Step 1** — Type `/debug` in Chat.
+
+**Step 2** — In the debug panel that opens, scroll to the **System prompt**
+section.
+
+- **What you look for**: A block of text matching the content of
+  `.github/copilot-instructions.md` — the project summary, folder table,
+  and conventions.
+
+---
+
+### 📝 Exercise — Add a new convention and verify it
+
+**Goal**: Add a JSON indentation rule and confirm Copilot obeys it when
+creating a new file.
+
+**Step 1 — Edit the instructions file**
+
+Open `.github/copilot-instructions.md` and add this line under the
+**Conventions** section:
+
+```markdown
+- **JSON formatting**: All JSON files must use 2-space indentation.
+```
+
+Save the file.
+
+**Step 2 — Test it**
+
+In Chat, type:
+```
+Create a new file data/sample.json with a single example task object
+```
+Press **Enter**.
+
+- **What you see**: The generated `sample.json` uses 2-space indentation —
+  Copilot picked up the new rule you just added.
+
+**Step 3 — Verify and clean up**
+
+- Open `data/sample.json` and confirm the indentation.
+- Delete the file: in the Explorer, right-click `sample.json` → **Delete**.
 
 ---
 
@@ -493,27 +1212,129 @@ file. If trigger phrases aren't in the description, the agent won't find it.
 "Use when creating or editing JSON data files in data/..."
 ```
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. Open `data/tasks.json` and ask Copilot to add a new task.
-   - **Expected**: The new task includes all required fields with valid enum
-     values, matching `data-files.instructions.md` rules.
-2. Open `src/task_utils.py` and ask Copilot to add a new function.
-   - **Expected**: snake_case name, type hints, docstring — matching
-     `python-style.instructions.md`.
-3. Ask Copilot: "Write a user guide for the task tracker."
-   - **Expected**: Markdown formatting with ATX headings, tables, and links —
-     matching `documentation.instructions.md` (loaded on-demand).
-4. Use `/debug` to verify which instruction files were loaded.
+#### Exercise 1 · Trigger `data-files` instructions automatically
 
-### 📝 Exercise
+**What you'll do**: Ask Copilot to add a task while `tasks.json` is in context
+and watch it enforce the schema rules from `data-files.instructions.md`.
 
-Create a new file `.github/instructions/scripts.instructions.md` with:
-- `applyTo: "scripts/**/*.sh"` 
-- Rules: always include `set -euo pipefail`, add a header comment with purpose
-  and exit codes.
+**Step 1** — Open `data/tasks.json` in the editor (**Ctrl+P** → `tasks.json`).
 
-Then ask Copilot to write a new shell script — verify it follows your rules.
+**Step 2** — Open Chat and type:
+```
+Add a new task to tasks.json
+```
+Press **Enter**.
+
+- **What you see**: Copilot generates a complete task object with *all* required
+  fields (`id`, `title`, `status`, `priority`, `assignee`, `due_date`,
+  `tags`, `description`) and only uses valid enum values like `"todo"`,
+  `"in-progress"`, `"done"` for `status`.
+- **What's loading this**: Because `tasks.json` is the active file, the
+  `applyTo: "data/**/*.json"` glob in `data-files.instructions.md` matches,
+  and the instruction file is injected automatically.
+
+---
+
+#### Exercise 2 · Trigger `python-style` instructions automatically
+
+**What you'll do**: Ask Copilot to add a function while `task_utils.py` is open
+and confirm it follows the Python style guide.
+
+**Step 1** — Open `src/task_utils.py` in the editor.
+
+**Step 2** — In Chat, type:
+```
+Add a function that returns all tasks with a specific tag
+```
+Press **Enter**.
+
+- **What you see**: Copilot writes a function with:
+  - A snake_case name (e.g., `get_tasks_by_tag`)
+  - Type hints on parameters and return value
+  - A docstring describing purpose, parameters, and return type
+  - An f-string (not `.format()` or `%`) if string formatting is needed
+- **Why**: `python-style.instructions.md` with `applyTo: "src/**/*.py"` was
+  automatically loaded because the active file lives in `src/`.
+
+---
+
+#### Exercise 3 · Trigger `documentation` instructions on demand
+
+**What you'll do**: Ask for documentation and confirm the on-demand instruction
+is loaded (no `applyTo` — purely description-based).
+
+**Step 1** — Close all files (so no specific file is active).
+
+**Step 2** — In Chat, type:
+```
+Write a user guide for the task tracker
+```
+Press **Enter**.
+
+- **What you see**: Copilot generates Markdown with ATX headings (`#`, `##`),
+  tables for structured data, and links to other project docs rather than
+  inline-pasting content.
+- **How to verify**: Type `/debug` — in the loaded instructions list you should
+  see `documentation.instructions.md` was loaded (matched by its description,
+  not a glob).
+
+---
+
+#### Exercise 4 · Confirm with `/debug`
+
+**Step 1** — Open `data/tasks.json` in the editor.
+
+**Step 2** — Type `/debug` in Chat.
+
+- **What you look for**: In the debug panel, under **Instructions**, you should
+  see `data-files.instructions.md` listed as loaded. Open
+  `src/task_utils.py` and type `/debug` again — this time you should see
+  `python-style.instructions.md` loaded instead.
+
+---
+
+### 📝 Exercise — Create a new instruction file
+
+**Goal**: Create a new instruction that enforces shell scripting standards for
+`scripts/*.sh` files.
+
+**Step 1 — Create the file**
+
+Create `.github/instructions/scripts.instructions.md` with this exact content:
+
+```markdown
+---
+description: "Use when creating or editing shell scripts in the scripts/ directory. Covers safety flags and header conventions."
+applyTo: "scripts/**/*.sh"
+---
+# Shell Script Conventions
+
+- Always begin with `#!/usr/bin/env bash`.
+- Always include `set -euo pipefail` on the second line.
+- Add a header comment block with: script purpose, inputs, outputs, and exit codes.
+- Use lowercase variable names.
+- Quote all variable expansions: `"$variable"` not `$variable`.
+```
+
+Save the file.
+
+**Step 2 — Test it**
+
+In Chat, with a `.sh` script open (or by asking):
+```
+Create a new script scripts/cleanup.sh that removes all .pyc files
+```
+Press **Enter**.
+
+- **What you see**: The generated script starts with `#!/usr/bin/env bash`,
+  has `set -euo pipefail` on line 2, and includes a header comment.
+
+**Step 3 — Verify**
+
+Open the generated file and confirm all conventions are followed. Delete it
+when done.
 
 ---
 
@@ -578,27 +1399,116 @@ tools: [search, web]         # Tools available during execution
 ---
 ```
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. Select the `filter_by_status` function in `src/task_utils.py`.
-2. Type `/generate-test-cases` in chat.
-   - **Expected**: Copilot generates pytest tests with happy path, edge cases,
-     and error cases for the selected function.
-3. Type `/summarize-tasks` in chat.
-   - **Expected**: A formatted summary of all tasks with counts, overdue items,
-     and blockers.
-4. Type `/summarize-tasks only high priority`
-   - **Expected**: Filtered summary showing only high-priority tasks (the
-     argument hint guided you).
+#### Exercise 1 · Run the `generate-test-cases` prompt
 
-### 📝 Exercise
+**What you'll do**: Use the prompt file as a `/` command to generate tests for
+a real function.
 
-Create `.github/prompts/code-review.prompt.md` that:
-- Reviews selected code for potential bugs and style issues
-- Uses the `ask` agent (no file changes, just analysis)
-- Includes an `argument-hint` like "Select code to review"
+**Step 1** — Open `src/task_utils.py` in the editor.
 
-Test it on `src/task_utils.py`.
+**Step 2** — Scroll to `filter_by_status` and select the entire function
+(click the function name → **Ctrl+Shift+K** or click-drag).
+
+**Step 3** — Open Chat and type:
+```
+/generate-test-cases
+```
+Press **Enter**.
+
+- **What you see**: Copilot generates a pytest test file containing:
+  - A happy-path test (valid status, tasks returned)
+  - An empty-result test (status with no matching tasks)
+  - An invalid-input test (unrecognised status string)
+  - Descriptive test names (e.g., `test_filter_by_status_returns_matching_tasks`)
+- **Why it knows to use pytest**: The prompt body in
+  `generate-test-cases.prompt.md` specifies pytest conventions.
+
+---
+
+#### Exercise 2 · Run the `summarize-tasks` prompt
+
+**Step 1** — In Chat, type:
+```
+/summarize-tasks
+```
+Press **Enter**.
+
+- **What you see**: A formatted Markdown report with totals by status
+  (to-do, in-progress, done), overdue items, and any blockers.
+
+**Step 2 — Try the argument hint**
+
+Type:
+```
+/summarize-tasks only high priority
+```
+Press **Enter**.
+
+- **What you see**: A filtered report showing only tasks where `priority` is
+  `"high"`.
+- **Why the hint appeared**: The `argument-hint` in the prompt frontmatter
+  displayed help text below the chat input while you were typing.
+
+---
+
+#### Exercise 3 · Inspect the prompt frontmatter
+
+**Step 1** — Open `.github/prompts/generate-test-cases.prompt.md`.
+
+**Step 2** — Read the frontmatter and the body. Notice:
+- `agent: "agent"` tells VS Code to run in full agent mode.
+- The body instructs Copilot to generate edge cases, not just happy paths.
+
+**Step 3** — Open `/prompts` in Chat to see both prompts listed.
+
+---
+
+### 📝 Exercise — Create a `code-review` prompt
+
+**Goal**: Build a reusable prompt that reviews selected code for bugs and style.
+
+**Step 1 — Create the file**
+
+Create `.github/prompts/code-review.prompt.md` with this content:
+
+```markdown
+---
+description: "Review selected code for bugs, style issues, and missing tests. Reports findings as a structured Markdown list."
+argument-hint: "Optional: focus area, e.g. 'only security issues' or 'only style'"
+agent: "ask"
+---
+
+Review the selected code for the following:
+
+1. **Bugs**: Logic errors, off-by-one errors, unhandled edge cases.
+2. **Style**: Does it follow the project's Python conventions (snake_case, type
+   hints, docstrings)?
+3. **Tests**: Are there obvious cases that lack test coverage?
+
+Format the output as three sections with bullet-point findings.
+If no issues are found in a category, write "No issues found."
+
+Selected code: {{selection}}
+```
+
+Save the file.
+
+**Step 2 — Test it**
+
+1. Open `src/task_utils.py` and select the `count_overdue` function.
+2. In Chat, type `/code-review` and press **Enter**.
+3. **What you see**: A three-section Markdown report — Bugs, Style, Tests —
+   each with bullet points or "No issues found."
+
+**Step 3 — Try with an argument**
+
+Type:
+```
+/code-review only security issues
+```
+- Copilot narrows its review to security-relevant findings only.
 
 ---
 
@@ -684,24 +1594,123 @@ stdin (JSON payload)
 | **Guarantee** | Best-effort | 100% — the script always runs |
 | **Use case** | "Prefer snake_case" | "Block if JSON is invalid" |
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. Ask Copilot: "Add a new task to tasks.json with missing required fields."
-   - **Expected**: After the edit, the PostToolUse hook fires, validation fails
-     (exit 2), and Copilot sees the error. It will attempt to fix the task
-     to include all required fields.
-2. Ask Copilot: "Add a valid task TASK-009 to tasks.json."
-   - **Expected**: The hook fires, validation passes, no blocking error.
-3. Use `/debug` to see hook execution in the agent logs.
+#### Exercise 1 · Force a hook failure
 
-### 📝 Exercise
+**What you'll do**: Ask Copilot to write an *invalid* task to `tasks.json` and
+watch the `PostToolUse` hook catch it.
 
-Create a new hook in `.github/hooks/no-secrets.json` that fires on
-`PreToolUse` and blocks any `editFiles` call to files in a `config/` folder.
-This would prevent accidentally writing secrets to config files.
+**Step 1** — Open Chat and type:
+```
+Add a new task to tasks.json. Include the id and title fields only — skip all
+other fields.
+```
+Press **Enter**.
 
-Hint: Use `PreToolUse` event and check for `permissionDecision: "deny"` in
-output.
+- **What happens**: Copilot writes the incomplete task object to `tasks.json`.
+  The `PostToolUse` hook fires immediately after the file is saved.
+  `scripts/validate.ps1` (Windows) or `scripts/validate.sh` (macOS/Linux) runs.
+  Validation fails and exits with code 2.
+- **What you see in chat**: Copilot receives the exit-2 error and reports it.
+  It then attempts to self-correct by adding the missing required fields.
+- **Key insight**: You did not manually catch this error — the hook
+  *automatically* enforced the schema.
+
+---
+
+#### Exercise 2 · Confirm a valid task passes the hook
+
+**Step 1** — In Chat, type:
+```
+Add a valid task TASK-009 to tasks.json with all required fields populated.
+```
+Press **Enter**.
+
+- **What happens**: Copilot writes a complete task. The hook fires, validation
+  passes (exit 0), and no error is shown.
+- **Verify**: Open `data/tasks.json` and confirm TASK-009 was added with all
+  required fields.
+
+---
+
+#### Exercise 3 · Watch the hook in agent logs
+
+**Step 1** — Type `/debug` in Chat.
+
+**Step 2** — Look for **PostToolUse** entries in the debug output. You should
+see the hook command and its stdout/exit code logged for the previous edits.
+
+---
+
+### 📝 Exercise — Create a `no-secrets` pre-edit hook
+
+**Goal**: Block any file edit in a `config/` folder to prevent accidental
+credential commits.
+
+**Step 1 — Create the hook config**
+
+Create `.github/hooks/no-secrets.json` with this content:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "bash ./scripts/hooks/no-secrets.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File ./scripts/hooks/no-secrets.ps1",
+        "timeout": 10
+      }
+    ]
+  }
+}
+```
+
+**Step 2 — Create the hook script**
+
+Create `scripts/hooks/no-secrets.ps1` with this content:
+
+```powershell
+# no-secrets.ps1 — Blocks edits to files in the config/ folder.
+# Exit 2 to block, exit 0 to allow.
+
+$input_json = $input | ConvertFrom-Json
+
+$tool = $input_json.toolName
+if ($tool -ne "editFiles" -and $tool -ne "createFile") {
+    exit 0
+}
+
+$paths = @()
+if ($input_json.toolInput.files) {
+    $paths = $input_json.toolInput.files | ForEach-Object { $_.path }
+} elseif ($input_json.toolInput.path) {
+    $paths = @($input_json.toolInput.path)
+}
+
+foreach ($p in $paths) {
+    if ($p -match "config[/\\]") {
+        Write-Host "BLOCKED: Edits to config/ are not allowed. Move secrets to environment variables."
+        exit 2
+    }
+}
+
+exit 0
+```
+
+**Step 3 — Test it**
+
+In Chat, type:
+```
+Create a file config/database.json with a connection string
+```
+- **What you see**: The hook intercepts the `createFile` call, exits 2, and
+  Copilot reports that the operation was blocked.
+
+**Step 4 — Verify it allows other edits**
+
+Ask Copilot to edit `src/task_utils.py` — the hook should allow it (exit 0).
 
 ---
 
@@ -779,29 +1788,123 @@ description: "Use when analyzing task data, finding overdue items..."
 description: "A helpful analysis tool"
 ```
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. In Chat, open the agent picker (dropdown at the top) and select **Task Analyst**.
-2. Ask: "How many tasks are overdue?"
-   - **Expected**: The Task Analyst reads `tasks.json`, identifies overdue items,
-     and presents a Markdown summary. It does NOT try to edit files.
-3. While using **Task Analyst**, ask: "Fix the overdue tasks."
-   - **Expected**: The agent refuses or explains it cannot edit files — it only
-     has `read` and `search` tools.
-4. Switch back to the default **Agent** and ask: "Write a contributor guide for
-   this project."
-   - **Expected**: The main agent may delegate to the **Doc Writer** subagent
-     (visible in agent logs via `/debug`).
+#### Exercise 1 · Use the Task Analyst (read-only)
 
-### 📝 Exercise
+**What you'll do**: Switch to the Task Analyst agent and confirm it can analyse
+but cannot edit.
 
-Create `.github/agents/code-reviewer.agent.md` with:
-- `tools: [read, search]` (read-only)
-- Role: Reviews Python code for bugs, style issues, and missing tests
-- `user-invocable: true`
+**Step 1** — In the Chat panel, click the **agent picker** dropdown at the
+top of the input area (it shows the current agent name, e.g., "Agent" or a
+model name).
 
-Test it by selecting it from the agent picker and asking it to review
-`src/task_utils.py`.
+**Step 2** — Select **Task Analyst** from the list.
+
+**Step 3** — Type:
+```
+How many tasks are overdue?
+```
+Press **Enter**.
+
+- **What you see**: The Task Analyst reads `data/tasks.json`, counts tasks
+  whose `due_date` is past today, and returns a Markdown table or bulleted
+  list. It does not offer to edit any files.
+
+---
+
+#### Exercise 2 · Confirm tool restrictions
+
+**Step 1** — Still using **Task Analyst**, type:
+```
+Fix the overdue tasks by updating their due dates to next week.
+```
+Press **Enter**.
+
+- **What you see**: The agent explains it cannot edit files — it only has
+  `read` and `search` tools. It may describe *what* would need to change
+  without making the change.
+- **Why**: The `tools: [read, search]` line in the agent's frontmatter
+  prevents `editFiles` from being available.
+
+---
+
+#### Exercise 3 · Trigger the Doc Writer via delegation
+
+**Step 1** — Click the agent picker and switch back to the default **Agent**.
+
+**Step 2** — Type:
+```
+Write a contributor guide for this project in docs/contributing.md
+```
+Press **Enter**.
+
+- **What you see**: The main agent may delegate the writing task to the Doc
+  Writer subagent. Watch the agent logs (type `/debug`) for a
+  `SubagentStart`/`SubagentStop` pair with "Doc Writer" as the agent name.
+- **Why**: The Doc Writer's `description` contains trigger phrases like
+  *"generating or updating project documentation"*, which the main agent
+  matches when it needs to delegate a documentation task.
+
+---
+
+### 📝 Exercise — Create a `code-reviewer` agent
+
+**Goal**: Build a read-only agent that reviews Python code for bugs, style,
+and missing tests.
+
+**Step 1 — Create the agent file**
+
+Create `.github/agents/code-reviewer.agent.md` with this content:
+
+```markdown
+---
+name: Code Reviewer
+description: "Use when reviewing Python code for bugs, style violations, and missing test coverage. Read-only — does not modify files."
+tools: [read, search]
+user-invocable: true
+---
+
+You are a senior Python code reviewer. When given a file or function to review:
+
+1. Check for logic errors, off-by-one bugs, and unhandled edge cases.
+2. Verify the code follows the project's Python style guide:
+   - snake_case function and variable names
+   - Type hints on all function parameters and return values
+   - Docstrings on all public functions
+3. Identify functions that lack test coverage.
+
+Format your response as a Markdown report with three sections:
+**Bugs**, **Style Issues**, and **Missing Tests**.
+Write "None found" in any section with no issues.
+
+Do NOT suggest edits or attempt to modify any files.
+```
+
+Save the file.
+
+**Step 2 — Test it**
+
+1. Click the agent picker dropdown.
+2. Select **Code Reviewer** (it should now appear because
+   `user-invocable: true`).
+3. Type:
+```
+Review src/task_utils.py
+```
+Press **Enter**.
+
+- **What you see**: A three-section Markdown report — Bugs, Style Issues,
+  Missing Tests — without any file edits being made.
+
+**Step 3 — Verify tool restriction**
+
+Ask the Code Reviewer:
+```
+Fix the style issues you found.
+```
+- **What you see**: It explains it cannot edit files and offers to describe
+  the changes needed instead.
 
 ---
 
@@ -860,33 +1963,131 @@ Critical: The `name` field **must exactly match** the folder name
 | `disable-model-invocation: true` | ✅ Yes | ❌ No |
 | Both set | ❌ No | ❌ No |
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. In Chat, type `/task-report`
-   - **Expected**: Copilot loads the skill, reads `tasks.json`, applies the
-     report template, and generates a formatted status report.
-2. Type `/task-report overdue items only`
-   - **Expected**: A filtered report focusing on overdue tasks.
-3. Type `/debug` and inspect the context — you should see the skill was loaded
-   progressively (first discovery, then instructions, then template).
+#### Exercise 1 · Run the skill
 
-### 📝 Exercise
+**What you'll do**: Invoke the `task-report` skill as a `/` command.
 
-Create a new skill `.github/skills/data-quality/`:
+**Step 1** — Open Chat.
 
+**Step 2** — Type:
 ```
-.github/skills/data-quality/
-├── SKILL.md
-└── references/
-    └── quality-rules.md
+/task-report
+```
+Press **Enter**.
+
+- **What you see**: Copilot loads the skill (see the progress indicator), reads
+  `data/tasks.json`, applies the report template from
+  `.github/skills/task-report/assets/report-template.md`, and returns a
+  formatted Markdown status report with task counts by status, overdue items,
+  and a summary table.
+
+---
+
+#### Exercise 2 · Pass an argument to the skill
+
+**Step 1** — Type:
+```
+/task-report overdue items only
+```
+Press **Enter**.
+
+- **What you see**: A filtered report showing only tasks with a `due_date` in
+  the past. The argument was passed as the user's request context alongside
+  the skill instructions.
+
+---
+
+#### Exercise 3 · Inspect progressive loading
+
+**Step 1** — Type `/debug` after running the skill.
+
+- **What you look for**: In the debug output, you should see the skill loaded
+  in stages:
+  1. **Discovery**: `name` and `description` from the frontmatter (~100 tokens).
+  2. **Instructions**: The full `SKILL.md` body.
+  3. **Resources**: The `report-format.md` and `report-template.md` files
+     (only loaded when the skill ran).
+
+---
+
+### 📝 Exercise — Create a `data-quality` skill
+
+**Goal**: Build a skill that checks `tasks.json` against the spec rules and
+reports issues.
+
+**Step 1 — Create the folder structure**
+
+Create these files:
+
+**`.github/skills/data-quality/SKILL.md`**:
+
+```markdown
+---
+name: data-quality
+description: "Check data/tasks.json for schema violations, missing fields, invalid values, and duplicate IDs. Use when auditing task data quality."
+argument-hint: "Optional: specific check to run, e.g. 'check for duplicates only'"
+---
+
+You are a data quality auditor for this task-tracker project.
+
+## Your job
+
+1. Read `data/tasks.json`.
+2. Check every task against the rules in `references/quality-rules.md`.
+3. Report all violations in a Markdown table with columns:
+   **Task ID**, **Field**, **Issue**, **Expected Value**.
+4. If no issues are found, write: "✅ All tasks pass quality checks."
+
+## Steps
+
+1. Use the `read` tool to load `data/tasks.json`.
+2. Use the `read` tool to load `.github/skills/data-quality/references/quality-rules.md`.
+3. Validate each task against every rule.
+4. Produce the report.
 ```
 
-The skill should:
-- Check `tasks.json` against validation rules from the spec
-- Report any issues (missing fields, invalid values, duplicate IDs)
-- Reference the quality rules file for detailed criteria
+**`.github/skills/data-quality/references/quality-rules.md`**:
 
-Test with `/data-quality`.
+```markdown
+# Data Quality Rules
+
+## Required fields
+Every task must have: `id`, `title`, `status`, `priority`, `assignee`,
+`due_date`, `tags`, `description`.
+
+## Enum constraints
+- `status` must be one of: `todo`, `in-progress`, `done`, `blocked`
+- `priority` must be one of: `low`, `medium`, `high`
+
+## Format constraints
+- `id` must match the pattern `TASK-NNN` (e.g., `TASK-001`)
+- `due_date` must be an ISO 8601 date string (`YYYY-MM-DD`)
+- `tags` must be an array (can be empty)
+
+## Uniqueness
+- `id` must be unique across all tasks
+```
+
+**Step 2 — Test the skill**
+
+In Chat, type:
+```
+/data-quality
+```
+Press **Enter**.
+
+- **What you see**: Copilot reads both files and validates every task. Any
+  tasks with missing fields, invalid enum values, or duplicate IDs appear in
+  a violations table.
+
+**Step 3 — Introduce a violation to test it**
+
+Temporarily edit `data/tasks.json` to set one task's `status` to `"invalid"`.
+Run `/data-quality` again — it should report the violation.
+
+Revert the edit when done.
 
 ---
 
@@ -966,19 +2167,113 @@ For a more advanced setup, here's how you'd configure a local MCP server
 }
 ```
 
-### 🧪 Try It
+### 🧪 Try It — Interactive Exercises
 
-1. In Chat, type: `Summarize the latest VS Code release notes #fetch https://code.visualstudio.com/updates`
-   - **Expected**: Copilot fetches the page via the MCP fetch server and
-     summarizes the content.
-2. Use `/tools` to see the list of available tools — `fetch` should appear.
-3. Use `/debug` to see the MCP tool invocation in the agent logs.
+#### Exercise 1 · Fetch release notes from the web
 
-### 📝 Exercise
+**What you'll do**: Use the MCP `fetch` server to retrieve a live web page
+inside chat.
 
-Research an MCP server for a tool your team uses (e.g., Jira, database,
-Confluence). Add it to `.vscode/mcp.json` and reference its tools from the
-Task Analyst agent. Test that the agent can invoke the external tool.
+**Step 1** — Open Chat.
+
+**Step 2** — Type:
+```
+Summarize the latest VS Code release notes #fetch https://code.visualstudio.com/updates
+```
+Press **Enter**.
+
+- **What you see**: Copilot fetches the VS Code updates page via the MCP
+  `fetch` server and returns a bullet-point summary of the latest release —
+  without you opening a browser.
+- **How it works**: `#fetch` tells Copilot to invoke the `fetch` tool from
+  `.vscode/mcp.json`. The MCP client sends the HTTP request and returns the
+  page content as tool output.
+
+---
+
+#### Exercise 2 · Verify the fetch tool is available
+
+**Step 1** — Type `/tools` in Chat.
+
+- **What you see**: A panel listing all available tools. `fetch` should appear
+  in the list, contributed by the `fetch` MCP server in `.vscode/mcp.json`.
+
+**Step 2** — If `fetch` is **not** listed:
+1. Open `.vscode/mcp.json` and verify the JSON is valid.
+2. Run the VS Code command **MCP: List Servers** from the Command Palette to
+   see if the server is registerd.
+3. Restart VS Code if the server was recently added.
+
+---
+
+#### Exercise 3 · Trace a fetch call in `/debug`
+
+**Step 1** — Run the fetch command from Exercise 1 again.
+
+**Step 2** — Type `/debug`.
+
+- **What you look for**: In the agent logs, find a tool invocation for `fetch`
+  with the URL as the input. This confirms the MCP server handled the request,
+  not a built-in Copilot capability.
+
+---
+
+### 📝 Exercise — Add an MCP server for your team's tools
+
+**Goal**: Configure a second MCP server in `.vscode/mcp.json`.
+
+**Step 1 — Choose a server**
+
+Pick one of these well-known MCP servers available via `npx`:
+
+| Server | Purpose | Package |
+|--------|---------|---------|
+| Filesystem | Read/write local files via MCP | `@modelcontextprotocol/server-filesystem` |
+| SQLite | Query a local SQLite database | `@modelcontextprotocol/server-sqlite` |
+| GitHub | GitHub API (repos, issues, PRs) | `@modelcontextprotocol/server-github` |
+
+**Step 2 — Edit `.vscode/mcp.json`**
+
+Open `.vscode/mcp.json` and add a second server entry. For example, to add
+the filesystem server:
+
+```json
+{
+  "servers": {
+    "fetch": {
+      "type": "copilot",
+      "description": "Built-in web fetch tool — retrieves content from URLs."
+    },
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ]
+    }
+  }
+}
+```
+
+Save the file.
+
+**Step 3 — Verify the new server**
+
+1. Open the Command Palette (**Ctrl+Shift+P**).
+2. Run **MCP: List Servers** — `filesystem` should appear.
+3. Type `/tools` in Chat — the filesystem tools (e.g., `read_file`,
+   `list_directory`) should appear alongside `fetch`.
+
+**Step 4 — Test it in an agent**
+
+Type in Chat:
+```
+Using the filesystem MCP server, list all files in the data/ folder
+```
+- **What you see**: The agent invokes the MCP filesystem server's
+  `list_directory` tool and returns the file listing.
 
 ---
 
