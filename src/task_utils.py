@@ -1,5 +1,8 @@
 """Minimal task tracker utilities for the Copilot features demo."""
 
+# Practice edit for Git exercise
+
+
 import json
 from datetime import date, datetime
 from pathlib import Path
