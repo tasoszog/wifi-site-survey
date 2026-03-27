@@ -13,6 +13,7 @@ customization primitive with working files you can test immediately.
 
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
+- [Chapter 0: Git & GitHub Essentials](#chapter-0--git--github-essentials)
 - **Part A — Built-in Chat Interface**
   - [Chapter 1: `/` Slash Commands](#chapter-1--slash-commands)
   - [Chapter 2: `@` Chat Participants](#chapter-2--chat-participants)
@@ -123,6 +124,400 @@ git commit -m "Initial commit: Copilot features demo"
 
 Workspace instructions are designed to be version-controlled and shared with
 your team.
+
+---
+
+## Chapter 0 · Git & GitHub Essentials
+
+**Concept**: Git is the version control system that tracks every change you make
+to your project. GitHub is the cloud platform that hosts your Git repositories
+and enables collaboration. Understanding both is essential — Copilot's
+customization files (instructions, prompts, hooks, agents, skills) are all
+designed to be version-controlled and shared via Git.
+
+### Why this matters for Copilot
+
+- Every customization file you create in `.github/` should be committed so your
+  team shares the same AI behavior.
+- Copilot can read your Git history (`#changes`, `git log`) to generate commit
+  messages, summarize work, and understand project evolution.
+- Hooks (Chapter 7) rely on Git to revert failed edits.
+
+### Git Command Reference
+
+#### Configuration
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git config --global user.name "Name"` | Sets your name for all commits | `git config --global user.name "Alice Smith"` |
+| `git config --global user.email "email"` | Sets your email for all commits | `git config --global user.email "alice@example.com"` |
+| `git config --list` | Shows all current configuration values | Check what name/email is set |
+
+#### Repository Setup
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git init` | Creates a new Git repository in the current directory | Start tracking a new project |
+| `git clone <url>` | Downloads a repository from GitHub to your machine | `git clone https://github.com/user/repo.git` |
+
+#### Staging & Committing
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git status` | Shows which files are modified, staged, or untracked | Check what changed before committing |
+| `git add <file>` | Stages a specific file for the next commit | `git add src/task_utils.py` |
+| `git add .` | Stages all changed files in the current directory | Stage everything at once |
+| `git commit -m "message"` | Saves staged changes as a new commit | `git commit -m "feat: add filter function"` |
+| `git commit --amend` | Modifies the most recent commit (message or content) | Fix a typo in your last commit message |
+
+#### Viewing History
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git log` | Shows the full commit history | Review all past commits |
+| `git log --oneline` | Shows a compact one-line-per-commit history | Quick overview of recent work |
+| `git log --graph --oneline` | Shows commit history as a visual branch graph | Understand branching and merges |
+| `git diff` | Shows unstaged changes line by line | See exactly what you changed |
+| `git diff --staged` | Shows staged changes (what will be committed) | Review before committing |
+| `git show <commit>` | Shows the details and diff of a specific commit | `git show abc1234` |
+
+#### Branching & Merging
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git branch` | Lists all local branches | See which branches exist |
+| `git branch <name>` | Creates a new branch | `git branch feature/add-filter` |
+| `git checkout <branch>` | Switches to an existing branch | `git checkout main` |
+| `git checkout -b <name>` | Creates and switches to a new branch in one step | `git checkout -b fix/overdue-bug` |
+| `git merge <branch>` | Merges the specified branch into the current branch | `git merge feature/add-filter` |
+| `git branch -d <name>` | Deletes a branch that has been merged | `git branch -d feature/add-filter` |
+
+#### Remote Repositories (GitHub)
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git remote -v` | Shows configured remote repositories | Verify your GitHub remote URL |
+| `git remote add origin <url>` | Connects your local repo to a GitHub repo | `git remote add origin https://github.com/user/repo.git` |
+| `git push -u origin main` | Pushes your local `main` branch to GitHub (first time) | Publish your project to GitHub |
+| `git push` | Pushes committed changes to the remote | Share your latest commits |
+| `git pull` | Fetches and merges remote changes into your branch | Get your teammate's latest work |
+| `git fetch` | Downloads remote changes without merging | Check what's new before merging |
+
+#### Undoing Changes
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `git checkout -- <file>` | Discards unstaged changes to a file | Revert a file to its last committed state |
+| `git restore <file>` | Discards unstaged changes (modern syntax) | `git restore src/task_utils.py` |
+| `git restore --staged <file>` | Unstages a file (keeps your edits) | `git restore --staged data/tasks.json` |
+| `git reset --soft HEAD~1` | Undoes the last commit but keeps changes staged | Redo a commit with a better message |
+| `git stash` | Temporarily shelves uncommitted changes | Switch branches without committing |
+| `git stash pop` | Restores the most recently stashed changes | Resume work after switching back |
+
+#### GitHub-Specific Workflows
+
+| Command / Action | What it does | Example |
+|-----------------|-------------|---------|
+| `git push` then open PR on GitHub | Proposes changes for team review | Standard collaboration workflow |
+| **Fork** (GitHub UI) | Creates your own copy of someone else's repository | Contribute to open-source projects |
+| **Pull Request** (GitHub UI) | Requests that your branch be merged into the main branch | Code review before merging |
+| **Issue** (GitHub UI) | Tracks a bug, feature request, or task | Organize project work |
+| `gh pr create` | Creates a pull request from the CLI (GitHub CLI) | `gh pr create --title "Add filter" --body "..."` |
+| `gh issue list` | Lists open issues from the CLI (GitHub CLI) | `gh issue list --label bug` |
+
+### 🧪 Try It — Interactive Exercises
+
+#### Exercise 1 · Configure Git and make your first commit
+
+**What you'll do**: Set up Git identity and create an initial commit.
+
+**Step 1 — Check your Git configuration**
+- Open the integrated terminal: **Ctrl+`** (backtick).
+- Run:
+  ```powershell
+  git config --global user.name
+  git config --global user.email
+  ```
+- **What you see**: Your configured name and email. If blank, set them:
+  ```powershell
+  git config --global user.name "Your Name"
+  git config --global user.email "your.email@example.com"
+  ```
+
+**Step 2 — Initialize and commit**
+- If you haven't already initialized git (from Getting Started), run:
+  ```powershell
+  cd C:\Projects\copilot-features-demo
+  git init
+  git add .
+  git commit -m "Initial commit: Copilot features demo"
+  ```
+- **What you see**: A message like `[main (root-commit) abc1234] Initial commit...`
+  confirming the snapshot was saved.
+
+**Step 3 — View the commit**
+- Run:
+  ```powershell
+  git log --oneline
+  ```
+- **What you see**: A single line showing the commit hash and message.
+
+---
+
+#### Exercise 2 · Track changes with `git status` and `git diff`
+
+**What you'll do**: Make a small edit and observe how Git tracks it.
+
+**Step 1** — Open `src/task_utils.py` and add a comment at the top:
+```python
+# Practice edit for Git exercise
+```
+Save the file (**Ctrl+S**).
+
+**Step 2** — In the terminal, run:
+```powershell
+git status
+```
+- **What you see**: `src/task_utils.py` listed under **Changes not staged for
+  commit** — Git detected your edit.
+
+**Step 3** — Run:
+```powershell
+git diff
+```
+- **What you see**: A line-by-line diff showing the added comment in green
+  with a `+` prefix.
+
+**Step 4 — Stage and commit**
+```powershell
+git add src/task_utils.py
+git commit -m "docs: add practice comment to task_utils"
+```
+
+**Step 5 — Verify**
+```powershell
+git log --oneline
+```
+- **What you see**: Two commits — your new one on top.
+
+**Step 6 — Clean up**
+- Remove the practice comment from `src/task_utils.py` and commit:
+  ```powershell
+  git add src/task_utils.py
+  git commit -m "chore: remove practice comment"
+  ```
+
+---
+
+#### Exercise 3 · Create and merge a branch
+
+**What you'll do**: Practice the branch-edit-merge workflow used in
+real projects.
+
+**Step 1 — Create a branch**
+```powershell
+git checkout -b exercise/git-practice
+```
+- **What you see**: `Switched to a new branch 'exercise/git-practice'`.
+
+**Step 2 — Make an edit on the branch**
+- Open `data/tasks.json` and add a temporary comment field to any task
+  (e.g., `"note": "testing branches"`).
+- Stage and commit:
+  ```powershell
+  git add data/tasks.json
+  git commit -m "test: add temporary note field for branch exercise"
+  ```
+
+**Step 3 — Switch back and merge**
+```powershell
+git checkout main
+git merge exercise/git-practice
+```
+- **What you see**: A fast-forward merge message — the change from your
+  branch is now on `main`.
+
+**Step 4 — Delete the branch**
+```powershell
+git branch -d exercise/git-practice
+```
+
+**Step 5 — Clean up**
+- Revert the temporary edit:
+  ```powershell
+  git checkout -- data/tasks.json
+  git commit -am "chore: revert temporary note field"
+  ```
+
+---
+
+#### Exercise 4 · Use `git stash` to shelve work temporarily
+
+**What you'll do**: Stash uncommitted changes so you can switch context
+without losing work.
+
+**Step 1** — Open `src/task_utils.py` and add a new comment anywhere.
+Save but **do not commit**.
+
+**Step 2** — Run:
+```powershell
+git stash
+```
+- **What you see**: `Saved working directory and index state...`. Your edit
+  disappears from the file.
+
+**Step 3** — Verify the file is clean:
+```powershell
+git status
+```
+- **What you see**: `nothing to commit, working tree clean`.
+
+**Step 4** — Restore your stashed changes:
+```powershell
+git stash pop
+```
+- **What you see**: Your comment reappears in the file. The stash is removed.
+
+**Step 5 — Clean up**
+- Discard the practice edit:
+  ```powershell
+  git checkout -- src/task_utils.py
+  ```
+
+---
+
+#### Exercise 5 · View detailed commit history
+
+**What you'll do**: Explore different ways to read the project history.
+
+**Step 1 — Full log**
+```powershell
+git log
+```
+- **What you see**: Each commit with its full hash, author, date, and message.
+  Press **q** to exit the pager.
+
+**Step 2 — Compact log**
+```powershell
+git log --oneline
+```
+
+**Step 3 — Graph view**
+```powershell
+git log --graph --oneline --all
+```
+- **What you see**: A text-based branch graph showing how commits relate.
+
+**Step 4 — Inspect a single commit**
+- Copy a commit hash from the log, then run:
+  ```powershell
+  git show <hash>
+  ```
+  (Replace `<hash>` with the actual hash.)
+- **What you see**: The commit metadata and the full diff of what changed.
+
+---
+
+#### Exercise 6 · Undo mistakes safely
+
+**What you'll do**: Practice reverting changes without losing work.
+
+**Step 1 — Discard an unstaged edit**
+- Edit `src/task_utils.py` (add any text), save, then run:
+  ```powershell
+  git restore src/task_utils.py
+  ```
+- **What you see**: The file reverts to its last committed state.
+
+**Step 2 — Unstage a file**
+- Make an edit, stage it, then unstage:
+  ```powershell
+  git add src/task_utils.py
+  git restore --staged src/task_utils.py
+  ```
+- **What you see**: `git status` now shows the file as modified but
+  **not staged**. Your edits are still in the file.
+
+**Step 3 — Soft-reset the last commit**
+- Make a throwaway commit:
+  ```powershell
+  git add src/task_utils.py
+  git commit -m "throwaway commit"
+  ```
+- Undo it (keeps changes staged):
+  ```powershell
+  git reset --soft HEAD~1
+  ```
+- **What you see**: `git log --oneline` no longer shows "throwaway commit",
+  but `git status` shows your changes still staged.
+
+**Step 4 — Clean up**
+```powershell
+git restore --staged src/task_utils.py
+git restore src/task_utils.py
+```
+
+---
+
+#### Exercise 7 · Connect to GitHub and push
+
+**What you'll do**: Link your local repository to GitHub and push your commits.
+
+> **Prerequisite**: You need a GitHub account and a repository created on
+> GitHub (empty — no README or .gitignore).
+
+**Step 1 — Create a GitHub repository**
+- Go to [https://github.com/new](https://github.com/new).
+- Name it `copilot-features-demo` (or any name).
+- Leave it **empty** (no README, no .gitignore, no license).
+- Click **Create repository**.
+
+**Step 2 — Add the remote**
+```powershell
+git remote add origin https://github.com/YOUR-USERNAME/copilot-features-demo.git
+```
+(Replace `YOUR-USERNAME` with your GitHub username.)
+
+**Step 3 — Push**
+```powershell
+git push -u origin main
+```
+- **What you see**: Git uploads your commits to GitHub. Visit the repository
+  URL in your browser to confirm.
+
+**Step 4 — Verify the remote**
+```powershell
+git remote -v
+```
+- **What you see**: The `origin` URL pointing to your GitHub repository.
+
+---
+
+#### Exercise 8 · Use Copilot with Git context
+
+**What you'll do**: Combine Copilot's `#changes` context mention with Git
+to generate a commit message automatically.
+
+**Step 1** — Make a small edit to any file and save. **Do not commit.**
+
+**Step 2** — Open Chat (**Ctrl+Alt+I**) and type:
+```
+Write a conventional commit message for #changes
+```
+Press **Enter**.
+
+- **What you see**: Copilot reads your uncommitted diff via Git and produces
+  a Conventional Commits message (e.g., `feat(task_utils): add helper function`).
+
+**Step 3** — Copy the message and use it:
+```powershell
+git add .
+git commit -m "<paste the message here>"
+```
+
+> **Key insight**: This is where Git and Copilot complement each other —
+> Copilot understands your Git state and can automate repetitive Git tasks
+> like writing commit messages.
 
 ---
 
