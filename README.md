@@ -142,76 +142,76 @@ the chat input to see all available commands. They fall into 8 categories:
 
 These operate on code you select or reference in your prompt.
 
-| Command | What it does |
-|---------|-------------|
-| `/explain` | Explains selected code — purpose, logic, edge cases |
-| `/fix` | Proposes fixes for errors (reads Problems panel / stack traces) |
-| `/tests` | Generates tests for selected code using your project's test framework |
-| `/doc` | Generates documentation comments (inline chat) |
-| `/setupTests` | Scaffolds a test framework (config, dependencies, example tests) |
-| `/fixTestFailure` | Analyzes failing tests and suggests fixes |
+| Command | What it does | Example |
+|---------|-------------|--------|
+| `/explain` | Explains selected code — purpose, logic, edge cases | You inherited `count_overdue` and don't know what it does — select it and use `/explain` |
+| `/fix` | Proposes fixes for errors (reads Problems panel / stack traces) | A red underline appears under your code and you're unsure why — use `/fix` to let Copilot read the error and suggest a fix |
+| `/tests` | Generates tests for selected code using your project's test framework | You just wrote `filter_by_status` but have no tests yet — select it and use `/tests` |
+| `/doc` | Generates documentation comments (inline chat) | You wrote a utility function but left no docstring — select it and use `/doc` in inline chat |
+| `/setupTests` | Scaffolds a test framework (config, dependencies, example tests) | Your project has no test framework and you don't want to configure it manually — use `/setupTests` |
+| `/fixTestFailure` | Analyzes failing tests and suggests fixes | A pytest run just failed with an unclear error — use `/fixTestFailure` to let Copilot diagnose it |
 
 ### Category 2: Scaffolding
 
-| Command | What it does |
-|---------|-------------|
-| `/new` | Creates a new file or project from a description |
-| `/newNotebook` | Creates a new Jupyter notebook from a description |
+| Command | What it does | Example |
+|---------|-------------|--------|
+| `/new` | Creates a new file or project from a description | You need a new utility script but don't want to write boilerplate — use `/new Python script that reads a CSV` |
+| `/newNotebook` | Creates a new Jupyter notebook from a description | You want to explore `tasks.json` interactively — use `/newNotebook analyze tasks.json` |
 
 ### Category 3: Session Management
 
-| Command | What it does |
-|---------|-------------|
-| `/clear` | Starts a fresh chat session (archives current one) |
-| `/fork` | Copies the conversation into a new independent session |
-| `/compact` | Summarizes conversation history to free context window space |
-| `/rename` | Renames the current chat session (for organization) |
+| Command | What it does | Example |
+|---------|-------------|--------|
+| `/clear` | Starts a fresh chat session (archives current one) | You finished one task and want a clean slate for the next — use `/clear` |
+| `/fork` | Copies the conversation into a new independent session | You want to try a different approach without losing the current conversation — use `/fork` |
+| `/compact` | Summarizes conversation history to free context window space | Your chat history grew long and Copilot is losing early context — use `/compact` |
+| `/rename` | Renames the current chat session (for organization) | You want to find this session later by topic — use `/rename Fix task validation bug` |
 
 ### Category 4: Planning & Search
 
-| Command | What it does |
-|---------|-------------|
-| `/plan` | Creates a step-by-step implementation plan before writing code |
-| `/search` | Semantic search across your workspace |
-| `/startDebugging` | Generates a `launch.json` and starts a debug session |
+| Command | What it does | Example |
+|---------|-------------|--------|
+| `/plan` | Creates a step-by-step implementation plan before writing code | Before coding a new feature, you want to see all steps outlined first — use `/plan Add search by assignee to task_utils.py` |
+| `/search` | Semantic search across your workspace | You can't remember where status validation is implemented — use `/search where is task status validated` |
+| `/startDebugging` | Generates a `launch.json` and starts a debug session | You want to debug `task_utils.py` but have no launch config — use `/startDebugging` |
 
 ### Category 5: Customization Creators
 
 These create the files you'll learn about in Part B:
 
-| Command | What it creates |
-|---------|----------------|
-| `/init` | Generates `copilot-instructions.md` from your project structure |
-| `/create-prompt` | Creates a `.prompt.md` file |
-| `/create-instruction` | Creates a `.instructions.md` file |
-| `/create-skill` | Creates a `SKILL.md` and skill folder |
-| `/create-agent` | Creates an `.agent.md` file |
-| `/create-hook` | Creates a hook `.json` config |
-| `/agent-customization` | Opens the agent customization workflow |
+| Command | What it creates | Example |
+|---------|----------------|--------|
+| `/init` | Generates `copilot-instructions.md` from your project structure | You opened a new project and want Copilot to generate workspace instructions automatically — use `/init` |
+| `/create-prompt` | Creates a `.prompt.md` file | You keep typing the same changelog task in chat — turn it into a reusable command with `/create-prompt Generate a changelog` |
+| `/create-instruction` | Creates a `.instructions.md` file | You want all TypeScript files to follow specific style rules — use `/create-instruction for TypeScript files` |
+| `/create-skill` | Creates a `SKILL.md` and skill folder | You want to package a multi-step data quality workflow with templates — use `/create-skill data-quality` |
+| `/create-agent` | Creates an `.agent.md` file | You need a read-only agent that can only review code, not edit it — use `/create-agent security-reviewer` |
+| `/create-hook` | Creates a hook `.json` config | You want to automatically block any edit that produces invalid JSON — use `/create-hook to block invalid JSON` |
+| `/agent-customization` | Opens the agent customization workflow | You're new to agent config and want a guided setup walkthrough — use `/agent-customization` |
 
 ### Category 6: Management UIs
 
 These open configuration panels for managing customization files:
 
-| Command | Opens |
-|---------|-------|
-| `/agents` | Custom agents configuration |
-| `/hooks` | Hook configuration |
-| `/instructions` | Instruction files |
-| `/prompts` | Prompt files |
-| `/skills` | Agent skills |
-| `/tools` | Tool availability and permissions |
-| `/models` | AI model picker |
-| `/plugins` | Chat plugins/extensions |
+| Command | Opens | Example |
+|---------|-------|--------|
+| `/agents` | Custom agents configuration | You want to check which custom agents exist in this project — use `/agents` |
+| `/hooks` | Hook configuration | You want to verify that `validate-json.json` is configured correctly — use `/hooks` |
+| `/instructions` | Instruction files | You want to see which instruction files are currently active — use `/instructions` |
+| `/prompts` | Prompt files | You forgot the name of the test-generation prompt — use `/prompts` to find it |
+| `/skills` | Agent skills | You want to review the `task-report` skill before invoking it — use `/skills` |
+| `/tools` | Tool availability and permissions | Your agent isn't finding files and you suspect a tool is disabled — use `/tools` |
+| `/models` | AI model picker | You want a faster model for a quick question — use `/models` to switch |
+| `/plugins` | Chat plugins/extensions | You want to see which chat extensions are installed and active — use `/plugins` |
 
 ### Category 7: Permission Control
 
-| Command | What it does |
-|---------|-------------|
-| `/autoApprove` | Auto-approve all tool calls (skip confirmation dialogs) |
-| `/disableAutoApprove` | Re-enable confirmation dialogs |
-| `/yolo` | Maximum autonomy — auto-approve + auto-respond to questions |
-| `/disableYolo` | Return to normal approval mode |
+| Command | What it does | Example |
+|---------|-------------|--------|
+| `/autoApprove` | Auto-approve all tool calls (skip confirmation dialogs) | You're running a large automated refactor and don't want a confirmation dialog on every file edit — use `/autoApprove` |
+| `/disableAutoApprove` | Re-enable confirmation dialogs | You've finished the bulk refactor and want to review each tool call individually again — use `/disableAutoApprove` |
+| `/yolo` | Maximum autonomy — auto-approve + auto-respond to questions | You're in a throwaway sandbox and want Copilot to work end-to-end without any prompts — use `/yolo` |
+| `/disableYolo` | Return to normal approval mode | You're done experimenting and want to restore normal confirmation and approval — use `/disableYolo` |
 
 > **Warning**: `/yolo` mode gives Copilot full autonomy with no confirmation
 > prompts. Use it only in safe environments where you understand the
@@ -219,10 +219,10 @@ These open configuration panels for managing customization files:
 
 ### Category 8: Debugging
 
-| Command | What it does |
-|---------|-------------|
-| `/debug` | Opens the Chat Debug view — inspect system prompts, tools, and context that Copilot received |
-| `/troubleshoot` | Analyzes agent debug logs for the current session |
+| Command | What it does | Example |
+|---------|-------------|--------|
+| `/debug` | Opens the Chat Debug view — inspect system prompts, tools, and context that Copilot received | Your instruction file doesn't seem to be loading — use `/debug` to inspect exactly what Copilot received |
+| `/troubleshoot` | Analyzes agent debug logs for the current session | An agent produced unexpected output and you can't tell why — use `/troubleshoot` to have Copilot analyze its own logs |
 
 ### Key Insight
 
@@ -302,25 +302,25 @@ are available to Copilot. Type `#` in the chat input to see all options.
 
 These add specific items from your workspace as context:
 
-| Reference | What it adds |
-|-----------|-------------|
-| `#file:path/to/file` | A specific file's contents |
-| `#folder:path/to/dir` | Files within a directory |
-| `#symbol:functionName` | A specific code symbol (function, class, variable) |
-| `#codebase` | Searches your entire codebase for relevant context |
-| `#selection` | The current editor text selection |
-| `#changes` | Uncommitted source control changes |
+| Reference | What it adds | Example |
+|-----------|-------------|--------|
+| `#file:path/to/file` | A specific file's contents | You want Copilot to explain a whole file without copy-pasting it — use `Explain #file:src/task_utils.py` |
+| `#folder:path/to/dir` | Files within a directory | You want Copilot to review all source files at once — use `Review #folder:src` |
+| `#symbol:functionName` | A specific code symbol (function, class, variable) | You want docs generated for one specific function — use `Document #symbol:count_overdue` |
+| `#codebase` | Searches your entire codebase for relevant context | You can't find where status validation is implemented — use `Where is status validated? #codebase` |
+| `#selection` | The current editor text selection | You highlighted a complex block and want an explanation — select it and ask about `#selection` |
+| `#changes` | Uncommitted source control changes | You want a commit message based on everything you've changed — use `Summarize my changes #changes` |
 
 ### Tool References
 
 These invoke specific tools during the conversation:
 
-| Tool | What it does |
-|------|-------------|
-| `#fetch` | Retrieves content from a URL |
-| `#terminalSelection` | Reads the current terminal selection |
-| `#terminalLastCommand` | Gets the last terminal command and its output |
-| `#problems` | Adds workspace errors/warnings from the Problems panel |
+| Tool | What it does | Example |
+|------|-------------|--------|
+| `#fetch` | Retrieves content from a URL | You want Copilot to summarize the latest VS Code release notes without leaving chat — use `Summarize #fetch https://code.visualstudio.com/updates` |
+| `#terminalSelection` | Reads the current terminal selection | You selected a stack trace in the terminal and want it explained — use `Explain #terminalSelection` |
+| `#terminalLastCommand` | Gets the last terminal command and its output | Your last shell command failed and you want Copilot to diagnose the output — use `What went wrong? #terminalLastCommand` |
+| `#problems` | Adds workspace errors/warnings from the Problems panel | The Problems panel shows several errors and you want Copilot to fix them all at once — use `Fix these errors #problems` |
 
 ### Tool Sets
 
@@ -1092,86 +1092,86 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 
 ### Coding Actions
 
-| Command | Description |
-|---------|-------------|
-| `/explain` | Explain selected code — purpose, logic, edge cases |
-| `/fix` | Propose fixes for errors guided by Problems panel or stack traces |
-| `/tests` | Generate tests using your project's test framework conventions |
-| `/doc` | Generate documentation comments (inline chat) |
-| `/setupTests` | Scaffold a test framework — config, deps, example tests |
-| `/fixTestFailure` | Analyze failing tests and suggest fixes |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/explain` | Explain selected code — purpose, logic, edge cases | You inherited `count_overdue` and don't know what it does — select it and use `/explain` |
+| `/fix` | Propose fixes for errors guided by Problems panel or stack traces | A red underline appears under your code and you're unsure why — use `/fix` to let Copilot read the error and suggest a fix |
+| `/tests` | Generate tests using your project's test framework conventions | You just wrote `filter_by_status` but have no tests yet — select it and use `/tests` |
+| `/doc` | Generate documentation comments (inline chat) | You wrote a utility function but left no docstring — select it and use `/doc` in inline chat |
+| `/setupTests` | Scaffold a test framework — config, deps, example tests | Your project has no test framework and you don't want to configure it manually — use `/setupTests` |
+| `/fixTestFailure` | Analyze failing tests and suggest fixes | A pytest run just failed with an unclear error — use `/fixTestFailure` to let Copilot diagnose it |
 
 ### Scaffolding
 
-| Command | Description |
-|---------|-------------|
-| `/new` | Create a new file or project from natural language description |
-| `/newNotebook` | Create a new Jupyter notebook from a description |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/new` | Create a new file or project from natural language description | You need a new utility script but don't want to write boilerplate — use `/new Python script that reads a CSV` |
+| `/newNotebook` | Create a new Jupyter notebook from a description | You want to explore `tasks.json` interactively — use `/newNotebook analyze tasks.json` |
 
 ### Session Management
 
-| Command | Description |
-|---------|-------------|
-| `/clear` | Archive current session and start fresh |
-| `/fork` | Copy conversation into a new independent session |
-| `/compact` | Summarize history to free context window space |
-| `/rename` | Rename the current chat session |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/clear` | Archive current session and start fresh | You finished one task and want a clean slate for the next — use `/clear` |
+| `/fork` | Copy conversation into a new independent session | You want to try a different approach without losing your current conversation — use `/fork` |
+| `/compact` | Summarize history to free context window space | Your chat history grew long and Copilot is losing early context — use `/compact` |
+| `/rename` | Rename the current chat session | You want to find this session later by topic — use `/rename Fix task validation bug` |
 
 ### Planning & Search
 
-| Command | Description |
-|---------|-------------|
-| `/plan` | Create a detailed step-by-step implementation plan |
-| `/search` | Semantic search across workspace |
-| `/startDebugging` | Generate `launch.json` and start a debug session |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/plan` | Create a detailed step-by-step implementation plan | Before coding a new feature, you want to see all steps outlined first — use `/plan Add search by assignee to task_utils.py` |
+| `/search` | Semantic search across workspace | You can't remember where status validation is implemented — use `/search where is task status validated` |
+| `/startDebugging` | Generate `launch.json` and start a debug session | You want to debug `task_utils.py` but have no launch config — use `/startDebugging` |
 
 ### Customization Creators
 
-| Command | What it creates |
-|---------|----------------|
-| `/init` | `copilot-instructions.md` from project structure |
-| `/create-prompt` | `.prompt.md` file |
-| `/create-instruction` | `.instructions.md` file |
-| `/create-skill` | Skill folder with `SKILL.md` |
-| `/create-agent` | `.agent.md` file |
-| `/create-hook` | Hook `.json` configuration |
-| `/agent-customization` | Opens the agent customization workflow |
+| Command | What it creates | Example |
+|---------|----------------|--------|
+| `/init` | `copilot-instructions.md` from project structure | You opened a new project and want Copilot to generate workspace instructions automatically — use `/init` |
+| `/create-prompt` | `.prompt.md` file | You keep typing the same changelog task in chat — turn it into a reusable command with `/create-prompt Generate a changelog` |
+| `/create-instruction` | `.instructions.md` file | You want all TypeScript files to follow specific style rules — use `/create-instruction for TypeScript files` |
+| `/create-skill` | Skill folder with `SKILL.md` | You want to package a multi-step data quality workflow with templates — use `/create-skill data-quality` |
+| `/create-agent` | `.agent.md` file | You need a read-only agent that can only review code, not edit it — use `/create-agent security-reviewer` |
+| `/create-hook` | Hook `.json` configuration | You want to automatically block any edit that produces invalid JSON — use `/create-hook to block invalid JSON` |
+| `/agent-customization` | Opens the agent customization workflow | You're new to agent config and want a guided setup walkthrough — use `/agent-customization` |
 
 ### Management UIs
 
-| Command | Opens |
-|---------|-------|
-| `/agents` | Custom agents list |
-| `/hooks` | Hook configurations |
-| `/instructions` | Instruction files |
-| `/prompts` | Prompt files |
-| `/skills` | Agent skills |
-| `/tools` | Tool availability and permissions |
-| `/models` | AI model picker |
-| `/plugins` | Chat plugins and extensions |
+| Command | Opens | Example |
+|---------|-------|--------|
+| `/agents` | Custom agents list | You want to check which custom agents exist in this project — use `/agents` |
+| `/hooks` | Hook configurations | You want to verify that `validate-json.json` is configured correctly — use `/hooks` |
+| `/instructions` | Instruction files | You want to see which instruction files are currently active — use `/instructions` |
+| `/prompts` | Prompt files | You forgot the name of the test-generation prompt — use `/prompts` to find it |
+| `/skills` | Agent skills | You want to review the `task-report` skill before invoking it — use `/skills` |
+| `/tools` | Tool availability and permissions | Your agent isn't finding files and you suspect a tool is disabled — use `/tools` |
+| `/models` | AI model picker | You want a faster model for a quick question — use `/models` to switch |
+| `/plugins` | Chat plugins and extensions | You want to see which chat extensions are installed and active — use `/plugins` |
 
 ### Permission Control
 
-| Command | Description |
-|---------|-------------|
-| `/autoApprove` | Auto-approve all tool calls (skip confirmations) |
-| `/disableAutoApprove` | Re-enable tool call confirmations |
-| `/yolo` | Maximum autonomy — auto-approve + auto-respond |
-| `/disableYolo` | Return to normal approval mode |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/autoApprove` | Auto-approve all tool calls (skip confirmations) | You're running a large automated refactor and don't want a confirmation dialog on every file edit — use `/autoApprove` |
+| `/disableAutoApprove` | Re-enable tool call confirmations | You've finished the bulk refactor and want to review each tool call individually again — use `/disableAutoApprove` |
+| `/yolo` | Maximum autonomy — auto-approve + auto-respond | You're in a throwaway sandbox and want Copilot to work end-to-end without any prompts — use `/yolo` |
+| `/disableYolo` | Return to normal approval mode | You're done experimenting and want to restore normal confirmation and approval — use `/disableYolo` |
 
 ### Debug & Troubleshoot
 
-| Command | Description |
-|---------|-------------|
-| `/debug` | Open Chat Debug view — inspect prompts, context, and tools |
-| `/troubleshoot` | AI analysis of agent debug logs for current session |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/debug` | Open Chat Debug view — inspect prompts, context, and tools | Your instruction file doesn't seem to be loading — use `/debug` to inspect exactly what Copilot received |
+| `/troubleshoot` | AI analysis of agent debug logs for current session | An agent produced unexpected output and you can't tell why — use `/troubleshoot` to have Copilot analyze its own logs |
 
 ### Custom Commands
 
-| Command | Description |
-|---------|-------------|
-| `/<prompt-name>` | Run a prompt file (e.g., `/generate-test-cases`) |
-| `/<skill-name>` | Run a skill (e.g., `/task-report`) |
+| Command | Description | Example |
+|---------|-------------|--------|
+| `/<prompt-name>` | Run a prompt file (e.g., `/generate-test-cases`) | You want to generate tests without typing the full instructions each time — use `/generate-test-cases` after selecting a function |
+| `/<skill-name>` | Run a skill (e.g., `/task-report`) | You need a formatted sprint summary from `tasks.json` — use `/task-report high priority only` |
 
 ---
 
@@ -1189,23 +1189,23 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 
 ### `#` Context References
 
-| Reference | What it adds to context |
-|-----------|------------------------|
-| `#file:path` | A specific file |
-| `#folder:path` | All files in a directory |
-| `#symbol:name` | A function, class, or variable |
-| `#codebase` | Semantic search across the entire workspace |
-| `#selection` | Current editor text selection |
-| `#changes` | Uncommitted source control changes |
+| Reference | What it adds to context | Example |
+|-----------|------------------------|--------|
+| `#file:path` | A specific file | You want Copilot to explain a whole file without copy-pasting it — use `Explain #file:src/task_utils.py` |
+| `#folder:path` | All files in a directory | You want Copilot to review all source files at once — use `Review #folder:src` |
+| `#symbol:name` | A function, class, or variable | You want docs generated for one specific function — use `Document #symbol:count_overdue` |
+| `#codebase` | Semantic search across the entire workspace | You can't find where status validation is implemented — use `Where is status validated? #codebase` |
+| `#selection` | Current editor text selection | You highlighted a complex block and want an explanation — select it and ask about `#selection` |
+| `#changes` | Uncommitted source control changes | You want a commit message based on everything you've changed — use `Summarize my changes #changes` |
 
 ### `#` Tool References
 
-| Tool | What it does |
-|------|-------------|
-| `#fetch` | Retrieve content from a URL |
-| `#terminalSelection` | Read the current terminal selection |
-| `#terminalLastCommand` | Get the last terminal command and output |
-| `#problems` | Workspace errors and warnings |
+| Tool | What it does | Example |
+|------|-------------|--------|
+| `#fetch` | Retrieve content from a URL | You want Copilot to summarize the latest VS Code release notes without leaving chat — use `Summarize #fetch https://code.visualstudio.com/updates` |
+| `#terminalSelection` | Read the current terminal selection | You selected a stack trace in the terminal and want it explained — use `Explain #terminalSelection` |
+| `#terminalLastCommand` | Get the last terminal command and output | Your last shell command failed and you want Copilot to diagnose the output — use `What went wrong? #terminalLastCommand` |
+| `#problems` | Workspace errors and warnings | The Problems panel shows several errors and you want Copilot to fix them all at once — use `Fix these errors #problems` |
 
 ### Tool Set Aliases (for `tools:` frontmatter)
 
