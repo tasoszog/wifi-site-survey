@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "fetch": {
+      "type": "copilot",
+      "description": "Built-in web fetch tool — retrieves content from URLs. No installation needed."
+    }
+  }
+}
