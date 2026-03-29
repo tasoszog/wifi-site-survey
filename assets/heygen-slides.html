@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeyGen Prolog Slides — GitHub Copilot in VS Code</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background: #0d0d0d;
+    color: #e0e0e0;
+  }
+
+  /* ── Slide container ─────────────────────────────────── */
+  .slides-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 20px;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 100px;
+  }
+
+  .slide-label {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(0,0,0,.6);
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    z-index: 10;
+  }
+
+  /* ── Common text styles ──────────────────────────────── */
+  .slide-number {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 16px;
+    opacity: .6;
+  }
+
+  .slide h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .slide h2 {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .slide .subtitle {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 750px;
+    opacity: .8;
+  }
+
+  .slide .bullets {
+    list-style: none;
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .slide .bullets li {
+    font-size: 20px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .slide .bullets li .icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-top: 2px;
+  }
+
+  .accent { color: #58a6ff; }
+  .accent2 { color: #4ec9b0; }
+  .accent3 { color: #dcdcaa; }
+
+  /* ── Decorative elements ─────────────────────────────── */
+  .dot-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    opacity: .35;
+  }
+
+  /* ── Slide 1: Hook ───────────────────────────────────── */
+  .slide-1 {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+  }
+  .slide-1 .glow-1 { width: 500px; height: 500px; background: #0078d4; top: -120px; right: -80px; }
+  .slide-1 .glow-2 { width: 350px; height: 350px; background: #4ec9b0; bottom: -100px; left: -60px; }
+  .slide-1 h1 span { color: #58a6ff; }
+  .slide-1 .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .slide-1 .logo-row svg { width: 48px; height: 48px; fill: #58a6ff; }
+  .slide-1 .logo-row span { font-size: 16px; font-weight: 600; color: #7a8a9e; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* ── Slide 2: Three Layers ───────────────────────────── */
+  .slide-2 {
+    background: linear-gradient(160deg, #0f1923 0%, #141e2a 100%);
+    padding: 60px 80px;
+  }
+  .slide-2 .glow-1 { width: 400px; height: 400px; background: #0078d4; top: -80px; left: 30%; }
+  .slide-2 .layers {
+    display: flex;
+    gap: 28px;
+    margin-top: 36px;
+  }
+  .slide-2 .layer-card {
+    flex: 1;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform .2s;
+  }
+  .slide-2 .layer-card .layer-num {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    opacity: .5;
+  }
+  .slide-2 .layer-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .slide-2 .layer-card p {
+    font-size: 16px;
+    opacity: .7;
+    line-height: 1.55;
+  }
+
+  /* ── Slide 3: What You'll Build ──────────────────────── */
+  .slide-3 {
+    background: linear-gradient(145deg, #111827 0%, #1a1f2e 100%);
+  }
+  .slide-3 .glow-1 { width: 450px; height: 450px; background: #4ec9b0; bottom: -100px; right: -60px; }
+  .slide-3 .timeline {
+    display: flex;
+    gap: 0;
+    margin-top: 36px;
+    align-items: flex-start;
+    position: relative;
+  }
+  .slide-3 .timeline::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    right: 22px;
+    height: 3px;
+    background: linear-gradient(90deg, #0078d4, #4ec9b0);
+    border-radius: 2px;
+    opacity: .4;
+  }
+  .slide-3 .tl-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .slide-3 .tl-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 14px;
+    border: 3px solid rgba(255,255,255,.15);
+  }
+  .slide-3 .tl-step:nth-child(1) .tl-dot { background: #0078d4; }
+  .slide-3 .tl-step:nth-child(2) .tl-dot { background: #1a8870; }
+  .slide-3 .tl-step:nth-child(3) .tl-dot { background: #4ec9b0; }
+  .slide-3 .tl-step strong { font-size: 17px; margin-bottom: 4px; }
+  .slide-3 .tl-step span { font-size: 14px; opacity: .6; line-height: 1.4; max-width: 280px; }
+
+  /* ── Slide 4: Practice Project ───────────────────────── */
+  .slide-4 {
+    background: linear-gradient(140deg, #0e1a14 0%, #162117 100%);
+    padding: 60px 80px;
+  }
+  .slide-4 .glow-1 { width: 400px; height: 400px; background: #4caf50; top: -100px; right: -80px; }
+  .slide-4 .file-tree {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .slide-4 .file-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 10px;
+    padding: 18px 22px;
+  }
+  .slide-4 .file-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .slide-4 .file-item strong { font-size: 16px; display: block; }
+  .slide-4 .file-item span { font-size: 13px; opacity: .55; }
+
+  /* ── Slide 5: Structure ──────────────────────────────── */
+  .slide-5 {
+    background: linear-gradient(150deg, #12101e 0%, #1a172a 100%);
+    padding: 60px 80px;
+  }
+  .slide-5 .glow-1 { width: 500px; height: 400px; background: #7c4dff; top: -80px; left: -60px; opacity: .2; }
+  .slide-5 .parts {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+  }
+  .slide-5 .part-col {
+    flex: 1;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .slide-5 .part-col .part-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    padding: 4px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .slide-5 .part-a .part-label { background: rgba(0,120,212,.2); color: #58a6ff; }
+  .slide-5 .part-b .part-label { background: rgba(78,201,176,.15); color: #4ec9b0; }
+  .slide-5 .ch-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .slide-5 .ch-list li {
+    font-size: 15px;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: .8;
+  }
+  .slide-5 .ch-list .ch-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .slide-5 .part-a .ch-num { background: rgba(0,120,212,.15); color: #58a6ff; }
+  .slide-5 .part-b .ch-num { background: rgba(78,201,176,.1); color: #4ec9b0; }
+
+  /* ── Slide 6: Prerequisites ──────────────────────────── */
+  .slide-6 {
+    background: linear-gradient(140deg, #141218 0%, #1d1824 100%);
+  }
+  .slide-6 .glow-1 { width: 400px; height: 400px; background: #e91e63; bottom: -100px; left: -60px; opacity: .15; }
+  .slide-6 .reqs {
+    display: flex;
+    gap: 24px;
+    margin-top: 36px;
+  }
+  .slide-6 .req-card {
+    flex: 1;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    padding: 28px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-6 .req-card .req-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+  .slide-6 .req-card h3 { font-size: 18px; font-weight: 700; }
+  .slide-6 .req-card p { font-size: 14px; opacity: .6; line-height: 1.5; }
+
+  /* ── Slide 7: Let's Begin ────────────────────────────── */
+  .slide-7 {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    text-align: center;
+    align-items: center;
+  }
+  .slide-7 .glow-1 { width: 600px; height: 500px; background: #0078d4; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+  .slide-7 .glow-2 { width: 300px; height: 300px; background: #4ec9b0; bottom: -80px; right: 10%; }
+  .slide-7 h1 { font-size: 56px; }
+  .slide-7 .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 36px;
+    background: linear-gradient(135deg, #0078d4, #005a9e);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 16px 40px;
+    border-radius: 12px;
+    letter-spacing: .02em;
+    border: 1px solid rgba(255,255,255,.15);
+    box-shadow: 0 8px 32px rgba(0,120,212,.35);
+  }
+  .slide-7 .cta svg { width: 24px; height: 24px; fill: currentColor; }
+
+  /* ── Print / Screenshot helper ───────────────────────── */
+  @media print {
+    .slides-wrapper { gap: 0; padding: 0; }
+    .slide { page-break-after: always; border-radius: 0; }
+    .slide-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="slides-wrapper">
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 1 — Hook
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-1">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="slide-label">Slide 1 · Hook</div>
+
+    <div class="logo-row">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 5.5a.75.75 0 0 1 0 1.5h-2v2a.75.75 0 0 1-1.5 0v-2h-2a.75.75 0 0 1 0-1.5h2v-2a.75.75 0 0 1 1.5 0v2h2z"/></svg>
+      <span>GitHub Copilot Tutorial</span>
+    </div>
+    <h1>More Than <span>Autocomplete</span></h1>
+    <p class="subtitle">Discover the full customization system that shapes how AI understands your project, what tools it can use, and how it responds.</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 2 — The Three Layers
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-2">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="slide-label">Slide 2 · The Three Layers</div>
+
+    <div class="slide-number">How Copilot Works</div>
+    <h2>Three Layers of <span class="accent">Power</span></h2>
+
+    <div class="layers">
+      <div class="layer-card">
+        <div class="layer-num">Layer 1</div>
+        <h3 class="accent">Chat Interface</h3>
+        <p>Slash commands, @participants, and #context mentions — already built in.</p>
+      </div>
+      <div class="layer-card">
+        <div class="layer-num">Layer 2</div>
+        <h3 class="accent2">Customization</h3>
+        <p>Instructions, prompts, hooks, agents, and skills — files you create and share.</p>
+      </div>
+      <div class="layer-card">
+        <div class="layer-num">Layer 3</div>
+        <h3 class="accent3">External Tools</h3>
+        <p>MCP servers and extensions — connect Copilot to external systems.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 3 — What You'll Build
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-3">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="slide-label">Slide 3 · What You'll Build</div>
+
+    <div class="slide-number">Learning Path</div>
+    <h2>From Basics to <span class="accent2">Full Customization</span></h2>
+    <p class="subtitle">A step-by-step journey through every Copilot capability.</p>
+
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-dot">1</div>
+        <strong>Git Essentials</strong>
+        <span>Version control foundations for team collaboration</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">2</div>
+        <strong>Chat Interface</strong>
+        <span>Slash commands, participants, and context mentions</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">3</div>
+        <strong>Customization</strong>
+        <span>Instructions, prompts, hooks, agents, skills, and MCP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 4 — The Practice Project
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-4">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="slide-label">Slide 4 · Practice Project</div>
+
+    <div class="slide-number">Hands-On Domain</div>
+    <h2>WiFi Site-Survey <span class="accent2">Toolkit</span></h2>
+    <p class="subtitle">A simple domain so you can focus entirely on Copilot features.</p>
+
+    <div class="file-tree">
+      <div class="file-item">
+        <div class="file-icon" style="background:rgba(88,166,255,.15); color:#58a6ff;">📊</div>
+        <div>
+          <strong>ap_inventory.json</strong>
+          <span>8 access points with signal &amp; deployment data</span>
+        </div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon" style="background:rgba(78,201,176,.12); color:#4ec9b0;">🐍</div>
+        <div>
+          <strong>wifi_utils.py</strong>
+          <span>Python utilities for AP analysis</span>
+        </div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon" style="background:rgba(220,220,170,.12); color:#dcdcaa;">📋</div>
+        <div>
+          <strong>wifi-survey-spec.md</strong>
+          <span>Data specification &amp; schema rules</span>
+        </div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon" style="background:rgba(206,145,120,.12); color:#ce9178;">⚙️</div>
+        <div>
+          <strong>validate.sh / .ps1</strong>
+          <span>Inventory validation scripts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 5 — How It's Structured
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-5">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="slide-label">Slide 5 · Tutorial Structure</div>
+
+    <div class="slide-number">11 Chapters · 2 Parts</div>
+    <h2>Your Complete <span class="accent">Roadmap</span></h2>
+
+    <div class="parts">
+      <div class="part-col part-a">
+        <div class="part-label">Part A — Chat Interface</div>
+        <ul class="ch-list">
+          <li><span class="ch-num">0</span> Git &amp; GitHub Essentials</li>
+          <li><span class="ch-num">1</span> / Slash Commands</li>
+          <li><span class="ch-num">2</span> @ Chat Participants</li>
+          <li><span class="ch-num">3</span> # Context Mentions &amp; Tools</li>
+        </ul>
+      </div>
+      <div class="part-col part-b">
+        <div class="part-label">Part B — Customization Primitives</div>
+        <ul class="ch-list">
+          <li><span class="ch-num">4</span> Workspace Instructions</li>
+          <li><span class="ch-num">5</span> File-Specific Instructions</li>
+          <li><span class="ch-num">6</span> Prompt Files</li>
+          <li><span class="ch-num">7</span> Hooks</li>
+          <li><span class="ch-num">8</span> Custom Agents</li>
+          <li><span class="ch-num">9</span> Skills</li>
+          <li><span class="ch-num">10</span> MCP Integration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 6 — What You Need
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-6">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="slide-label">Slide 6 · Prerequisites</div>
+
+    <div class="slide-number">Before You Start</div>
+    <h2>What You <span class="accent">Need</span></h2>
+    <p class="subtitle">Three things to have ready before starting the tutorial.</p>
+
+    <div class="reqs">
+      <div class="req-card">
+        <div class="req-icon" style="background:rgba(88,166,255,.15); color:#58a6ff;">💻</div>
+        <h3>VS Code 1.100+</h3>
+        <p>Latest stable release with agent mode support</p>
+      </div>
+      <div class="req-card">
+        <div class="req-icon" style="background:rgba(78,201,176,.12); color:#4ec9b0;">✨</div>
+        <h3>Copilot Extension</h3>
+        <p>GitHub Copilot extension installed and signed in</p>
+      </div>
+      <div class="req-card">
+        <div class="req-icon" style="background:rgba(220,220,170,.12); color:#dcdcaa;">🔑</div>
+        <h3>Active Subscription</h3>
+        <p>Copilot Individual, Business, or Enterprise plan</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 32px; font-size: 18px; opacity: .7; text-align: center;">
+      ~3–5 days to complete all chapters · Work at your own pace
+    </p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SLIDE 7 — Let's Begin
+       ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-7">
+    <div class="dot-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="slide-label">Slide 7 · Let's Begin</div>
+
+    <h1>Let's <span class="accent">Get Started</span></h1>
+    <p class="subtitle" style="margin: 0 auto;">
+      Open the project in VS Code, initialize Git, and begin.<br>
+      By the end, you'll master every Copilot customization primitive.
+    </p>
+
+    <div class="cta">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      Open VS Code &amp; Begin Chapter 0
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
