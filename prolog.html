@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prolog — GitHub Copilot in VS Code Tutorial</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%230078d4' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 5.5a.75.75 0 0 1 0 1.5h-2v2a.75.75 0 0 1-1.5 0v-2h-2a.75.75 0 0 1 0-1.5h2v-2a.75.75 0 0 1 1.5 0v2h2z'/%3E%3C/svg%3E">
+<style>
+/* ── Theme Variables ─────────────────────────────────────────── */
+:root {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-card: #2d2d2d;
+  --border: #3e3e3e;
+  --border-hover: #4e4e4e;
+  --text-primary: #d4d4d4;
+  --text-secondary: #9d9d9d;
+  --text-muted: #6d6d6d;
+  --text-heading: #fff;
+  --accent: #0078d4;
+  --accent-hover: #005a9e;
+  --accent2: #4ec9b0;
+  --link: #569cd6;
+  --link-hover: #79b8f8;
+  --code-bg: #1a1a1a;
+  --code-color: #ce9178;
+  --green-text: #6a9955;
+  --warning: #dcdcaa;
+}
+
+/* ── Reset & Base ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--link-hover); }
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Top Nav ─────────────────────────────────────────────────── */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+.topnav .container {
+  display: flex; align-items: center; gap: 16px;
+}
+.topnav-brand {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 700; font-size: 0.9rem; color: var(--text-heading);
+  text-decoration: none;
+}
+.topnav-brand:hover { text-decoration: none; color: var(--link-hover); }
+.topnav-sep { color: var(--text-muted); }
+.topnav-crumb { font-size: 0.85rem; color: var(--text-secondary); }
+.topnav-back {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.82rem; color: var(--link);
+  background: none; border: 1px solid var(--border);
+  padding: 5px 14px; border-radius: 6px;
+  cursor: pointer; transition: all .15s; font-family: inherit;
+  text-decoration: none;
+}
+.topnav-back:hover {
+  background: var(--bg-card); border-color: var(--link);
+  text-decoration: none; color: var(--link-hover);
+}
+
+/* ── Chapter Header ──────────────────────────────────────────── */
+.chapter-header {
+  background: linear-gradient(
+    180deg,
+    rgba(0,120,212,.12) 0%,
+    transparent 100%
+  );
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0 36px;
+  text-align: center;
+}
+.chapter-eyebrow {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent2); margin-bottom: 12px;
+}
+.chapter-header h1 {
+  font-size: 2.2rem; font-weight: 800; color: var(--text-heading);
+  letter-spacing: -0.02em; margin-bottom: 12px;
+}
+.chapter-header h1 span { color: var(--accent); }
+.chapter-header .subtitle {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 680px; margin: 0 auto 24px;
+}
+.chapter-meta {
+  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+}
+.meta-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 0.78rem; color: var(--text-secondary);
+}
+.meta-pill strong { color: var(--text-primary); }
+
+/* ── Scene Grid Layout ───────────────────────────────────────── */
+.scenes { padding: 48px 0 64px; display: flex; flex-direction: column; gap: 48px; }
+
+/* ── Scene Card ──────────────────────────────────────────────── */
+.scene {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+}
+.scene:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 6px 28px rgba(0,0,0,.3);
+}
+
+/* ── Slide Panel (left) ──────────────────────────────────────── */
+.slide-panel {
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  min-height: 320px;
+  justify-content: center;
+}
+.scene-num-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  padding: 3px 10px; border-radius: 6px;
+  align-self: flex-start;
+}
+.slide-title { font-size: 1.55rem; font-weight: 800; line-height: 1.2; color: var(--text-heading); }
+.slide-subtitle { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* layer cards for scene 2 */
+.layer-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.lc {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 12px 16px;
+}
+.lc-num { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; opacity: .5; margin-bottom: 2px; }
+.lc-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+.lc-body { font-size: 0.8rem; opacity: .65; }
+
+/* timeline for scene 3 */
+.tl { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.tl-item { display: flex; align-items: flex-start; gap: 14px; }
+.tl-dot {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.85rem; color: #fff;
+  border: 2px solid rgba(255,255,255,.15);
+}
+.tl-text strong { font-size: 0.9rem; display: block; }
+.tl-text span { font-size: 0.78rem; opacity: .6; }
+
+/* file tree for scene 4 */
+.file-items { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.fi {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+  border-radius: 8px; padding: 12px 16px;
+}
+.fi-icon {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+}
+.fi strong { font-size: 0.85rem; display: block; }
+.fi span { font-size: 0.73rem; opacity: .55; }
+
+/* two-column chapter list for scene 5 */
+.parts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.part-block {
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px; padding: 14px 16px;
+}
+.part-lbl {
+  display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; padding: 2px 8px; border-radius: 5px; margin-bottom: 10px;
+}
+.part-a-lbl { background: rgba(0,120,212,.2); color: #58a6ff; }
+.part-b-lbl { background: rgba(78,201,176,.15); color: #4ec9b0; }
+.ch-list-mini { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.ch-list-mini li { font-size: 0.78rem; display: flex; gap: 8px; align-items: center; opacity: .8; }
+.ch-num-mini {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700;
+}
+.ch-a-mini { background: rgba(0,120,212,.15); color: #58a6ff; }
+.ch-b-mini { background: rgba(78,201,176,.1); color: #4ec9b0; }
+
+/* prereq cards for scene 6 */
+.req-cards { display: flex; gap: 10px; margin-top: 8px; }
+.rc {
+  flex: 1; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px; padding: 14px 12px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.rc-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.rc strong { font-size: 0.82rem; font-weight: 700; }
+.rc span { font-size: 0.72rem; opacity: .6; line-height: 1.4; }
+
+/* CTA for scene 7 */
+.cta-block { text-align: center; }
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, #0078d4, #005a9e);
+  color: #fff; font-size: 0.95rem; font-weight: 700;
+  padding: 14px 32px; border-radius: 10px; letter-spacing: .02em;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 6px 24px rgba(0,120,212,.3);
+  text-decoration: none; transition: box-shadow .2s, transform .2s;
+}
+.cta-btn:hover { box-shadow: 0 10px 32px rgba(0,120,212,.45); transform: translateY(-2px); text-decoration: none; color: #fff; }
+.cta-sub { font-size: 0.8rem; color: var(--text-secondary); margin-top: 12px; }
+
+/* accent pin colors */
+.s1 .scene-num-badge { background: rgba(0,120,212,.15); color: #58a6ff; }
+.s1 .slide-panel { background: linear-gradient(135deg, rgba(0,120,212,.08) 0%, transparent 60%); }
+.s2 .scene-num-badge { background: rgba(0,120,212,.12); color: #58a6ff; }
+.s2 .slide-panel { background: linear-gradient(135deg, rgba(0,120,212,.06) 0%, transparent 60%); }
+.s3 .scene-num-badge { background: rgba(78,201,176,.12); color: #4ec9b0; }
+.s3 .slide-panel { background: linear-gradient(135deg, rgba(78,201,176,.06) 0%, transparent 60%); }
+.s4 .scene-num-badge { background: rgba(76,175,80,.12); color: #81c784; }
+.s4 .slide-panel { background: linear-gradient(135deg, rgba(76,175,80,.06) 0%, transparent 60%); }
+.s5 .scene-num-badge { background: rgba(124,77,255,.12); color: #b39ddb; }
+.s5 .slide-panel { background: linear-gradient(135deg, rgba(124,77,255,.06) 0%, transparent 60%); }
+.s6 .scene-num-badge { background: rgba(233,30,99,.1); color: #f48fb1; }
+.s6 .slide-panel { background: linear-gradient(135deg, rgba(233,30,99,.05) 0%, transparent 60%); }
+.s7 .scene-num-badge { background: rgba(0,120,212,.15); color: #58a6ff; }
+.s7 .slide-panel { background: linear-gradient(135deg, rgba(0,120,212,.1) 0%, rgba(78,201,176,.04) 100%); }
+
+/* ── Script Panel (right) ────────────────────────────────────── */
+.script-panel {
+  padding: 32px 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 1px solid var(--border);
+}
+.script-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text-muted); display: flex; align-items: center; gap: 8px;
+}
+.script-label::before {
+  content: ''; display: block; width: 20px; height: 1px; background: var(--border);
+}
+.script-text {
+  font-size: 0.93rem; color: var(--text-secondary); line-height: 1.8;
+  font-style: normal;
+}
+.script-text em { font-style: italic; color: var(--text-muted); }
+
+/* ── Intro Banner ────────────────────────────────────────────── */
+.intro-banner {
+  background: var(--bg-secondary); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 28px;
+  display: flex; gap: 16px; align-items: flex-start;
+  margin-bottom: 0;
+}
+.intro-banner .ib-icon {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(0,120,212,.15); display: flex; align-items: center;
+  justify-content: center; color: #58a6ff; font-size: 18px;
+}
+.intro-banner p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+.intro-banner strong { color: var(--text-primary); }
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.footer {
+  text-align: center; padding: 32px 0; margin-top: 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem; color: var(--text-muted);
+}
+.footer-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.footer-links a { color: var(--link); font-size: 0.76rem; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 780px) {
+  .scene { grid-template-columns: 1fr; }
+  .script-panel { padding: 0 24px 28px; border-left: none; border-top: 1px solid var(--border); }
+  .parts-grid { grid-template-columns: 1fr; }
+  .req-cards { flex-direction: column; }
+  .chapter-header h1 { font-size: 1.6rem; }
+}
+
+/* ── Reduced Motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cta-btn { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Top Nav ════════════════════════════════════════════════ -->
+<nav class="topnav">
+  <div class="container">
+    <a class="topnav-brand" href="index.html">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 5.5a.75.75 0 0 1 0 1.5h-2v2a.75.75 0 0 1-1.5 0v-2h-2a.75.75 0 0 1 0-1.5h2v-2a.75.75 0 0 1 1.5 0v2h2z"/></svg>
+      Copilot Tutorial
+    </a>
+    <span class="topnav-sep">›</span>
+    <span class="topnav-crumb">Prolog</span>
+    <a class="topnav-back" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Back to Tutorial
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ Chapter Header ═════════════════════════════════════════ -->
+<div class="chapter-header">
+  <div class="container">
+    <p class="chapter-eyebrow">Introduction · 7 Scenes · ~2 min</p>
+    <h1>More Than <span>Autocomplete</span></h1>
+    <p class="subtitle">
+      A guided overview of everything you'll learn — the full customization system
+      that shapes how Copilot understands your project, what tools it can use,
+      and how it responds.
+    </p>
+    <div class="chapter-meta">
+      <span class="meta-pill"><strong>7</strong> scenes</span>
+      <span class="meta-pill"><strong>~2 min</strong> watch time</span>
+      <span class="meta-pill"><strong>11 chapters</strong> ahead</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Scenes ═════════════════════════════════════════════════ -->
+<div class="container">
+  <div class="scenes">
+
+    <!-- ── Intro Banner ── -->
+    <div class="intro-banner">
+      <div class="ib-icon">▶</div>
+      <p>
+        <strong>How to use this page:</strong> Each card below pairs a slide from the
+        introduction video with its narration script. Read through sequentially as a
+        chapter, or use it as a reference while watching the video. The content covers
+        everything in scope before you start Chapter 0.
+      </p>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 1 — Hook
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s1">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 1 · Hook</span>
+        <h2 class="slide-title">More Than<br>Autocomplete</h2>
+        <p class="slide-subtitle">
+          Discover the full customization system that shapes how AI understands
+          your project, what tools it can use, and how it responds.
+        </p>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          Welcome to the GitHub Copilot in VS Code hands-on tutorial.
+          If you think Copilot is just autocomplete — you're about to
+          discover how much more it can do. In this guide, you'll learn
+          the full customization system that lets you shape how AI
+          understands your project, what tools it can use, and how it
+          responds.
+        </p>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 2 — The Three Layers
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s2">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 2 · How Copilot Works</span>
+        <h2 class="slide-title">Three Layers<br>of Power</h2>
+        <div class="layer-cards">
+          <div class="lc">
+            <p class="lc-num">Layer 1</p>
+            <p class="lc-title" style="color:#58a6ff;">Chat Interface</p>
+            <p class="lc-body">Slash commands, @participants, and #context mentions — already built in.</p>
+          </div>
+          <div class="lc">
+            <p class="lc-num">Layer 2</p>
+            <p class="lc-title" style="color:#4ec9b0;">Customization</p>
+            <p class="lc-body">Instructions, prompts, hooks, agents, and skills — files you create and share.</p>
+          </div>
+          <div class="lc">
+            <p class="lc-num">Layer 3</p>
+            <p class="lc-title" style="color:#dcdcaa;">External Tools</p>
+            <p class="lc-body">MCP servers and extensions — connect Copilot to external systems.</p>
+          </div>
+        </div>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          Copilot's power comes from three layers. First, the built-in
+          chat interface — slash commands, at-participants, and context
+          mentions that are already available. Second, customization
+          primitives — instructions, prompts, hooks, agents, and skills
+          that you create as files in your project. And third, external
+          tools through MCP servers and extensions.
+        </p>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 3 — What You'll Build
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s3">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 3 · Learning Path</span>
+        <h2 class="slide-title">From Basics to<br>Full Customization</h2>
+        <p class="slide-subtitle">A step-by-step journey through every Copilot capability.</p>
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#0078d4;">1</div>
+            <div class="tl-text">
+              <strong>Git Essentials</strong>
+              <span>Version control foundations for team collaboration</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#1a8870;">2</div>
+            <div class="tl-text">
+              <strong>Chat Interface</strong>
+              <span>Slash commands, participants, and context mentions</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#4ec9b0;">3</div>
+            <div class="tl-text">
+              <strong>Customization</strong>
+              <span>Instructions, prompts, hooks, agents, skills, and MCP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          This tutorial walks you through all three layers step by step.
+          You'll start with Git essentials, then explore every built-in
+          chat feature. After that, you'll create your own instruction
+          files, prompt templates, automated hooks, custom agents, and
+          skills — all version-controlled and ready to share with your
+          team.
+        </p>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 4 — The Practice Project
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s4">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 4 · Hands-On Domain</span>
+        <h2 class="slide-title">WiFi Site-Survey<br>Toolkit</h2>
+        <p class="slide-subtitle">A simple domain so you can focus entirely on Copilot features.</p>
+        <div class="file-items">
+          <div class="fi">
+            <div class="fi-icon" style="background:rgba(88,166,255,.15);color:#58a6ff;">📊</div>
+            <div>
+              <strong>ap_inventory.json</strong>
+              <span>8 access points with signal &amp; deployment data</span>
+            </div>
+          </div>
+          <div class="fi">
+            <div class="fi-icon" style="background:rgba(78,201,176,.12);color:#4ec9b0;">🐍</div>
+            <div>
+              <strong>wifi_utils.py</strong>
+              <span>Python utilities for AP analysis</span>
+            </div>
+          </div>
+          <div class="fi">
+            <div class="fi-icon" style="background:rgba(220,220,170,.12);color:#dcdcaa;">📋</div>
+            <div>
+              <strong>wifi-survey-spec.md</strong>
+              <span>Data specification &amp; schema rules</span>
+            </div>
+          </div>
+          <div class="fi">
+            <div class="fi-icon" style="background:rgba(206,145,120,.12);color:#ce9178;">⚙️</div>
+            <div>
+              <strong>validate.sh / .ps1</strong>
+              <span>Inventory validation scripts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          To keep things practical, we use a simple WiFi site-survey
+          toolkit as our domain. It includes sample access point data,
+          Python utilities, validation scripts, and a data specification.
+          The domain is intentionally simple — the focus is entirely on
+          the Copilot features, not the application code.
+        </p>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 5 — How It's Structured
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s5">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 5 · 11 Chapters · 2 Parts</span>
+        <h2 class="slide-title">Your Complete<br>Roadmap</h2>
+        <div class="parts-grid">
+          <div class="part-block">
+            <span class="part-lbl part-a-lbl">Part A — Chat Interface</span>
+            <ul class="ch-list-mini">
+              <li><span class="ch-num-mini ch-a-mini">0</span> Git &amp; GitHub Essentials</li>
+              <li><span class="ch-num-mini ch-a-mini">1</span> / Slash Commands</li>
+              <li><span class="ch-num-mini ch-a-mini">2</span> @ Chat Participants</li>
+              <li><span class="ch-num-mini ch-a-mini">3</span> # Context Mentions &amp; Tools</li>
+            </ul>
+          </div>
+          <div class="part-block">
+            <span class="part-lbl part-b-lbl">Part B — Customization</span>
+            <ul class="ch-list-mini">
+              <li><span class="ch-num-mini ch-b-mini">4</span> Workspace Instructions</li>
+              <li><span class="ch-num-mini ch-b-mini">5</span> File-Specific Instructions</li>
+              <li><span class="ch-num-mini ch-b-mini">6</span> Prompt Files</li>
+              <li><span class="ch-num-mini ch-b-mini">7</span> Hooks</li>
+              <li><span class="ch-num-mini ch-b-mini">8</span> Custom Agents</li>
+              <li><span class="ch-num-mini ch-b-mini">9</span> Skills</li>
+              <li><span class="ch-num-mini ch-b-mini">10</span> MCP Integration</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          The tutorial is organized into eleven chapters across two parts.
+          Part A covers the built-in chat interface — slash commands,
+          at-participants, and context mentions. Part B covers the
+          customization primitives — workspace instructions, file-specific
+          instructions, prompt files, hooks, custom agents, skills, and
+          MCP integration. Each chapter includes theory and hands-on
+          exercises.
+        </p>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 6 — What You Need
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s6">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 6 · Before You Start</span>
+        <h2 class="slide-title">What You<br>Need</h2>
+        <p class="slide-subtitle">Three things to have ready before starting the tutorial.</p>
+        <div class="req-cards">
+          <div class="rc">
+            <div class="rc-icon" style="background:rgba(88,166,255,.15);color:#58a6ff;">💻</div>
+            <strong>VS Code 1.100+</strong>
+            <span>Latest stable release with agent mode support</span>
+          </div>
+          <div class="rc">
+            <div class="rc-icon" style="background:rgba(78,201,176,.12);color:#4ec9b0;">✨</div>
+            <strong>Copilot Extension</strong>
+            <span>Installed and signed in to GitHub</span>
+          </div>
+          <div class="rc">
+            <div class="rc-icon" style="background:rgba(220,220,170,.12);color:#dcdcaa;">🔑</div>
+            <strong>Active Subscription</strong>
+            <span>Individual, Business, or Enterprise plan</span>
+          </div>
+        </div>
+        <p style="margin-top:16px;font-size:0.8rem;color:var(--text-muted);text-align:center;">
+          ~3–5 days to complete all chapters · Work at your own pace
+        </p>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          To get started, you'll need VS Code version 1.100 or later,
+          the GitHub Copilot extension, and an active Copilot subscription.
+          The tutorial takes about three to five days to complete all
+          chapters — but you can work through them at your own pace, and
+          your progress is tracked automatically.
+        </p>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SCENE 7 — Let's Begin
+         ────────────────────────────────────────────────────────── -->
+    <div class="scene s7">
+      <div class="slide-panel">
+        <span class="scene-num-badge">Scene 7 · Let's Begin</span>
+        <h2 class="slide-title">Let's Get<br>Started</h2>
+        <p class="slide-subtitle">
+          Open the project in VS Code, initialize Git, and begin.<br>
+          By the end, you'll master every Copilot customization primitive.
+        </p>
+        <div class="cta-block" style="margin-top:8px;">
+          <a class="cta-btn" href="index.html#quickstart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Open VS Code &amp; Begin Chapter 0
+          </a>
+          <p class="cta-sub">Start at the Quick Start section on the main tutorial page.</p>
+        </div>
+      </div>
+      <div class="script-panel">
+        <p class="script-label">Narration Script</p>
+        <p class="script-text">
+          Everything you need is already in the project folder. Open it
+          in VS Code, initialize Git, and you're ready to go. By the end,
+          you'll have a complete set of customization files that demonstrate
+          every Copilot primitive — and the confidence to apply them to
+          your own projects. Let's get started.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /scenes -->
+</div><!-- /container -->
+
+<!-- ═══ Footer ═════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <p>GitHub Copilot in VS Code — Hands-On Tutorial</p>
+    <div class="footer-links">
+      <a href="index.html">← Tutorial Home</a>
+      <a href="README.md">README</a>
+      <a href="docs/wifi-survey-spec.md">WiFi Survey Spec</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

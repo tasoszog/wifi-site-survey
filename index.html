@@ -659,7 +659,7 @@ code {
   border-radius: 10px; padding: 28px 32px;
 }
 .decision-section h2 {
-  color: var(--text-heading); font-size: 1.2rem; margin-bottom: 20px;
+  color: var(--text-heading); font-size: 1.2rem;
   display: flex; align-items: center; gap: 10px;
 }
 .decision-grid {
@@ -685,8 +685,8 @@ code {
 .decision-item .di-text p { color: var(--text-secondary); font-size: 0.78rem; margin-top: 2px; }
 
 /* ── Appendices ─────────────────────────────────────────────── */
-.appendices { margin: 40px 0; }
-.appendices h2 { color: var(--text-heading); font-size: 1.2rem; margin-bottom: 16px; }
+.appendices { margin-top: 40px; margin-bottom: 40px; }
+.appendices h2 { color: var(--text-heading); font-size: 1.2rem; }
 .appendix-list { display: flex; flex-direction: column; gap: 8px; }
 .appendix-item {
   border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
@@ -732,7 +732,7 @@ code {
   margin: 40px 0; background: var(--bg-secondary); border: 1px solid var(--border);
   border-radius: 10px; padding: 28px 32px;
 }
-.filemap h2 { color: var(--text-heading); font-size: 1.2rem; margin-bottom: 16px; }
+.filemap h2 { color: var(--text-heading); font-size: 1.2rem; }
 .filemap pre {
   background: var(--code-bg); padding: 20px; border-radius: 8px;
   overflow-x: auto; font-size: 0.8rem; line-height: 1.65;
@@ -905,6 +905,7 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
       <source src="assets/prolog.mp4" type="video/mp4">
     </video>
   </div>
+  <p style="margin-top:14px;"><a href="prolog.html" style="font-size:0.82rem;">Read the Prolog Chapter →</a></p>
 </div>
 
 <!-- ═══ Progress Tracker ═════════════════════════════════════ -->
@@ -977,10 +978,13 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
 <!-- ═══ Decision Flow ════════════════════════════════════════ -->
 <div class="container" id="decision-flow">
   <div class="decision-section">
-    <h2>
-      <svg width="20" height="20" viewBox="0 0 16 16" fill="#dcdcaa"><path d="M8 1L1 8l7 7 7-7-7-7zm0 2.83L12.17 8 8 12.17 3.83 8 8 3.83z"/></svg>
-      Which Primitive Should I Use?
-    </h2>
+    <div class="section-header">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="#dcdcaa"><path d="M8 1L1 8l7 7 7-7-7-7zm0 2.83L12.17 8 8 12.17 3.83 8 8 3.83z"/></svg>
+        Which Primitive Should I Use?
+      </h2>
+      <p>Match your use case to the right customization type &mdash; each card describes a situation and the primitive that best fits it.</p>
+    </div>
     <div class="decision-grid">
       <div class="decision-item">
         <div class="decision-icon" style="background:#264f78"><svg width="18" height="18" viewBox="0 0 16 16" fill="#fff"><path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 12.5v-9zM4 5v1h8V5H4zm0 3v1h5V8H4z"/></svg></div>
@@ -1020,7 +1024,10 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
 
 <!-- ═══ Appendices ═══════════════════════════════════════════ -->
 <div class="container appendices" id="appendices-section">
-  <h2>Appendices</h2>
+  <div class="section-header">
+    <h2>Appendices</h2>
+    <p>Reference material &mdash; decision flow, common pitfalls, file reference, command tables, and cheat sheets.</p>
+  </div>
   <div class="appendix-list">
 
     <!-- Appendix A -->
@@ -1188,10 +1195,13 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
 <!-- ═══ Project File Map ════════════════════════════════════ -->
 <div class="container" id="file-map">
   <div class="filemap">
-    <h2>
-      <svg width="20" height="20" viewBox="0 0 16 16" fill="#9cdcfe"><path d="M1.5 1h5l1 1H14.5a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"/></svg>
-      Project File Map
-    </h2>
+    <div class="section-header">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="#9cdcfe"><path d="M1.5 1h5l1 1H14.5a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"/></svg>
+        Project File Map
+      </h2>
+      <p>Every file in the project and which chapter it belongs to &mdash; use this as a reference while working through the tutorial.</p>
+    </div>
     <pre>copilot-features-demo/
 ├── <span class="fm-folder">.github/</span>
 │   ├── copilot-instructions.md              <span class="fm-comment">← Ch. 4: Workspace Instructions</span>
