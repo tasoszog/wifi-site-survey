@@ -207,6 +207,30 @@ code {
   font-family: inherit;
 }
 .theory .readme-link:hover { background: #2d2d2d; border-color: #569cd6; }
+.theory h3 { color: #d4d4d4; margin: 20px 0 10px; font-size: 0.95rem; }
+.theory h4 { color: #d4d4d4; margin: 16px 0 8px; font-size: 0.9rem; }
+.theory table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.82rem; }
+.theory th, .theory td { padding: 6px 10px; border: 1px solid #3e3e3e; text-align: left; }
+.theory th { color: #fff; font-weight: 600; background: #252526; }
+.theory ul, .theory ol { padding-left: 24px; margin: 8px 0; }
+.theory li { margin: 4px 0; }
+.theory pre { background: #1a1a1a; padding: 12px; border-radius: 6px; overflow-x: auto; margin: 8px 0; }
+.theory blockquote { border-left: 3px solid #3e3e3e; padding-left: 12px; color: #9d9d9d; margin: 8px 0; }
+.theory hr { border: none; border-top: 1px solid #3e3e3e; margin: 16px 0; }
+
+/* ── Exercise Content ───────────────────────────────────────── */
+.ex-goal p { margin-bottom: 10px; }
+.ex-goal strong { color: #d4d4d4; }
+.ex-goal h4 { color: #d4d4d4; margin: 14px 0 6px; font-size: 0.88rem; }
+.ex-goal table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.82rem; }
+.ex-goal th, .ex-goal td { padding: 6px 10px; border: 1px solid #3e3e3e; text-align: left; }
+.ex-goal th { color: #fff; font-weight: 600; background: #252526; }
+.ex-goal ul, .ex-goal ol { padding-left: 24px; margin: 8px 0; }
+.ex-goal li { margin: 4px 0; }
+.ex-goal pre { background: #1a1a1a; padding: 12px; border-radius: 6px; overflow-x: auto; margin: 8px 0; font-size: 0.82rem; }
+.ex-goal pre code { background: none; padding: 0; color: #d4d4d4; }
+.ex-goal blockquote { border-left: 3px solid #3e3e3e; padding-left: 12px; color: #9d9d9d; margin: 8px 0; }
+.ex-goal hr { border: none; border-top: 1px solid #3e3e3e; margin: 16px 0; }
 
 /* ── Reading Modal ──────────────────────────────────────────── */
 .modal-overlay {
@@ -847,38 +871,423 @@ var CHAPTERS = [
     title: 'Git &amp; GitHub Essentials',
     file: 'git commands \u2022 GitHub workflows',
     link: 'README.md#chapter-0--git--github-essentials',
-    theory: 'Git is the version control system that tracks every change you make to your project. GitHub is the cloud platform that hosts your repositories and enables collaboration. Understanding both is essential \u2014 Copilot\u2019s customization files (instructions, prompts, hooks, agents, skills) are all designed to be version-controlled and shared via Git.<br><br>Every customization file you create in <code>.github/</code> should be committed so your team shares the same AI behavior. Copilot can read your Git history (<code>#changes</code>, <code>git log</code>) to generate commit messages, summarize work, and understand project evolution. Hooks (Chapter 7) rely on Git to revert failed edits.',
+    theory: '<p><strong>Concept</strong>: Git is the version control system that tracks every change you make to your project. GitHub is the cloud platform that hosts your Git repositories and enables collaboration. Understanding both is essential \u2014 Copilot\u2019s customization files (instructions, prompts, hooks, agents, skills) are all designed to be version-controlled and shared via Git.</p>' +
+      '<h3>Why this matters for Copilot</h3>' +
+      '<ul><li>Every customization file you create in <code>.github/</code> should be committed so your team shares the same AI behavior.</li>' +
+      '<li>Copilot can read your Git history (<code>#changes</code>, <code>git log</code>) to generate commit messages, summarize work, and understand project evolution.</li>' +
+      '<li>Hooks (Chapter 7) rely on Git to revert failed edits.</li></ul>' +
+      '<h3>Git Command Reference</h3>' +
+      '<h4>Configuration</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git config --global user.name &quot;Name&quot;</code></td><td>Sets your name for all commits</td><td><code>git config --global user.name &quot;Alice Smith&quot;</code></td></tr>' +
+      '<tr><td><code>git config --global user.email &quot;email&quot;</code></td><td>Sets your email for all commits</td><td><code>git config --global user.email &quot;alice@example.com&quot;</code></td></tr>' +
+      '<tr><td><code>git config --list</code></td><td>Shows all current configuration values</td><td>Check what name/email is set</td></tr></table>' +
+      '<h4>Repository Setup</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git init</code></td><td>Creates a new Git repository in the current directory</td><td>Start tracking a new project</td></tr>' +
+      '<tr><td><code>git clone &lt;url&gt;</code></td><td>Downloads a repository from GitHub to your machine</td><td><code>git clone https://github.com/user/repo.git</code></td></tr></table>' +
+      '<h4>Staging &amp; Committing</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git status</code></td><td>Shows which files are modified, staged, or untracked</td><td>Check what changed before committing</td></tr>' +
+      '<tr><td><code>git add &lt;file&gt;</code></td><td>Stages a specific file for the next commit</td><td><code>git add src/wifi_utils.py</code></td></tr>' +
+      '<tr><td><code>git add .</code></td><td>Stages all changed files in the current directory</td><td>Stage everything at once</td></tr>' +
+      '<tr><td><code>git commit -m &quot;message&quot;</code></td><td>Saves staged changes as a new commit</td><td><code>git commit -m &quot;feat(survey): add channel-overlap detection&quot;</code></td></tr>' +
+      '<tr><td><code>git commit --amend</code></td><td>Modifies the most recent commit (message or content)</td><td>Fix a typo in your last commit message</td></tr></table>' +
+      '<h4>Viewing History</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git log</code></td><td>Shows the full commit history</td><td>Review all past commits</td></tr>' +
+      '<tr><td><code>git log --oneline</code></td><td>Shows a compact one-line-per-commit history</td><td>Quick overview of recent work</td></tr>' +
+      '<tr><td><code>git log --graph --oneline</code></td><td>Shows commit history as a visual branch graph</td><td>Understand branching and merges</td></tr>' +
+      '<tr><td><code>git diff</code></td><td>Shows unstaged changes line by line</td><td>See exactly what you changed</td></tr>' +
+      '<tr><td><code>git diff --staged</code></td><td>Shows staged changes (what will be committed)</td><td>Review before committing</td></tr>' +
+      '<tr><td><code>git show &lt;commit&gt;</code></td><td>Shows the details and diff of a specific commit</td><td><code>git show abc1234</code></td></tr></table>' +
+      '<h4>Branching &amp; Merging</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git branch</code></td><td>Lists all local branches</td><td>See which branches exist</td></tr>' +
+      '<tr><td><code>git branch &lt;name&gt;</code></td><td>Creates a new branch</td><td><code>git branch feature/channel-overlap</code></td></tr>' +
+      '<tr><td><code>git checkout &lt;branch&gt;</code></td><td>Switches to an existing branch</td><td><code>git checkout main</code></td></tr>' +
+      '<tr><td><code>git checkout -b &lt;name&gt;</code></td><td>Creates and switches to a new branch in one step</td><td><code>git checkout -b fix/weak-signal-threshold</code></td></tr>' +
+      '<tr><td><code>git merge &lt;branch&gt;</code></td><td>Merges the specified branch into the current branch</td><td><code>git merge feature/channel-overlap</code></td></tr>' +
+      '<tr><td><code>git branch -d &lt;name&gt;</code></td><td>Deletes a branch that has been merged</td><td><code>git branch -d feature/channel-overlap</code></td></tr></table>' +
+      '<h4>Remote Repositories (GitHub)</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git remote -v</code></td><td>Shows configured remote repositories</td><td>Verify your GitHub remote URL</td></tr>' +
+      '<tr><td><code>git remote add origin &lt;url&gt;</code></td><td>Connects your local repo to a GitHub repo</td><td><code>git remote add origin https://github.com/user/repo.git</code></td></tr>' +
+      '<tr><td><code>git push -u origin main</code></td><td>Pushes your local <code>main</code> branch to GitHub (first time)</td><td>Publish your project to GitHub</td></tr>' +
+      '<tr><td><code>git push</code></td><td>Pushes committed changes to the remote</td><td>Share your latest commits</td></tr>' +
+      '<tr><td><code>git pull</code></td><td>Fetches and merges remote changes into your branch</td><td>Get your teammate\u2019s latest work</td></tr>' +
+      '<tr><td><code>git fetch</code></td><td>Downloads remote changes without merging</td><td>Check what\u2019s new before merging</td></tr></table>' +
+      '<h4>Undoing Changes</h4>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git checkout -- &lt;file&gt;</code></td><td>Discards unstaged changes to a file</td><td>Revert a file to its last committed state</td></tr>' +
+      '<tr><td><code>git restore &lt;file&gt;</code></td><td>Discards unstaged changes (modern syntax)</td><td><code>git restore src/wifi_utils.py</code></td></tr>' +
+      '<tr><td><code>git restore --staged &lt;file&gt;</code></td><td>Unstages a file (keeps your edits)</td><td><code>git restore --staged data/ap_inventory.json</code></td></tr>' +
+      '<tr><td><code>git reset --soft HEAD~1</code></td><td>Undoes the last commit but keeps changes staged</td><td>Redo a commit with a better message</td></tr>' +
+      '<tr><td><code>git stash</code></td><td>Temporarily shelves uncommitted changes</td><td>Switch branches without committing</td></tr>' +
+      '<tr><td><code>git stash pop</code></td><td>Restores the most recently stashed changes</td><td>Resume work after switching back</td></tr></table>' +
+      '<h4>GitHub-Specific Workflows</h4>' +
+      '<table><tr><th>Command / Action</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>git push</code> then open PR on GitHub</td><td>Proposes changes for team review</td><td>Standard collaboration workflow</td></tr>' +
+      '<tr><td><strong>Fork</strong> (GitHub UI)</td><td>Creates your own copy of someone else\u2019s repository</td><td>Contribute to open-source projects</td></tr>' +
+      '<tr><td><strong>Pull Request</strong> (GitHub UI)</td><td>Requests that your branch be merged into the main branch</td><td>Code review before merging</td></tr>' +
+      '<tr><td><strong>Issue</strong> (GitHub UI)</td><td>Tracks a bug, feature request, or task</td><td>Organize project work</td></tr>' +
+      '<tr><td><code>gh pr create</code></td><td>Creates a pull request from the CLI (GitHub CLI)</td><td><code>gh pr create --title &quot;Add channel-overlap detection&quot; --body &quot;...&quot;</code></td></tr>' +
+      '<tr><td><code>gh issue list</code></td><td>Lists open issues from the CLI (GitHub CLI)</td><td><code>gh issue list --label rf-issue</code></td></tr></table>',
     exercises: [
-      { title: 'Configure Git and make your first commit', goal: 'Set up Git identity and create an initial commit for your WiFi site-survey project.' },
-      { title: 'Track changes with git status and git diff', goal: 'Make a small edit to <code>wifi_utils.py</code> and observe how Git tracks it.' },
-      { title: 'Create and merge a branch', goal: 'Practice the branch-edit-merge workflow \u2014 simulating a new AP deployment update on a feature branch.' },
-      { title: 'Use git stash to shelve work temporarily', goal: 'Stash uncommitted changes so you can switch context without losing work.' },
-      { title: 'View detailed commit history', goal: 'Explore different ways to read the project history with <code>git log</code>.' },
-      { title: 'Undo mistakes safely', goal: 'Practice reverting changes without losing work \u2014 essential when experimenting with AP configuration updates.' },
-      { title: 'Connect to GitHub and push', goal: 'Link your local WiFi survey repository to GitHub and push your commits.' },
-      { title: 'Use Copilot with Git context', goal: 'Combine Copilot\u2019s <code>#changes</code> context mention with Git to generate a commit message automatically.' }
+      { title: 'Configure Git and make your first commit',
+        goal: '**What you\'ll do**: Set up Git identity and create an initial commit.\n\n' +
+          '**Step 1 \u2014 Check your Git configuration**\n' +
+          '- Open the integrated terminal: **Ctrl+`** (backtick).\n' +
+          '- Run:\n\n' +
+          '```powershell\ngit config --global user.name\ngit config --global user.email\n```\n\n' +
+          '- **What you see**: Your configured name and email. If blank, set them:\n\n' +
+          '```powershell\ngit config --global user.name "Your Name"\ngit config --global user.email "your.email@example.com"\n```\n\n' +
+          '**Step 2 \u2014 Initialize and commit**\n' +
+          '- If you haven\'t already initialized git (from Getting Started), run:\n\n' +
+          '```powershell\ncd C:\\Projects\\copilot-features-demo\ngit init\ngit add .\ngit commit -m "Initial commit: Copilot features demo"\n```\n\n' +
+          '- **What you see**: A message like `[main (root-commit) abc1234] Initial commit...` confirming the snapshot was saved.\n\n' +
+          '**Step 3 \u2014 View the commit**\n' +
+          '- Run:\n\n' +
+          '```powershell\ngit log --oneline\n```\n\n' +
+          '- **What you see**: A single line showing the commit hash and message.' },
+      { title: 'Track changes with git status and git diff',
+        goal: '**What you\'ll do**: Make a small edit to the WiFi utilities and observe how Git tracks it.\n\n' +
+          '**Step 1** \u2014 Open `src/wifi_utils.py` and add a comment at the top:\n\n' +
+          '```python\n# Channel planning constants\n```\n\nSave the file (**Ctrl+S**).\n\n' +
+          '**Step 2** \u2014 In the terminal, run:\n\n' +
+          '```powershell\ngit status\n```\n\n' +
+          '- **What you see**: `src/wifi_utils.py` listed under **Changes not staged for commit** \u2014 Git detected your edit.\n\n' +
+          '**Step 3** \u2014 Run:\n\n' +
+          '```powershell\ngit diff\n```\n\n' +
+          '- **What you see**: A line-by-line diff showing the added comment in green with a `+` prefix.\n\n' +
+          '**Step 4 \u2014 Stage and commit**\n\n' +
+          '```powershell\ngit add src/wifi_utils.py\ngit commit -m "docs(wifi_utils): add channel planning constants comment"\n```\n\n' +
+          '**Step 5 \u2014 Verify**\n\n' +
+          '```powershell\ngit log --oneline\n```\n\n' +
+          '- **What you see**: Two commits \u2014 your new one on top.\n\n' +
+          '**Step 6 \u2014 Clean up**\n' +
+          '- Remove the practice comment from `src/wifi_utils.py` and commit:\n\n' +
+          '```powershell\ngit add src/wifi_utils.py\ngit commit -m "chore: remove practice comment"\n```' },
+      { title: 'Create and merge a branch',
+        goal: '**What you\'ll do**: Practice the branch-edit-merge workflow \u2014 simulating a new AP deployment update on a feature branch.\n\n' +
+          '**Step 1 \u2014 Create a branch**\n\n' +
+          '```powershell\ngit checkout -b feature/add-floor3-aps\n```\n\n' +
+          '- **What you see**: `Switched to a new branch \'feature/add-floor3-aps\'`.\n\n' +
+          '**Step 2 \u2014 Make an edit on the branch**\n' +
+          '- Open `data/ap_inventory.json` and add a temporary field to any AP (e.g., `"note": "pending floor 3 survey"`).\n' +
+          '- Stage and commit:\n\n' +
+          '```powershell\ngit add data/ap_inventory.json\ngit commit -m "feat(survey): add floor 3 deployment note"\n```\n\n' +
+          '**Step 3 \u2014 Switch back and merge**\n\n' +
+          '```powershell\ngit checkout main\ngit merge feature/add-floor3-aps\n```\n\n' +
+          '- **What you see**: A fast-forward merge message \u2014 the change from your branch is now on `main`.\n\n' +
+          '**Step 4 \u2014 Delete the branch**\n\n' +
+          '```powershell\ngit branch -d feature/add-floor3-aps\n```\n\n' +
+          '**Step 5 \u2014 Clean up**\n' +
+          '- Revert the temporary edit:\n\n' +
+          '```powershell\ngit checkout -- data/ap_inventory.json\ngit commit -am "chore: revert temporary note field"\n```' },
+      { title: 'Use git stash to shelve work temporarily',
+        goal: '**What you\'ll do**: Stash uncommitted changes so you can switch context without losing work \u2014 for example, pausing an AP config update to handle an urgent channel-conflict fix.\n\n' +
+          '**Step 1** \u2014 Open `src/wifi_utils.py` and add a new comment:\n\n' +
+          '```python\n# TODO: add DFS channel fallback logic\n```\n\nSave but **do not commit**.\n\n' +
+          '**Step 2** \u2014 Run:\n\n' +
+          '```powershell\ngit stash\n```\n\n' +
+          '- **What you see**: `Saved working directory and index state...`. Your edit disappears from the file.\n\n' +
+          '**Step 3** \u2014 Verify the file is clean:\n\n' +
+          '```powershell\ngit status\n```\n\n' +
+          '- **What you see**: `nothing to commit, working tree clean`.\n\n' +
+          '**Step 4** \u2014 Restore your stashed changes:\n\n' +
+          '```powershell\ngit stash pop\n```\n\n' +
+          '- **What you see**: Your comment reappears in the file. The stash is removed.\n\n' +
+          '**Step 5 \u2014 Clean up**\n' +
+          '- Discard the practice edit:\n\n' +
+          '```powershell\ngit checkout -- src/wifi_utils.py\n```' },
+      { title: 'View detailed commit history',
+        goal: '**What you\'ll do**: Explore different ways to read the project history.\n\n' +
+          '**Step 1 \u2014 Full log**\n\n' +
+          '```powershell\ngit log\n```\n\n' +
+          '- **What you see**: Each commit with its full hash, author, date, and message. Press **q** to exit the pager.\n\n' +
+          '**Step 2 \u2014 Compact log**\n\n' +
+          '```powershell\ngit log --oneline\n```\n\n' +
+          '**Step 3 \u2014 Graph view**\n\n' +
+          '```powershell\ngit log --graph --oneline --all\n```\n\n' +
+          '- **What you see**: A text-based branch graph showing how commits relate.\n\n' +
+          '**Step 4 \u2014 Inspect a single commit**\n' +
+          '- Copy a commit hash from the log, then run:\n\n' +
+          '```powershell\ngit show <hash>\n```\n\n' +
+          '(Replace `<hash>` with the actual hash.)\n\n' +
+          '- **What you see**: The commit metadata and the full diff of what changed.' },
+      { title: 'Undo mistakes safely',
+        goal: '**What you\'ll do**: Practice reverting changes without losing work \u2014 essential when experimenting with AP configuration updates.\n\n' +
+          '**Step 1 \u2014 Discard an unstaged edit**\n' +
+          '- Edit `src/wifi_utils.py` (e.g., change a tx_power default), save, then run:\n\n' +
+          '```powershell\ngit restore src/wifi_utils.py\n```\n\n' +
+          '- **What you see**: The file reverts to its last committed state.\n\n' +
+          '**Step 2 \u2014 Unstage a file**\n' +
+          '- Make an edit, stage it, then unstage:\n\n' +
+          '```powershell\ngit add src/wifi_utils.py\ngit restore --staged src/wifi_utils.py\n```\n\n' +
+          '- **What you see**: `git status` now shows the file as modified but **not staged**. Your edits are still in the file.\n\n' +
+          '**Step 3 \u2014 Soft-reset the last commit**\n' +
+          '- Make a throwaway commit:\n\n' +
+          '```powershell\ngit add src/wifi_utils.py\ngit commit -m "throwaway commit"\n```\n\n' +
+          '- Undo it (keeps changes staged):\n\n' +
+          '```powershell\ngit reset --soft HEAD~1\n```\n\n' +
+          '- **What you see**: `git log --oneline` no longer shows "throwaway commit", but `git status` shows your changes still staged.\n\n' +
+          '**Step 4 \u2014 Clean up**\n\n' +
+          '```powershell\ngit restore --staged src/wifi_utils.py\ngit restore src/wifi_utils.py\n```' },
+      { title: 'Connect to GitHub and push',
+        goal: '**What you\'ll do**: Link your local WiFi survey repository to GitHub and push your commits so the team can access the AP inventory.\n\n' +
+          '> **Prerequisite**: You need a GitHub account and a repository created on GitHub (empty \u2014 no README or .gitignore).\n\n' +
+          '**Step 1 \u2014 Create a GitHub repository**\n' +
+          '- Go to [https://github.com/new](https://github.com/new).\n' +
+          '- Name it `wifi-site-survey` (or any name).\n' +
+          '- Leave it **empty** (no README, no .gitignore, no license).\n' +
+          '- Click **Create repository**.\n\n' +
+          '**Step 2 \u2014 Add the remote**\n\n' +
+          '```powershell\ngit remote add origin https://github.com/YOUR-USERNAME/wifi-site-survey.git\n```\n\n' +
+          '(Replace `YOUR-USERNAME` with your GitHub username.)\n\n' +
+          '**Step 3 \u2014 Push**\n\n' +
+          '```powershell\ngit push -u origin main\n```\n\n' +
+          '- **What you see**: Git uploads your commits to GitHub. Visit the repository URL in your browser to confirm.\n\n' +
+          '**Step 4 \u2014 Verify the remote**\n\n' +
+          '```powershell\ngit remote -v\n```\n\n' +
+          '- **What you see**: The `origin` URL pointing to your GitHub repository.' },
+      { title: 'Use Copilot with Git context',
+        goal: '**What you\'ll do**: Combine Copilot\'s `#changes` context mention with Git to generate a commit message automatically for an AP inventory update.\n\n' +
+          '**Step 1** \u2014 Open `data/ap_inventory.json` and update the `tx_power` value of any access point. Save the file. **Do not commit.**\n\n' +
+          '**Step 2** \u2014 Open Chat (**Ctrl+Alt+I**) and type:\n\n' +
+          '```\nWrite a conventional commit message for #changes\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot reads your uncommitted diff via Git and produces a Conventional Commits message (e.g., `fix(survey): update tx_power for AP-03`).\n\n' +
+          '**Step 3** \u2014 Copy the message and use it:\n\n' +
+          '```powershell\ngit add .\ngit commit -m "<paste the message here>"\n```\n\n' +
+          '> **Key insight**: This is where Git and Copilot complement each other \u2014 Copilot understands your Git state and can automate repetitive Git tasks like writing commit messages.' }
     ],
-    bonus: { title: 'Practice a pull request workflow', goal: 'Create a branch, push it, and open a pull request on GitHub.' }
+    bonus: { title: 'Practice a pull request workflow',
+      goal: '**Goal**: Create a branch, push it, and open a pull request on GitHub.\n\n' +
+        '**Step 1** \u2014 Create a feature branch and make a small change:\n\n' +
+        '```powershell\ngit checkout -b feature/update-ap-config\n```\n\n' +
+        '- Edit any file (e.g., update a `tx_power` value in `data/ap_inventory.json`), then commit:\n\n' +
+        '```powershell\ngit add .\ngit commit -m "feat(survey): update AP-03 tx_power"\n```\n\n' +
+        '**Step 2** \u2014 Push the branch to GitHub:\n\n' +
+        '```powershell\ngit push -u origin feature/update-ap-config\n```\n\n' +
+        '**Step 3** \u2014 Open a pull request:\n' +
+        '- Visit your repository on GitHub. You\'ll see a prompt to create a PR for the recently pushed branch.\n' +
+        '- Click **Compare & pull request**, add a description, and click **Create pull request**.\n\n' +
+        '**Step 4** \u2014 Clean up:\n\n' +
+        '```powershell\ngit checkout main\ngit branch -d feature/update-ap-config\n```' }
   },
   {
     id: 1, part: 'a',
     title: '<code>/</code> Slash Commands',
     file: '8 categories \u2022 30+ built-in commands',
     link: 'README.md#chapter-1--slash-commands',
-    theory: 'Slash commands are shortcuts to specific functionality. Type <code>/</code> in chat to see all available commands. They fall into eight categories: <strong>Coding Actions</strong> (<code>/explain</code>, <code>/fix</code>, <code>/tests</code>, <code>/doc</code>), <strong>Scaffolding</strong> (<code>/new</code>, <code>/newNotebook</code>), <strong>Session Management</strong> (<code>/clear</code>, <code>/fork</code>, <code>/compact</code>), <strong>Planning &amp; Search</strong> (<code>/plan</code>, <code>/search</code>), <strong>Customization Creators</strong> (generate prompts, skills, agents), <strong>Management UIs</strong> (inspect configs), <strong>Permission Control</strong> (<code>/autoApprove</code>, <code>/yolo</code>), and <strong>Debugging</strong> (<code>/debug</code>, <code>/troubleshoot</code>).<br><br><strong>Key insight:</strong> Custom prompts and skills also appear as <code>/</code> commands. Once you create a <code>.prompt.md</code> or <code>SKILL.md</code>, invoke them by typing <code>/</code> followed by the file name.',
+    theory: '<p><strong>Concept</strong>: Slash commands are shortcuts to specific functionality. Type <code>/</code> in the chat input to see all available commands. They fall into 8 categories:</p>' +
+      '<h3>Category 1: Coding Actions</h3><p>These operate on code you select or reference in your prompt.</p>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>/explain</code></td><td>Explains selected code — purpose, logic, edge cases</td><td>Select <code>find_weak_signals</code> and use <code>/explain</code></td></tr>' +
+      '<tr><td><code>/fix</code></td><td>Proposes fixes for errors (reads Problems panel / stack traces)</td><td>A red underline appears — use <code>/fix</code></td></tr>' +
+      '<tr><td><code>/tests</code></td><td>Generates tests using your project\u2019s test framework</td><td>Select a function and use <code>/tests</code></td></tr>' +
+      '<tr><td><code>/doc</code></td><td>Generates documentation comments (inline chat)</td><td>Select a function and use <code>/doc</code></td></tr>' +
+      '<tr><td><code>/setupTests</code></td><td>Scaffolds a test framework (config, deps, example tests)</td><td>Use <code>/setupTests</code></td></tr>' +
+      '<tr><td><code>/fixTestFailure</code></td><td>Analyzes failing tests and suggests fixes</td><td>Use <code>/fixTestFailure</code></td></tr></table>' +
+      '<h3>Category 2: Scaffolding</h3>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>/new</code></td><td>Creates a new file or project from a description</td><td><code>/new Python script that reads a CSV</code></td></tr>' +
+      '<tr><td><code>/newNotebook</code></td><td>Creates a new Jupyter notebook from a description</td><td><code>/newNotebook analyze ap_inventory.json</code></td></tr></table>' +
+      '<h3>Category 3: Session Management</h3>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>/clear</code></td><td>Starts a fresh chat session (archives current one)</td><td>Clean slate for the next task</td></tr>' +
+      '<tr><td><code>/fork</code></td><td>Copies conversation into a new independent session</td><td>Try a different approach</td></tr>' +
+      '<tr><td><code>/compact</code></td><td>Summarizes conversation history to free context window space</td><td>Reclaim context in long sessions</td></tr>' +
+      '<tr><td><code>/rename</code></td><td>Renames the current chat session</td><td><code>/rename Fix channel-overlap detection</code></td></tr></table>' +
+      '<h3>Category 4: Planning &amp; Search</h3>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>/plan</code></td><td>Creates a step-by-step implementation plan before writing code</td><td><code>/plan Add channel-overlap detection</code></td></tr>' +
+      '<tr><td><code>/search</code></td><td>Semantic search across your workspace</td><td><code>/search where is AP status validated</code></td></tr>' +
+      '<tr><td><code>/startDebugging</code></td><td>Generates a <code>launch.json</code> and starts a debug session</td><td>Debug without manual config</td></tr></table>' +
+      '<h3>Category 5: Customization Creators</h3><p>These create the files you\u2019ll learn about in Part B:</p>' +
+      '<table><tr><th>Command</th><th>What it creates</th><th>Example</th></tr>' +
+      '<tr><td><code>/init</code></td><td>Generates <code>copilot-instructions.md</code> from your project structure</td><td>Auto-generate workspace instructions</td></tr>' +
+      '<tr><td><code>/create-prompt</code></td><td>Creates a <code>.prompt.md</code> file</td><td>Turn a repeated task into a reusable command</td></tr>' +
+      '<tr><td><code>/create-instruction</code></td><td>Creates a <code>.instructions.md</code> file</td><td>Enforce style rules for file types</td></tr>' +
+      '<tr><td><code>/create-skill</code></td><td>Creates a <code>SKILL.md</code> and skill folder</td><td>Package a multi-step workflow</td></tr>' +
+      '<tr><td><code>/create-agent</code></td><td>Creates an <code>.agent.md</code> file</td><td>Create a read-only analyst agent</td></tr>' +
+      '<tr><td><code>/create-hook</code></td><td>Creates a hook <code>.json</code> config</td><td>Block invalid JSON edits</td></tr>' +
+      '<tr><td><code>/agent-customization</code></td><td>Opens the agent customization workflow</td><td>Guided setup walkthrough</td></tr></table>' +
+      '<h3>Category 6: Management UIs</h3>' +
+      '<table><tr><th>Command</th><th>Opens</th><th>Example</th></tr>' +
+      '<tr><td><code>/agents</code></td><td>Custom agents configuration</td><td>Check which agents exist</td></tr>' +
+      '<tr><td><code>/hooks</code></td><td>Hook configuration</td><td>Verify hook configs</td></tr>' +
+      '<tr><td><code>/instructions</code></td><td>Instruction files</td><td>See active instructions</td></tr>' +
+      '<tr><td><code>/prompts</code></td><td>Prompt files</td><td>Find prompt names</td></tr>' +
+      '<tr><td><code>/skills</code></td><td>Agent skills</td><td>Review skills</td></tr>' +
+      '<tr><td><code>/tools</code></td><td>Tool availability and permissions</td><td>Check tool status</td></tr>' +
+      '<tr><td><code>/models</code></td><td>AI model picker</td><td>Switch models</td></tr>' +
+      '<tr><td><code>/plugins</code></td><td>Chat plugins/extensions</td><td>See active extensions</td></tr></table>' +
+      '<h3>Category 7: Permission Control</h3>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>/autoApprove</code></td><td>Auto-approve all tool calls (skip confirmations)</td><td>Large automated refactor</td></tr>' +
+      '<tr><td><code>/disableAutoApprove</code></td><td>Re-enable confirmation dialogs</td><td>Restore review flow</td></tr>' +
+      '<tr><td><code>/yolo</code></td><td>Maximum autonomy — auto-approve + auto-respond</td><td>Sandbox experimentation</td></tr>' +
+      '<tr><td><code>/disableYolo</code></td><td>Return to normal approval mode</td><td>Restore confirmations</td></tr></table>' +
+      '<blockquote><strong>Warning</strong>: <code>/yolo</code> mode gives Copilot full autonomy with no confirmation prompts. Use it only in safe environments.</blockquote>' +
+      '<h3>Category 8: Debugging</h3>' +
+      '<table><tr><th>Command</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>/debug</code></td><td>Opens the Chat Debug view — inspect system prompts, tools, and context</td><td>Check if instructions loaded</td></tr>' +
+      '<tr><td><code>/troubleshoot</code></td><td>Analyzes agent debug logs for the current session</td><td>Diagnose unexpected output</td></tr></table>' +
+      '<h3>Key Insight</h3>' +
+      '<p><strong>Custom prompts and skills also appear as <code>/</code> commands.</strong> Once you create a <code>.prompt.md</code> or <code>SKILL.md</code>, invoke them by typing <code>/</code> followed by the file name. This project includes <code>/generate-test-cases</code> and <code>/summarize-aps</code> (prompts) and <code>/wifi-survey-report</code> (skill).</p>',
     exercises: [
-      { title: 'Explain then test a function', goal: 'Use <code>/explain</code> and <code>/tests</code> on a real WiFi analysis function.' },
-      { title: 'Plan before coding', goal: 'Use <code>/plan</code> to get a structured implementation plan for a new feature.' },
-      { title: 'Inspect what Copilot sees', goal: 'Use <code>/debug</code> to see the exact context injected into each request.' },
-      { title: 'Free up context window space', goal: 'Use <code>/compact</code> after a long conversation to reclaim context.' },
-      { title: 'Fix an error and add docs', goal: 'Use <code>/fix</code> to resolve an error and <code>/doc</code> to generate a docstring.' },
-      { title: 'Scaffold with /new, /newNotebook, /setupTests', goal: 'Create new files and scaffold a test framework without writing boilerplate.' },
-      { title: 'Manage sessions', goal: 'Organise sessions with <code>/clear</code>, <code>/fork</code>, and <code>/rename</code>.' },
-      { title: 'Search and debug', goal: 'Find code semantically with <code>/search</code> and set up debugging with <code>/startDebugging</code>.' },
-      { title: 'Create customization files', goal: 'Use <code>/create-*</code> commands to scaffold each customization primitive.' },
-      { title: 'Browse configuration', goal: 'Use management <code>/</code> commands to inspect all configured primitives.' },
-      { title: 'Control permissions', goal: 'Experience how <code>/autoApprove</code> and <code>/yolo</code> change the approval flow.' },
-      { title: 'Troubleshoot behaviour', goal: 'Use <code>/troubleshoot</code> and <code>/fixTestFailure</code> to investigate problems.' }
+      { title: 'Explain then test a function',
+        goal: '**What you\'ll do**: Use `/explain` and `/tests` on a real WiFi analysis function in this project.\n\n' +
+          '**Step 1 \u2014 Open the file**\n' +
+          '- In VS Code, press **Ctrl+P** and type `wifi_utils.py`, press **Enter**.\n\n' +
+          '**Step 2 \u2014 Select the function**\n' +
+          '- Scroll to the `find_weak_signals` function (around line 30). Select the entire function body.\n\n' +
+          '**Step 3 \u2014 Explain it**\n' +
+          '- Open Chat: **Ctrl+Alt+I**. Type `/explain` and press **Enter**.\n' +
+          '- **What you see**: Copilot describes what `find_weak_signals` does, what parameters it takes, what it returns, and any edge cases.\n\n' +
+          '**Step 4 \u2014 Generate tests**\n' +
+          '- Keep the same selection. In Chat, type `/tests` and press **Enter**.\n' +
+          '- **What you see**: Copilot generates a pytest test file with at least three cases: a happy path, an empty list case, and an edge case.\n\n' +
+          '> `/explain` and `/tests` use the current editor *selection* as context. If nothing is selected, Copilot uses the entire active file.' },
+      { title: 'Plan before coding',
+        goal: '**What you\'ll do**: Use `/plan` to get a structured implementation plan for a new WiFi analysis feature.\n\n' +
+          '**Step 1** \u2014 In Chat, type exactly:\n\n' +
+          '```\n/plan Add a function to detect channel conflicts between nearby access points\n```\n\nPress **Enter**.\n\n' +
+          '**Step 2 \u2014 Read the plan**\n' +
+          '- **What you see**: Copilot returns a numbered list of steps without writing any code yet.\n' +
+          '- Notice that `/plan` **does not modify any files**. It only plans.\n\n' +
+          '**Step 3 \u2014 Approve and implement**\n' +
+          '- Reply in Chat: `Looks good, implement it.`\n' +
+          '- **What you see**: Copilot now writes the function into `wifi_utils.py`, following the plan it just outlined.' },
+      { title: 'Inspect what Copilot sees',
+        goal: '**What you\'ll do**: Use `/debug` to see the exact context injected into each request.\n\n' +
+          '**Step 1** \u2014 In Chat, type `/debug` and press **Enter**.\n' +
+          '- **What you see**: The Chat Debug view opens \u2014 a panel showing the full system prompt, which instruction files were loaded, and what tools are available.\n\n' +
+          '**Step 2 \u2014 Look for workspace instructions**\n' +
+          '- Scroll through the debug output until you find a section labelled `copilot-instructions.md`. This is the project-level context from `.github/copilot-instructions.md`.' },
+      { title: 'Free up context window space',
+        goal: '**What you\'ll do**: Use `/compact` after a long conversation.\n\n' +
+          '**Step 1** \u2014 Send 4\u20135 messages in the same chat session (e.g., ask a few questions about `ap_inventory.json` or the channel-overlap function you just planned).\n\n' +
+          '**Step 2** \u2014 In Chat, type `/compact` and press **Enter**.\n' +
+          '- **What you see**: Copilot summarises the conversation history into a short paragraph and replaces the raw history with the summary. The token count drops significantly.\n\n' +
+          '> **When to use this**: Use `/compact` when you notice Copilot forgetting earlier context in a long session.' },
+      { title: 'Fix an error and add docs',
+        goal: '**What you\'ll do**: Use `/fix` to resolve a real error and `/doc` to generate a docstring through inline chat.\n\n' +
+          '**Step 1 \u2014 Introduce an error**\n' +
+          '- Open `src/wifi_utils.py`. Temporarily break a function: delete the `:` at the end of any `def` line and save (**Ctrl+S**).\n' +
+          '- The Problems panel (View \u2192 Problems) will show a red error.\n\n' +
+          '**Step 2 \u2014 Fix it with `/fix`**\n' +
+          '- In Chat, type `/fix` and press **Enter**.\n' +
+          '- **What you see**: Copilot reads the Problems panel, identifies the syntax error, and proposes the corrected line. Accept the suggestion.\n\n' +
+          '**Step 3 \u2014 Add a docstring with `/doc`**\n' +
+          '- Select the `find_weak_signals` function (or any function without a docstring).\n' +
+          '- Press **Ctrl+I** to open **inline chat**. Type `/doc` and press **Enter**.\n' +
+          '- **What you see**: Copilot inserts a docstring directly above the function body \u2014 in-place in the editor, not in the chat panel.' },
+      { title: 'Scaffold with /new, /newNotebook, /setupTests',
+        goal: '**What you\'ll do**: Create new files and scaffold a test framework without writing boilerplate.\n\n' +
+          '**Step 1 \u2014 Create a new utility script**\n' +
+          '- In Chat, type:\n\n' +
+          '```\n/new Python script that reads ap_inventory.json and prints a signal-strength summary table\n```\n\n' +
+          '- **What you see**: Copilot creates a new `.py` file with boilerplate imports, argument parsing, and the core logic sketched out.\n\n' +
+          '**Step 2 \u2014 Create a Jupyter notebook**\n' +
+          '- In Chat, type:\n\n' +
+          '```\n/newNotebook analyze ap_inventory.json \u2014 show AP distribution by band as a bar chart\n```\n\n' +
+          '- **What you see**: A new `.ipynb` file opens with cells for loading the JSON, computing counts by band, and plotting with matplotlib.\n\n' +
+          '**Step 3 \u2014 Scaffold a test framework**\n' +
+          '- In Chat, type `/setupTests` and press **Enter**.\n' +
+          '- **What you see**: Copilot detects the project uses Python and generates a `pytest.ini` (or `pyproject.toml` section), installs pytest, and creates an example test file.' },
+      { title: 'Manage sessions',
+        goal: '**What you\'ll do**: Organise your chat sessions so you can find them later and work in parallel.\n\n' +
+          '**Step 1 \u2014 Rename the current session**\n' +
+          '- In Chat, type:\n\n' +
+          '```\n/rename Chapter 1 WiFi analysis slash commands\n```\n\n' +
+          '- **What you see**: The session tab or title updates. Useful for finding sessions in Chat history.\n\n' +
+          '**Step 2 \u2014 Fork a session**\n' +
+          '- In Chat, type `/fork` and press **Enter**.\n' +
+          '- **What you see**: A **new** chat session opens containing a copy of the current conversation. Changes in the fork don\'t affect the original.\n\n' +
+          '**Step 3 \u2014 Clear and start fresh**\n' +
+          '- In the forked session, type `/clear` and press **Enter**.\n' +
+          '- **What you see**: The current session is archived and a blank new session opens. The previous conversation is still accessible in Chat history.' },
+      { title: 'Search and debug',
+        goal: '**What you\'ll do**: Find code semantically and set up a debug configuration.\n\n' +
+          '**Step 1 \u2014 Semantic search**\n' +
+          '- In Chat, type:\n\n' +
+          '```\n/search where is AP status validated\n```\n\n' +
+          '- **What you see**: Copilot searches the workspace and returns file paths and line references \u2014 likely pointing to `scripts/validate.sh` and `docs/wifi-survey-spec.md`. Click a result to jump to that location.\n\n' +
+          '**Step 2 \u2014 Generate a debug configuration**\n' +
+          '- In Chat, type `/startDebugging` and press **Enter**.\n' +
+          '- **What you see**: Copilot creates a `.vscode/launch.json` with a Python configuration targeting `src/wifi_utils.py`, then starts a debug session.' },
+      { title: 'Create customization files',
+        goal: '**What you\'ll do**: Use the creator commands to scaffold each customization primitive directly from chat.\n\n' +
+          '**Step 1 \u2014 Generate workspace instructions**\n' +
+          '- In a fresh project (or a temp folder), type `/init`.\n' +
+          '- **What you see**: Copilot scans the project structure and generates a `.github/copilot-instructions.md` with a project summary and inferred conventions.\n\n' +
+          '**Step 2 \u2014 Create a prompt file**\n\n' +
+          '```\n/create-prompt Generate an RF coverage summary from ap_inventory.json\n```\n\n' +
+          '- **What you see**: Copilot creates `.github/prompts/generate-rf-coverage-summary.prompt.md` with appropriate frontmatter. You can now invoke it with `/generate-rf-coverage-summary`.\n\n' +
+          '**Step 3 \u2014 Create an instruction file**\n\n' +
+          '```\n/create-instruction for all Python files in src/ \u2014 enforce type hints and RF-analysis naming conventions\n```\n\n' +
+          '- **What you see**: A new `.instructions.md` file is created with `applyTo: "src/**/*.py"` and the rules you described.\n\n' +
+          '**Step 4 \u2014 Create an agent**\n\n' +
+          '```\n/create-agent rf-analyst \u2014 read-only, focuses on WiFi survey data analysis\n```\n\n' +
+          '- **What you see**: `.github/agents/rf-analyst.agent.md` is created with `tools: [read, search]`.\n\n' +
+          '**Step 5 \u2014 Create a hook**\n\n' +
+          '```\n/create-hook to block any edit that produces invalid AP inventory JSON\n```\n\n' +
+          '- **What you see**: A `.github/hooks/*.json` file is created with a `PostToolUse` event and a shell command stub.\n\n' +
+          '**Step 6 \u2014 Create a skill**\n\n' +
+          '```\n/create-skill rf-coverage-audit \u2014 audits ap_inventory.json for schema violations\n```\n\n' +
+          '- **What you see**: The folder `.github/skills/rf-coverage-audit/` is created with a `SKILL.md` frontmatter and a stub body.\n\n' +
+          '**Step 7 \u2014 Open the guided setup**\n' +
+          '- In Chat, type `/agent-customization` and press **Enter**.\n' +
+          '- **What you see**: An interactive guided workflow opens, asking questions about what you want to build.' },
+      { title: 'Browse configuration',
+        goal: '**What you\'ll do**: Use the management commands to inspect everything currently configured.\n\n' +
+          '**Step 1** \u2014 Type each command below in Chat and press **Enter** after each one:\n\n' +
+          '| Command | What to look for |\n|---------|------------------|\n' +
+          '| `/agents` | Lists `rf-analyst` and `report-writer` \u2014 note their tool sets |\n' +
+          '| `/hooks` | Shows `validate-json.json` with its `PostToolUse` event |\n' +
+          '| `/instructions` | Lists all three `.instructions.md` files and their `applyTo` globs |\n' +
+          '| `/prompts` | Lists `generate-test-cases` and `summarize-aps` with descriptions |\n' +
+          '| `/skills` | Lists `wifi-survey-report` \u2014 note the `argument-hint` displayed |\n' +
+          '| `/tools` | Lists every tool currently available \u2014 including MCP tools |\n' +
+          '| `/models` | Opens the model picker \u2014 note the model currently selected |\n' +
+          '| `/plugins` | Lists any chat extensions installed |\n\n' +
+          '**Step 2 \u2014 Spot something unexpected?**\n' +
+          '- If a file you created doesn\'t appear, the file likely has a YAML syntax error. Open it and check for unquoted colons or tabs.' },
+      { title: 'Control permissions',
+        goal: '**What you\'ll do**: Experience how permission modes change the approval flow.\n\n' +
+          '> **Safety note**: Run these exercises in a sandbox. `/yolo` removes *all* confirmation prompts. Revert any unintended changes with `git checkout .`\n\n' +
+          '**Step 1 \u2014 Enable auto-approve**\n' +
+          '- In Chat, type `/autoApprove` and press **Enter**.\n' +
+          '- Ask Copilot to make a small edit:\n\n' +
+          '```\nAdd a comment at the top of src/wifi_utils.py saying "# RF analysis module"\n```\n\n' +
+          '- **What you see**: Copilot makes the edit **without** showing a confirmation dialog.\n\n' +
+          '**Step 2 \u2014 Disable auto-approve**\n' +
+          '- Type `/disableAutoApprove` and press **Enter**.\n' +
+          '- Ask for the same edit again. **What you see**: The confirmation dialog returns.\n\n' +
+          '**Step 3 \u2014 Enable yolo mode**\n' +
+          '- Type `/yolo` and press **Enter**.\n' +
+          '- Ask a multi-step task:\n\n' +
+          '```\nAdd a function get_aps_by_location, generate a test for it, then run the test\n```\n\n' +
+          '- **What you see**: Copilot completes all three steps back-to-back without any confirmation.\n\n' +
+          '**Step 4 \u2014 Return to normal**\n' +
+          '- Type `/disableYolo` and press **Enter**.\n' +
+          '- **Clean up**: Run `git checkout src/wifi_utils.py` in the terminal to revert.' },
+      { title: 'Troubleshoot behaviour',
+        goal: '**What you\'ll do**: Use the diagnostic commands to investigate problems.\n\n' +
+          '**Step 1 \u2014 /troubleshoot**\n' +
+          '- After running several agent tasks (the earlier exercises work well), type:\n\n' +
+          '```\n/troubleshoot\n```\n\n' +
+          '- **What you see**: Copilot analyses the current session\'s debug log and summarises any anomalies \u2014 missed tool calls, instruction files that weren\'t loaded, hooks that fired unexpectedly.\n\n' +
+          '**Step 2 \u2014 /fixTestFailure**\n' +
+          '- First, introduce a failing test. In the terminal run:\n\n' +
+          '```powershell\npython -m pytest --tb=short 2>&1\n```\n\n' +
+          '- If there are no tests yet, create a deliberately failing one:\n\n' +
+          '```powershell\necho "def test_fail(): assert 1 == 2" > test_temp.py\npython -m pytest test_temp.py --tb=short 2>&1\n```\n\n' +
+          '- Switch to Chat and type `/fixTestFailure`.\n' +
+          '- **What you see**: Copilot reads the pytest output, identifies the failing assertion, and proposes a fix.\n' +
+          '- **Clean up**: Delete `test_temp.py` after the exercise.' }
     ]
   },
   {
@@ -886,13 +1295,65 @@ var CHAPTERS = [
     title: '<code>@</code> Chat Participants',
     file: '@vscode \u2022 @terminal \u2022 @github',
     link: 'README.md#chapter-2--chat-participants',
-    theory: 'Chat participants are domain-specific assistants invoked with <code>@</code>. Built-in participants include <code>@vscode</code> (VS Code features, settings, keybindings), <code>@terminal</code> (shell commands and terminal help), and <code>@github</code> (repos, PRs, issues, commits).<br><br>Participants <strong>scope</strong> the answer to their domain \u2014 without <code>@vscode</code>, Copilot might answer about general networking tools rather than VS Code extensions. Extensions can add more <code>@</code> participants; type <code>@</code> in chat to discover all available ones.',
+    theory: '<p><strong>Concept</strong>: Chat participants are domain-specific assistants you invoke with <code>@</code>. They are built-in or contributed by extensions. Type <code>@</code> in the chat input to see available participants.</p>' +
+      '<h3>Built-in Participants</h3>' +
+      '<table><tr><th>Participant</th><th>Domain</th><th>Example</th></tr>' +
+      '<tr><td><code>@vscode</code></td><td>VS Code features, settings, keybindings, extension APIs</td><td><code>@vscode how do I enable word wrapping?</code></td></tr>' +
+      '<tr><td><code>@terminal</code></td><td>Shell commands, terminal operations, command-line help</td><td><code>@terminal list the 5 largest files in this workspace</code></td></tr>' +
+      '<tr><td><code>@github</code></td><td>GitHub repos, PRs, issues, commits</td><td><code>@github what are my open PRs?</code></td></tr></table>' +
+      '<h3>How Participants Differ from Custom Agents</h3>' +
+      '<table><tr><th></th><th><code>@</code> Chat Participants</th><th>Custom Agents (<code>.agent.md</code>)</th></tr>' +
+      '<tr><td><strong>Created by</strong></td><td>VS Code or extensions</td><td>You (project files)</td></tr>' +
+      '<tr><td><strong>Invoked with</strong></td><td><code>@name</code> in chat</td><td>Agent picker dropdown</td></tr>' +
+      '<tr><td><strong>Tools</strong></td><td>Fixed by the extension</td><td>You define which tools are available</td></tr>' +
+      '<tr><td><strong>Customizable</strong></td><td>No</td><td>Yes \u2014 full control over instructions, tools, model</td></tr>' +
+      '<tr><td><strong>Shared via</strong></td><td>Extension installation</td><td>Version control (<code>.github/agents/</code>)</td></tr></table>' +
+      '<h3>Extension-Contributed Participants</h3>' +
+      '<p>Extensions can add their own <code>@</code> participants. To discover them:</p>' +
+      '<ol><li>Type <code>@</code> in the chat input \u2014 all available participants are listed.</li>' +
+      '<li>Or run the command: <strong>Chat: List Participants</strong> from the Command Palette.</li></ol>' +
+      '<p>Examples: Docker extensions may add <code>@docker</code>, database extensions may add <code>@database</code>, etc.</p>',
     exercises: [
-      { title: 'Ask @vscode a settings question', goal: 'Get VS Code help relevant to your WiFi engineering workflow.' },
-      { title: 'Ask @terminal for a shell command', goal: 'Get a WiFi diagnostic shell command without leaving chat.' },
-      { title: 'Spot the difference', goal: 'Compare <code>@vscode</code> vs plain chat to see scoping in action.' },
-      { title: 'Use @github for repository information', goal: 'Query GitHub directly from chat for pull requests and issues.' },
-      { title: 'Discover extension-contributed participants', goal: 'See all <code>@</code> participants available, including extension-contributed ones.' }
+      { title: 'Ask @vscode a settings question',
+        goal: '**What you\'ll do**: Use the `@vscode` participant to get VS Code help relevant to your WiFi engineering workflow.\n\n' +
+          '**Step 1** \u2014 Open Chat (**Ctrl+Alt+I**).\n\n' +
+          '**Step 2** \u2014 Type exactly:\n\n' +
+          '```\n@vscode what extensions are useful for network engineers working with JSON data?\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot responds with VS Code-specific extension recommendations \u2014 JSON tools, REST clients, remote SSH extensions \u2014 with exact extension IDs and how to install them.\n' +
+          '- **Why the difference matters**: Without `@vscode`, Copilot might answer about general networking tools. The participant scopes the answer to VS Code.' },
+      { title: 'Ask @terminal for a shell command',
+        goal: '**What you\'ll do**: Use `@terminal` to get a WiFi diagnostic shell command without leaving chat.\n\n' +
+          '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\n@terminal how do I list available WiFi networks on Windows using netsh?\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot returns a PowerShell or `cmd` command (e.g., `netsh wlan show networks mode=bssid`), not a Linux command. The `@terminal` participant is aware of your OS and active shell.\n\n' +
+          '**Step 2** \u2014 Click **Insert into Terminal** (if the button appears) to run the command without copy-pasting.' },
+      { title: 'Spot the difference',
+        goal: '**What you\'ll do**: Compare `@vscode` vs plain chat to see scoping in action.\n\n' +
+          '**Step 1** \u2014 In a fresh chat, type (no `@`):\n\n' +
+          '```\nHow do I view WiFi signal strength from a terminal?\n```\n\n' +
+          '**Step 2** \u2014 Then type:\n\n' +
+          '```\n@vscode Is there an extension to visualise WiFi heatmaps or signal data?\n```\n\n' +
+          '- **What you see**: The `@vscode` version returns VS Code-specific answers \u2014 extension names, install commands, or setting paths. The plain version may give a generic answer about OS-level tools.' },
+      { title: 'Use @github for repository information',
+        goal: '**What you\'ll do**: Query GitHub directly from chat to check the status of your WiFi survey project\'s pull requests.\n\n' +
+          '> **Prerequisite**: Install the GitHub Pull Requests extension and sign in to GitHub.\n\n' +
+          '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\n@github what are my open pull requests?\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: A list of your open PRs across GitHub repositories \u2014 titles, repo names, and links \u2014 fetched live from the GitHub API.\n\n' +
+          '**Step 2** \u2014 Try a search query:\n\n' +
+          '```\n@github show recent issues labelled "rf-issue" in this repo\n```\n\n' +
+          '- **What you see**: GitHub issues matching the filter, with titles and links.\n\n' +
+          '**Step 3 \u2014 Discover participant capabilities**\n' +
+          '- Type `@github ` (with a trailing space) in the chat input and pause.\n' +
+          '- **What you see**: A tooltip or autocomplete list showing the sub-commands `@github` supports.\n\n' +
+          '> If `@github` is not in your list: Type `@` in chat \u2014 if it\'s missing, install the GitHub Pull Requests extension from the Extensions view (**Ctrl+Shift+X**).' },
+      { title: 'Discover extension-contributed participants',
+        goal: '**What you\'ll do**: See all `@` participants available in your VS Code installation, including any contributed by extensions.\n\n' +
+          '**Step 1** \u2014 In Chat, type `@` and **pause** (do not press Enter).\n' +
+          '- **What you see**: An autocomplete dropdown listing every available participant \u2014 built-ins (`@vscode`, `@terminal`, `@github`) and any added by installed extensions.\n\n' +
+          '**Step 2** \u2014 Open the Command Palette (**Ctrl+Shift+P**) and run:\n\n' +
+          '```\nChat: List Participants\n```\n\n' +
+          '- **What you see**: The full list of registered participants with their descriptions \u2014 a reliable inventory if the dropdown list is hard to read.' }
     ]
   },
   {
@@ -900,112 +1361,548 @@ var CHAPTERS = [
     title: '<code>#</code> Context Mentions &amp; Tools',
     file: '#file \u2022 #folder \u2022 #symbol \u2022 #codebase \u2022 #fetch',
     link: 'README.md#chapter-3--context-mentions--tools',
-    theory: 'The <code>#</code> symbol lets you explicitly control what context and tools are available to Copilot. <strong>Context references</strong> include <code>#file</code>, <code>#folder</code>, <code>#symbol</code>, <code>#codebase</code>, <code>#selection</code>, and <code>#changes</code>. <strong>Tool references</strong> include <code>#fetch</code> (retrieve URL content), <code>#terminalSelection</code>, <code>#terminalLastCommand</code>, and <code>#problems</code>.<br><br>You can also add context via drag &amp; drop \u2014 dragging files, folders, problems, or images directly onto Chat. Tool sets in frontmatter use aliases like <code>read</code>, <code>edit</code>, <code>execute</code>, <code>search</code>, <code>web</code>, <code>agent</code>.',
+    theory: '<p><strong>Concept</strong>: The <code>#</code> symbol lets you explicitly control what context and tools are available to Copilot. Type <code>#</code> in the chat input to see all options.</p>' +
+      '<h3>Context References</h3><p>These add specific items from your workspace as context:</p>' +
+      '<table><tr><th>Reference</th><th>What it adds</th><th>Example</th></tr>' +
+      '<tr><td><code>#file:path/to/file</code></td><td>A specific file\u2019s contents</td><td><code>Explain #file:src/wifi_utils.py</code></td></tr>' +
+      '<tr><td><code>#folder:path/to/dir</code></td><td>Files within a directory</td><td><code>Review #folder:src</code></td></tr>' +
+      '<tr><td><code>#symbol:functionName</code></td><td>A specific code symbol (function, class, variable)</td><td><code>Document #symbol:find_weak_signals</code></td></tr>' +
+      '<tr><td><code>#codebase</code></td><td>Searches your entire codebase for relevant context</td><td><code>Where is AP status validated? #codebase</code></td></tr>' +
+      '<tr><td><code>#selection</code></td><td>The current editor text selection</td><td>Select code and ask about <code>#selection</code></td></tr>' +
+      '<tr><td><code>#changes</code></td><td>Uncommitted source control changes</td><td><code>Summarize my changes #changes</code></td></tr></table>' +
+      '<h3>Tool References</h3><p>These invoke specific tools during the conversation:</p>' +
+      '<table><tr><th>Tool</th><th>What it does</th><th>Example</th></tr>' +
+      '<tr><td><code>#fetch</code></td><td>Retrieves content from a URL</td><td><code>Summarize #fetch https://code.visualstudio.com/updates</code></td></tr>' +
+      '<tr><td><code>#terminalSelection</code></td><td>Reads the current terminal selection</td><td><code>Explain #terminalSelection</code></td></tr>' +
+      '<tr><td><code>#terminalLastCommand</code></td><td>Gets the last terminal command and its output</td><td><code>What went wrong? #terminalLastCommand</code></td></tr>' +
+      '<tr><td><code>#problems</code></td><td>Adds workspace errors/warnings from the Problems panel</td><td><code>Fix these errors #problems</code></td></tr></table>' +
+      '<h3>Tool Sets</h3><p>When defining tools in agent or prompt frontmatter (<code>tools:</code> field), you reference tool sets by their alias:</p>' +
+      '<table><tr><th>Alias</th><th>Capability</th><th>Example tools included</th></tr>' +
+      '<tr><td><code>read</code></td><td>Read workspace files</td><td><code>readFile</code>, <code>getNotebookSummary</code>, <code>terminalLastCommand</code></td></tr>' +
+      '<tr><td><code>edit</code></td><td>Modify files</td><td><code>createFile</code>, <code>editFiles</code>, <code>editNotebook</code></td></tr>' +
+      '<tr><td><code>execute</code></td><td>Run code</td><td><code>runInTerminal</code>, <code>runNotebookCell</code>, <code>testFailure</code></td></tr>' +
+      '<tr><td><code>search</code></td><td>Find things</td><td><code>codebase</code>, <code>fileSearch</code>, <code>textSearch</code>, <code>listDirectory</code></td></tr>' +
+      '<tr><td><code>web</code></td><td>Access the internet</td><td><code>fetch</code></td></tr>' +
+      '<tr><td><code>agent</code></td><td>Delegate to subagents</td><td><code>runSubagent</code></td></tr>' +
+      '<tr><td><code>vscode</code></td><td>VS Code operations</td><td><code>runCommand</code>, <code>extensions</code>, <code>installExtension</code></td></tr>' +
+      '<tr><td><code>browser</code></td><td>Interact with browser (Experimental)</td><td>Navigate, read, click, screenshot</td></tr>' +
+      '<tr><td><code>todos</code></td><td>Task tracking</td><td>Manage todo lists in chat</td></tr></table>' +
+      '<h3>Drag &amp; Drop</h3><p>You can also add context without <code>#</code> mentions:</p>' +
+      '<ul><li><strong>Drag files</strong> from the Explorer or Search view onto the Chat.</li>' +
+      '<li><strong>Drag folders</strong> onto Chat to include all files within.</li>' +
+      '<li><strong>Drag problems</strong> from the Problems panel.</li>' +
+      '<li><strong>Attach images</strong> \u2014 screenshots, mockups, or diagrams.</li></ul>',
     exercises: [
-      { title: 'Attach a file with #file', goal: 'Give Copilot the full context of <code>wifi_utils.py</code>.' },
-      { title: 'Answer a data question with #file', goal: 'Query which access points have weak signal quality.' },
-      { title: 'Search the whole project with #codebase', goal: 'Find where AP validation rules are defined across the project.' },
-      { title: 'Use #terminalLastCommand to diagnose output', goal: 'Run a script and ask Copilot to explain the terminal output.' },
-      { title: 'Fetch external content with #fetch', goal: 'Summarize external documentation without leaving VS Code.' },
-      { title: 'Reference a folder and a symbol', goal: 'Attach an entire directory with <code>#folder</code> and a named symbol with <code>#symbol</code>.' },
-      { title: 'Use #selection for in-place context', goal: 'Reference your current editor selection for analysis.' },
-      { title: 'Summarise uncommitted changes', goal: 'Use <code>#changes</code> to generate a commit message from your diff.' },
-      { title: 'Diagnose a terminal selection', goal: 'Read a specific portion of terminal output with <code>#terminalSelection</code>.' },
-      { title: 'Fix all Problems panel errors', goal: 'Feed the entire Problems panel into Copilot with <code>#problems</code>.' }
+      { title: 'Attach a file with #file',
+        goal: '**What you\'ll do**: Give Copilot the full context of `wifi_utils.py` using `#file`.\n\n' +
+          '**Step 1** \u2014 Open Chat.\n\n' +
+          '**Step 2** \u2014 Type exactly (do **not** open the file first):\n\n' +
+          '```\nExplain #file:src/wifi_utils.py\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot explains *every* function in the file \u2014 it has read the entire file, not just a selection. You did not need to open the file.\n' +
+          '- **Why this is useful**: `#file` attaches the file to the request without making it the active editor. Great for referencing related files while working in a different file.' },
+      { title: 'Answer a data question with #file',
+        goal: '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\nWhich access points have weak signal quality based on #file:data/ap_inventory.json\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot reads the JSON and lists any APs with low `tx_power` or `"signal_quality": "critical"`. It identifies them by `ap_id` and `location`.' },
+      { title: 'Search the whole project with #codebase',
+        goal: '**What you\'ll do**: Find where AP validation rules are defined \u2014 without knowing which file to open.\n\n' +
+          '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\nWhat are the AP inventory validation rules? #codebase\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot searches across all project files and cites the specific files where validation rules appear \u2014 likely `docs/wifi-survey-spec.md` and `scripts/validate.sh`.\n' +
+          '- **How to verify**: Click the file names in Copilot\'s response to jump to those locations in your editor.' },
+      { title: 'Use #terminalLastCommand to diagnose output',
+        goal: '**What you\'ll do**: Run the WiFi analysis script, then ask Copilot to explain the output.\n\n' +
+          '**Step 1** \u2014 Open the integrated terminal: **Ctrl+`** (backtick).\n\n' +
+          '**Step 2** \u2014 Run:\n\n' +
+          '```powershell\npython src/wifi_utils.py\n```\n\n' +
+          '**Step 3** \u2014 Switch back to Chat and type:\n\n' +
+          '```\nExplain the output #terminalLastCommand\n```\n\n' +
+          '- **What you see**: Copilot reads the exact terminal output (it does not ask you to paste it) and explains what the AP inventory summary means.' },
+      { title: 'Fetch external content with #fetch',
+        goal: '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\nSummarize #fetch https://code.visualstudio.com/updates\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot fetches the remote page and returns a bullet-point summary of the latest VS Code release notes \u2014 without you leaving VS Code.\n\n' +
+          '> **Note**: This requires the MCP `fetch` server configured in `.vscode/mcp.json` (see Chapter 10).' },
+      { title: 'Reference a folder and a symbol',
+        goal: '**What you\'ll do**: Attach an entire directory and a single named symbol as context.\n\n' +
+          '**Step 1 \u2014 `#folder`**\n' +
+          '- In Chat, type:\n\n' +
+          '```\nReview all files in #folder:src for any missing type hints\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot reads every file inside `src/` and reports functions that are missing type annotations.\n\n' +
+          '**Step 2 \u2014 `#symbol`**\n' +
+          '- In Chat, type:\n\n' +
+          '```\nDocument #symbol:find_weak_signals\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot generates a docstring for `find_weak_signals` using only that function\'s source, not the whole file.' },
+      { title: 'Use #selection for in-place context',
+        goal: '**What you\'ll do**: Reference your current editor selection so Copilot does not need you to copy-paste code into chat.\n\n' +
+          '**Step 1** \u2014 Open `src/wifi_utils.py` and highlight any multi-line block (e.g., the body of `filter_aps_by_band`).\n\n' +
+          '**Step 2** \u2014 In Chat, type:\n\n' +
+          '```\nWhat edge cases are not handled in #selection?\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot analyses specifically the selected lines and lists edge cases \u2014 e.g., empty AP list, unknown band string, `None` values.\n' +
+          '- **Why use this instead of `/explain`**: `#selection` works mid-sentence in any prompt; `/explain` is a standalone command.' },
+      { title: 'Summarise uncommitted changes',
+        goal: '**What you\'ll do**: Use `#changes` to generate a commit message from your current git diff.\n\n' +
+          '**Step 1** \u2014 Make a small edit anywhere in the project (e.g., update a `tx_power` value in `data/ap_inventory.json`) and save. **Do not commit yet.**\n\n' +
+          '**Step 2** \u2014 In Chat, type:\n\n' +
+          '```\nWrite a conventional commit message for #changes\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot reads your uncommitted diff from source control and produces a commit message following the Conventional Commits format.\n' +
+          '- **How to verify**: Open the Source Control panel (**Ctrl+Shift+G**) \u2014 the diff Copilot read is the same as what appears there.' },
+      { title: 'Diagnose a terminal selection',
+        goal: '**What you\'ll do**: Read a specific portion of terminal output without running a new command.\n\n' +
+          '**Step 1** \u2014 Open the integrated terminal (**Ctrl+`**) and run:\n\n' +
+          '```powershell\npython src/wifi_utils.py\n```\n\n' +
+          '**Step 2** \u2014 In the terminal, **click and drag** to select a portion of the output \u2014 for example, just the line that shows the count of offline APs.\n\n' +
+          '**Step 3** \u2014 In Chat, type:\n\n' +
+          '```\nExplain #terminalSelection\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot explains only the lines you selected in the terminal \u2014 not the full output.\n' +
+          '- **Difference from `#terminalLastCommand`**: `#terminalLastCommand` captures the entire last command + output. `#terminalSelection` captures only what you highlighted.' },
+      { title: 'Fix all Problems panel errors',
+        goal: '**What you\'ll do**: Feed the entire Problems panel into Copilot in a single request.\n\n' +
+          '**Step 1 \u2014 Introduce some problems**\n' +
+          '- Open `src/wifi_utils.py` and make two small syntax errors (e.g., remove two closing parentheses on separate lines). Save the file.\n' +
+          '- Open the Problems panel: **View \u2192 Problems** (or **Ctrl+Shift+M**). You should see at least two errors listed.\n\n' +
+          '**Step 2** \u2014 In Chat, type:\n\n' +
+          '```\nFix these errors #problems\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot reads *all* errors in the Problems panel at once and proposes fixes for each one in a single response.\n\n' +
+          '**Step 3 \u2014 Apply and verify**\n' +
+          '- Accept the proposed changes. Check that the Problems panel is now empty (or reduced).' }
     ],
-    bonus: { title: 'Combine multiple # references', goal: 'Use two or more <code>#</code> references in a single prompt for combined context.' }
+    bonus: { title: 'Combine multiple # references',
+      goal: '**Goal**: Use two or more `#` references in a single prompt for combined context.\n\n' +
+        '**Step 1** \u2014 In Chat, type:\n\n' +
+        '```\nCompare the AP schema in #file:docs/wifi-survey-spec.md with the actual data in #file:data/ap_inventory.json \u2014 are there any mismatches?\n```\n\nPress **Enter**.\n\n' +
+        '- **What you see**: Copilot reads both files and cross-references the schema definition against the actual data, reporting any fields that don\'t match the spec.' }
   },
   {
     id: 4, part: 'b',
     title: 'Workspace Instructions',
     file: '.github/copilot-instructions.md',
     link: 'README.md#chapter-4-workspace-instructions',
-    theory: 'The <code>.github/copilot-instructions.md</code> file provides <strong>always-on context</strong> that Copilot reads with every request. It\u2019s like a brief project orientation for the AI \u2014 shared via version control with your whole team.<br><br><strong>Design principles:</strong> Minimal by default (every line costs context-window space), link don\u2019t embed (reference <code>docs/wifi-survey-spec.md</code> instead of copying), and concise and actionable (every line should guide behavior).',
+    theory: '<p><strong>File</strong>: <code>.github/copilot-instructions.md</code></p>' +
+      '<p><strong>Concept</strong>: This file provides always-on context that Copilot reads with every request in this workspace. It\u2019s like a brief project orientation for the AI \u2014 shared via version control with your whole team.</p>' +
+      '<h3>What\u2019s in the file</h3>' +
+      '<p>Open it and you\u2019ll see:</p>' +
+      '<ul><li>A project summary and folder structure table</li>' +
+      '<li>Coding conventions (data format, Python style, Markdown docs, no secrets)</li>' +
+      '<li>A quick-start section with validation commands</li></ul>' +
+      '<h3>Design Principles</h3>' +
+      '<ol><li><strong>Minimal by default</strong> \u2014 Only include what\u2019s relevant to <em>every</em> task. This file is loaded into every chat interaction, so bloat costs context-window space.</li>' +
+      '<li><strong>Link, don\u2019t embed</strong> \u2014 Reference <code>docs/wifi-survey-spec.md</code> instead of copying its contents.</li>' +
+      '<li><strong>Concise and actionable</strong> \u2014 Every line should guide Copilot\u2019s behavior.</li></ol>' +
+      '<h3>When to use</h3>' +
+      '<ul><li>General coding standards that apply everywhere</li>' +
+      '<li>Project structure and conventions shared with the team</li>' +
+      '<li>Quick-start info the AI needs for any task</li></ul>' +
+      '<h3>Alternative: <code>AGENTS.md</code></h3>' +
+      '<p>Instead of <code>copilot-instructions.md</code>, you can use an <code>AGENTS.md</code> file at the project root. The key difference:</p>' +
+      '<ul><li><code>AGENTS.md</code> supports hierarchical overrides in monorepos (nested files in subdirectories take precedence).</li>' +
+      '<li><code>copilot-instructions.md</code> is the recommended cross-editor format.</li>' +
+      '<li><strong>Use only one</strong> \u2014 not both.</li></ul>',
     exercises: [
-      { title: 'Verify it loads automatically', goal: 'Confirm that workspace instructions load without any explicit attachment.' },
-      { title: 'Verify the quick-start command', goal: 'Ask how to validate AP inventory data and confirm Copilot references the correct path.' },
-      { title: 'Inspect with /debug', goal: 'Look for the instructions in the system prompt via <code>/debug</code>.' }
+      { title: 'Verify it loads automatically',
+        goal: '**What you\'ll do**: Confirm that workspace instructions load without any explicit attachment on your part.\n\n' +
+          '**Step 1** \u2014 Open a **new** chat session: type `/clear` or click the **+** icon in the Chat panel.\n\n' +
+          '**Step 2** \u2014 Type (do **not** attach any file):\n\n' +
+          '```\nWhat are the coding conventions for this project?\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot describes the conventions from `.github/copilot-instructions.md` \u2014 snake_case Python, 2-space JSON indentation, Markdown docs, no secrets. You never attached the file.\n' +
+          '- **Why it works**: VS Code injects `copilot-instructions.md` automatically at the top of every request\'s system prompt.' },
+      { title: 'Verify the quick-start command',
+        goal: '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\nHow do I validate the AP inventory data?\n```\n\n' +
+          '- **What you see**: Copilot mentions the `bash scripts/validate.sh` and `powershell scripts/validate.ps1` commands from the Quick Start section \u2014 quoting the file path exactly as written in the instructions file.' },
+      { title: 'Inspect with /debug',
+        goal: '**Step 1** \u2014 Type `/debug` in Chat.\n\n' +
+          '**Step 2** \u2014 In the debug panel that opens, scroll to the **System prompt** section.\n\n' +
+          '- **What you look for**: A block of text matching the content of `.github/copilot-instructions.md` \u2014 the project summary, folder table, and conventions.' }
     ],
-    bonus: { title: 'Add a new convention and verify it', goal: 'Add a JSON indentation rule and confirm Copilot obeys it when creating a new file.' }
+    bonus: { title: 'Add a new convention and verify it',
+      goal: '**Goal**: Add a JSON indentation rule and confirm Copilot obeys it when creating a new file.\n\n' +
+        '**Step 1 \u2014 Edit the instructions file**\n' +
+        '- Open `.github/copilot-instructions.md` and add this line under the **Conventions** section:\n\n' +
+        '```markdown\n- **JSON formatting**: All JSON files must use 2-space indentation.\n```\n\nSave the file.\n\n' +
+        '**Step 2 \u2014 Test it**\n' +
+        '- In Chat, type:\n\n' +
+        '```\nCreate a new file data/sample_ap.json with a single example access-point object\n```\n\nPress **Enter**.\n\n' +
+        '- **What you see**: The generated `sample_ap.json` uses 2-space indentation \u2014 Copilot picked up the new rule you just added.\n\n' +
+        '**Step 3 \u2014 Verify and clean up**\n' +
+        '- Open `data/sample_ap.json` and confirm the indentation. Delete the file when done.' }
   },
   {
     id: 5, part: 'b',
     title: 'File-Specific Instructions',
     file: '.github/instructions/*.instructions.md',
     link: 'README.md#chapter-5-file-specific-instructions',
-    theory: 'While workspace instructions apply everywhere, <strong>file instructions</strong> apply only to specific files or tasks using two discovery modes: <strong>Explicit</strong> (<code>applyTo</code>) loads automatically when matching files are in context, while <strong>On-demand</strong> (<code>description</code>) loads when the task description matches.<br><br>Three examples: <code>data-files.instructions.md</code> with <code>applyTo: "data/**/*.json"</code>, <code>python-style.instructions.md</code> with <code>applyTo: "src/**/*.py"</code>, and <code>documentation.instructions.md</code> with only a description (on-demand).',
+    theory: '<p><strong>Files</strong>: <code>.github/instructions/*.instructions.md</code></p>' +
+      '<p><strong>Concept</strong>: While workspace instructions apply everywhere, <em>file instructions</em> apply only to specific files or tasks. They use two discovery modes:</p>' +
+      '<table><tr><th>Mode</th><th>How it triggers</th><th>Use case</th></tr>' +
+      '<tr><td><strong>Explicit</strong> (<code>applyTo</code>)</td><td>Automatically loaded when files matching the glob pattern are in context</td><td>File-type rules: \u201call Python files follow this style\u201d</td></tr>' +
+      '<tr><td><strong>On-demand</strong> (<code>description</code>)</td><td>Copilot loads it when the task description matches</td><td>Task-type rules: \u201cwhen writing documentation, follow these guidelines\u201d</td></tr></table>' +
+      '<h3>The three example files</h3>' +
+      '<h4>1. <code>data-files.instructions.md</code> \u2014 Explicit (glob-triggered)</h4>' +
+      '<pre><code>---\ndescription: \"Use when creating or editing JSON data files in data/...\"\napplyTo: \"data/**/*.json\"\n---</code></pre>' +
+      '<p>This loads automatically whenever you open, create, or edit any <code>.json</code> file in the <code>data/</code> folder. Copilot sees the task schema rules, required fields, and validation commands.</p>' +
+      '<h4>2. <code>python-style.instructions.md</code> \u2014 Explicit (glob-triggered)</h4>' +
+      '<pre><code>---\ndescription: \"Use when creating or editing Python source files...\"\napplyTo: \"src/**/*.py\"\n---</code></pre>' +
+      '<p>This loads automatically for any Python file in <code>src/</code>. Copilot applies snake_case, type hints, docstring, and f-string conventions.</p>' +
+      '<h4>3. <code>documentation.instructions.md</code> \u2014 On-demand (description-triggered)</h4>' +
+      '<pre><code>---\ndescription: \"Use when writing, reviewing, or restructuring project documentation...\"\n---</code></pre>' +
+      '<p>No <code>applyTo</code> \u2014 this loads only when Copilot determines the task is about documentation (based on keywords in the <code>description</code> field). The description acts as the discovery surface.</p>' +
+      '<h3>The <code>description</code> field is critical</h3>' +
+      '<p>The <code>description</code> field is how Copilot decides whether to load an instruction file. If trigger phrases aren\u2019t in the description, the agent won\u2019t find it.</p>' +
+      '<p><strong>Pattern</strong>: Start with <code>\"Use when...\"</code> followed by specific keywords:</p>' +
+      '<pre><code>\"Use when creating or editing JSON data files in data/...\"</code></pre>',
     exercises: [
-      { title: 'Trigger data-files instructions', goal: 'Ask Copilot to add an AP while <code>ap_inventory.json</code> is in context.' },
-      { title: 'Trigger python-style instructions', goal: 'Ask Copilot to add a function while <code>wifi_utils.py</code> is open.' },
-      { title: 'Trigger documentation instructions on demand', goal: 'Ask for documentation and confirm the on-demand instruction loads.' },
-      { title: 'Confirm with /debug', goal: 'Verify which instruction files load when editing different file types.' }
+      { title: 'Trigger data-files instructions',
+        goal: '**What you\'ll do**: Ask Copilot to add an AP while `ap_inventory.json` is in context and watch it enforce the schema rules from `data-files.instructions.md`.\n\n' +
+          '**Step 1** \u2014 Open `data/ap_inventory.json` in the editor (**Ctrl+P** \u2192 `ap_inventory.json`).\n\n' +
+          '**Step 2** \u2014 Open Chat and type:\n\n' +
+          '```\nAdd a new access point to ap_inventory.json\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot generates a complete AP object with *all* required fields (`ap_id`, `ssid`, `bssid`, `channel`, `band`, `tx_power`, `location`, `status`, `firmware_version`) and only uses valid enum values.\n' +
+          '- **What\'s loading this**: Because `ap_inventory.json` is the active file, the `applyTo: "data/**/*.json"` glob in `data-files.instructions.md` matches, and the instruction file is injected automatically.' },
+      { title: 'Trigger python-style instructions',
+        goal: '**What you\'ll do**: Ask Copilot to add a function while `wifi_utils.py` is open and confirm it follows the Python style guide.\n\n' +
+          '**Step 1** \u2014 Open `src/wifi_utils.py` in the editor.\n\n' +
+          '**Step 2** \u2014 In Chat, type:\n\n' +
+          '```\nAdd a function that returns all APs in a specific location zone\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot writes a function with:\n' +
+          '  - A snake_case name (e.g., `get_aps_by_location`)\n' +
+          '  - Type hints on parameters and return value\n' +
+          '  - A docstring describing purpose, parameters, and return type\n' +
+          '  - An f-string (not `.format()` or `%`) if string formatting is needed\n' +
+          '- **Why**: `python-style.instructions.md` with `applyTo: "src/**/*.py"` was automatically loaded because the active file lives in `src/`.' },
+      { title: 'Trigger documentation instructions on demand',
+        goal: '**What you\'ll do**: Ask for documentation and confirm the on-demand instruction is loaded (no `applyTo` \u2014 purely description-based).\n\n' +
+          '**Step 1** \u2014 Close all files (so no specific file is active).\n\n' +
+          '**Step 2** \u2014 In Chat, type:\n\n' +
+          '```\nWrite a user guide for the WiFi site-survey toolkit\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot generates Markdown with ATX headings (`#`, `##`), tables for structured data, and links to other project docs rather than inline-pasting content.\n' +
+          '- **How to verify**: Type `/debug` \u2014 in the loaded instructions list you should see `documentation.instructions.md` was loaded (matched by its description, not a glob).' },
+      { title: 'Confirm with /debug',
+        goal: '**Step 1** \u2014 Open `data/ap_inventory.json` in the editor.\n\n' +
+          '**Step 2** \u2014 Type `/debug` in Chat.\n\n' +
+          '- **What you look for**: In the debug panel, under **Instructions**, you should see `data-files.instructions.md` listed as loaded. Open `src/wifi_utils.py` and type `/debug` again \u2014 this time you should see `python-style.instructions.md` loaded instead.' }
     ],
-    bonus: { title: 'Create a new instruction file', goal: 'Create instructions enforcing shell scripting standards for <code>scripts/*.sh</code>.' }
+    bonus: { title: 'Create a new instruction file',
+      goal: '**Goal**: Create a new instruction that enforces shell scripting standards for `scripts/*.sh` files.\n\n' +
+        '**Step 1 \u2014 Create the file**\n' +
+        '- Create `.github/instructions/scripts.instructions.md` with this content:\n\n' +
+        '```markdown\n---\ndescription: "Use when creating or editing shell scripts in the scripts/ directory."\napplyTo: "scripts/**/*.sh"\n---\n# Shell Script Conventions\n- Always begin with `#!/usr/bin/env bash`.\n- Always include `set -euo pipefail` on the second line.\n- Use lowercase variable names.\n- Quote all variable expansions: `"$variable"` not `$variable`.\n```\n\n' +
+        '**Step 2 \u2014 Test it**\n' +
+        '- In Chat, with a `.sh` script open (or by asking):\n\n' +
+        '```\nCreate a new script scripts/cleanup.sh that removes all .pyc files\n```\n\nPress **Enter**.\n\n' +
+        '- **What you see**: The generated script starts with `#!/usr/bin/env bash`, has `set -euo pipefail` on line 2, and includes a header comment.\n\n' +
+        '**Step 3 \u2014 Verify**\n' +
+        '- Open the generated file and confirm all conventions are followed. Delete it when done.' }
   },
   {
     id: 6, part: 'b',
     title: 'Prompt Files',
     file: '.github/prompts/*.prompt.md',
     link: 'README.md#chapter-6-prompt-files',
-    theory: 'Prompt files are reusable task templates that appear as <code>/</code> commands in chat. Each defines a focused, repeatable task. Two examples: <code>generate-test-cases.prompt.md</code> with <code>agent: "agent"</code> (full agent mode) and <code>summarize-aps.prompt.md</code> with <code>argument-hint</code> (shows help text).<br><br>Frontmatter options: <code>description</code>, <code>argument-hint</code>, <code>agent</code> (agent/ask/plan/custom), <code>model</code>, and <code>tools</code>. Prompts are simpler than skills \u2014 a single focused task vs. a multi-step workflow with bundled resources.',
+    theory: '<p><strong>Files</strong>: <code>.github/prompts/*.prompt.md</code></p>' +
+      '<p><strong>Concept</strong>: Prompt files are reusable task templates that appear as <code>/</code> commands in chat. Each one defines a focused, repeatable task you can invoke with a slash command.</p>' +
+      '<h3>The two example files</h3>' +
+      '<h4>1. <code>generate-test-cases.prompt.md</code></h4>' +
+      '<pre><code>---\ndescription: \"Generate test cases for the selected code or function...\"\nagent: \"agent\"\n---</code></pre>' +
+      '<ul><li><strong>Invocation</strong>: Type <code>/generate-test-cases</code> in chat.</li>' +
+      '<li><code>agent: \"agent\"</code> tells Copilot to run this in full agent mode (can read files, search code, and make edits).</li>' +
+      '<li>The body defines what kind of tests to generate (pytest conventions, edge cases, descriptive names).</li></ul>' +
+      '<h4>2. <code>summarize-aps.prompt.md</code></h4>' +
+      '<pre><code>---\ndescription: \"Summarize AP data from data/ap_inventory.json...\"\nargument-hint: \"Optional: path to ap_inventory.json or filter criteria\"\n---</code></pre>' +
+      '<ul><li><strong>Invocation</strong>: Type <code>/summarize-aps</code> in chat.</li>' +
+      '<li><code>argument-hint</code> shows help text in the chat input field, guiding the user on what to type after the command.</li>' +
+      '<li>The body defines the report structure (counts by status, offline APs, signal quality).</li></ul>' +
+      '<h3>Prompts vs Skills</h3>' +
+      '<table><tr><th></th><th>Prompts</th><th>Skills</th></tr>' +
+      '<tr><td><strong>Complexity</strong></td><td>Single focused task</td><td>Multi-step workflow</td></tr>' +
+      '<tr><td><strong>Assets</strong></td><td>Just one <code>.prompt.md</code> file</td><td>Folder with SKILL.md + scripts, templates, references</td></tr>' +
+      '<tr><td><strong>Use case</strong></td><td>\u201cGenerate tests for this code\u201d</td><td>\u201cRun this entire QA workflow\u201d</td></tr></table>' +
+      '<h3>Frontmatter options</h3>' +
+      '<pre><code>---\ndescription: \"...\"           # What it does (for discovery)\nargument-hint: \"...\"         # Hint shown in chat input\nagent: \"agent\"               # Which agent runs it: agent, ask, plan, or custom\nmodel: \"Claude Sonnet 4\"     # Preferred AI model\ntools: [search, web]         # Tools available during execution\n---</code></pre>',
     exercises: [
-      { title: 'Run generate-test-cases', goal: 'Use the prompt as a <code>/</code> command to generate tests for a WiFi function.' },
-      { title: 'Run summarize-aps', goal: 'Generate a formatted report and try the argument hint filter.' },
-      { title: 'Inspect the prompt frontmatter', goal: 'Read the frontmatter to understand <code>agent:</code> mode and body instructions.' }
+      { title: 'Run generate-test-cases',
+        goal: '**What you\'ll do**: Use the prompt file as a `/` command to generate tests for a real WiFi analysis function.\n\n' +
+          '**Step 1** \u2014 Open `src/wifi_utils.py` in the editor.\n\n' +
+          '**Step 2** \u2014 Scroll to `filter_aps_by_band` and select the entire function (click the function name \u2192 **Ctrl+Shift+K** or click-drag).\n\n' +
+          '**Step 3** \u2014 Open Chat and type:\n\n' +
+          '```\n/generate-test-cases\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot generates a pytest test file containing a happy-path test, an empty-result test, an invalid-input test, and descriptive test names (e.g., `test_filter_aps_by_band_returns_matching_aps`).\n' +
+          '- **Why it knows to use pytest**: The prompt body in `generate-test-cases.prompt.md` specifies pytest conventions.' },
+      { title: 'Run summarize-aps',
+        goal: '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\n/summarize-aps\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: A formatted Markdown report with totals by status (planned, deployed, offline), weak-signal APs, and any blockers.\n\n' +
+          '**Step 2 \u2014 Try the argument hint**\n' +
+          '- Type:\n\n' +
+          '```\n/summarize-aps only critical signal quality\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: A filtered report showing only APs where `signal_quality` is `"critical"`.\n' +
+          '- **Why the hint appeared**: The `argument-hint` in the prompt frontmatter displayed help text below the chat input while you were typing.' },
+      { title: 'Inspect the prompt frontmatter',
+        goal: '**Step 1** \u2014 Open `.github/prompts/generate-test-cases.prompt.md`.\n\n' +
+          '**Step 2** \u2014 Read the frontmatter and the body. Notice:\n' +
+          '- `agent: "agent"` tells VS Code to run in full agent mode.\n' +
+          '- The body instructs Copilot to generate edge cases, not just happy paths.\n\n' +
+          '**Step 3** \u2014 Open `/prompts` in Chat to see both prompts listed.' }
     ],
-    bonus: { title: 'Create a code-review prompt', goal: 'Build a reusable prompt that reviews selected code for bugs and style.' }
+    bonus: { title: 'Create a code-review prompt',
+      goal: '**Goal**: Build a reusable prompt that reviews selected code for bugs and style.\n\n' +
+        '**Step 1 \u2014 Create the file**\n' +
+        '- Create `.github/prompts/code-review.prompt.md` with this content:\n\n' +
+        '```markdown\n---\ndescription: "Review selected code for bugs, style issues, and missing tests."\nargument-hint: "Optional: focus area, e.g. \'only security issues\'"\nagent: "ask"\n---\n\nReview the selected code for:\n1. **Bugs**: Logic errors, off-by-one errors, unhandled edge cases.\n2. **Style**: Does it follow the project\'s Python conventions?\n3. **Tests**: Are there obvious cases that lack test coverage?\n\nFormat the output as three sections with bullet-point findings.\n```\n\n' +
+        '**Step 2 \u2014 Test it**\n' +
+        '1. Open `src/wifi_utils.py` and select the `find_weak_signals` function.\n' +
+        '2. In Chat, type `/code-review` and press **Enter**.\n' +
+        '3. **What you see**: A three-section Markdown report \u2014 Bugs, Style, Tests.\n\n' +
+        '**Step 3 \u2014 Try with an argument**\n' +
+        '- Type `/code-review only security issues` \u2014 Copilot narrows its review to security-relevant findings only.' }
   },
   {
     id: 7, part: 'b',
     title: 'Hooks',
     file: '.github/hooks/*.json',
     link: 'README.md#chapter-7-hooks',
-    theory: 'Hooks are <strong>deterministic</strong> automation \u2014 shell commands that run at specific agent lifecycle events. Unlike instructions that <em>guide</em>, hooks <em>enforce</em>. Events include <code>PostToolUse</code>, <code>PreToolUse</code>, <code>SessionStart</code>, <code>UserPromptSubmit</code>, and more.<br><br>Your script communicates via exit code: <strong>0</strong> = continue, <strong>2</strong> = blocking error (stop). The example <code>validate-json.json</code> hook runs after <code>ap_inventory.json</code> is edited \u2014 if validation fails, Copilot receives the error and can self-correct.',
+    theory: '<p><strong>Files</strong>: <code>.github/hooks/validate-json.json</code> + <code>scripts/hooks/enforce-todo-format.*</code></p>' +
+      '<p><strong>Concept</strong>: Hooks are <strong>deterministic</strong> automation \u2014 they run shell commands at specific lifecycle events in the agent session. Unlike instructions (which <em>guide</em> behavior), hooks <em>enforce</em> it.</p>' +
+      '<h3>How hooks work</h3>' +
+      '<pre><code>Agent lifecycle event  \u2192  Hook fires  \u2192  Shell script runs  \u2192  Returns JSON/exit code</code></pre>' +
+      '<p>The hook system provides context as JSON on stdin. Your script communicates back:</p>' +
+      '<ul><li><strong>Exit 0</strong>: Continue normally</li>' +
+      '<li><strong>Exit 2</strong>: Blocking error \u2014 stop the operation</li>' +
+      '<li>Other exit codes: Non-blocking warning</li></ul>' +
+      '<h3>Hook events</h3>' +
+      '<table><tr><th>Event</th><th>When it fires</th></tr>' +
+      '<tr><td><code>SessionStart</code></td><td>First prompt of a new agent session</td></tr>' +
+      '<tr><td><code>UserPromptSubmit</code></td><td>User sends a prompt</td></tr>' +
+      '<tr><td><code>PreToolUse</code></td><td>Before a tool is invoked</td></tr>' +
+      '<tr><td><code>PostToolUse</code></td><td>After a tool completes successfully</td></tr>' +
+      '<tr><td><code>PreCompact</code></td><td>Before context compaction</td></tr>' +
+      '<tr><td><code>SubagentStart</code></td><td>A subagent starts</td></tr>' +
+      '<tr><td><code>SubagentStop</code></td><td>A subagent ends</td></tr>' +
+      '<tr><td><code>Stop</code></td><td>Agent session ends</td></tr></table>' +
+      '<h3>The example: validate-json.json</h3>' +
+      '<p>This project uses a <code>PostToolUse</code> hook. After every file edit, the hook script checks if the edited file was <code>ap_inventory.json</code>. If yes, it runs validation. If validation fails \u2192 exit 2 (blocking error) \u2192 Copilot sees the failure and can self-correct.</p>' +
+      '<h3>The hook script flow</h3>' +
+      '<pre><code>stdin (JSON payload)\n  \u2502\n  \u251c\u2500 toolName != \"editFiles\" or \"createFile\"?  \u2192  exit 0 (skip)\n  \u2502\n  \u251c\u2500 no \"ap_inventory.json\" in edited files?  \u2192  exit 0 (skip)\n  \u2502\n  \u2514\u2500 run validate.sh/validate.ps1\n       \u251c\u2500 passes  \u2192  exit 0 (continue)\n       \u2514\u2500 fails   \u2192  exit 2 (block, agent sees error)</code></pre>' +
+      '<h3>Hooks vs Instructions</h3>' +
+      '<table><tr><th></th><th>Instructions</th><th>Hooks</th></tr>' +
+      '<tr><td><strong>Behavior</strong></td><td>Guide (non-deterministic)</td><td>Enforce (deterministic)</td></tr>' +
+      '<tr><td><strong>How</strong></td><td>AI interprets text guidance</td><td>Shell script runs automatically</td></tr>' +
+      '<tr><td><strong>Guarantee</strong></td><td>Best-effort</td><td>100% \u2014 the script always runs</td></tr>' +
+      '<tr><td><strong>Use case</strong></td><td>\u201cPrefer snake_case\u201d</td><td>\u201cBlock if JSON is invalid\u201d</td></tr></table>',
     exercises: [
-      { title: 'Force a hook failure', goal: 'Ask Copilot to write an invalid AP entry and watch the hook catch it.' },
-      { title: 'Confirm a valid AP passes', goal: 'Add a valid access point and verify the hook allows it (exit 0).' },
-      { title: 'Watch the hook in agent logs', goal: 'Use <code>/debug</code> to see PostToolUse entries with exit codes.' }
+      { title: 'Force a hook failure',
+        goal: '**What you\'ll do**: Ask Copilot to write an *invalid* AP entry to `ap_inventory.json` and watch the `PostToolUse` hook catch it.\n\n' +
+          '**Step 1** \u2014 Open Chat and type:\n\n' +
+          '```\nAdd a new access point to ap_inventory.json. Include the ap_id and ssid fields only \u2014 skip all other fields.\n```\n\nPress **Enter**.\n\n' +
+          '- **What happens**: Copilot writes the incomplete AP object. The `PostToolUse` hook fires immediately after the file is saved. Validation fails and exits with code 2.\n' +
+          '- **What you see in chat**: Copilot receives the exit-2 error and reports it. It then attempts to self-correct by adding the missing required fields.\n' +
+          '- **Key insight**: You did not manually catch this error \u2014 the hook *automatically* enforced the AP inventory schema.' },
+      { title: 'Confirm a valid AP passes',
+        goal: '**Step 1** \u2014 In Chat, type:\n\n' +
+          '```\nAdd a valid access point AP-09 to ap_inventory.json with all required fields populated.\n```\n\nPress **Enter**.\n\n' +
+          '- **What happens**: Copilot writes a complete AP entry. The hook fires, validation passes (exit 0), and no error is shown.\n' +
+          '- **Verify**: Open `data/ap_inventory.json` and confirm AP-09 was added with all required fields.' },
+      { title: 'Watch the hook in agent logs',
+        goal: '**Step 1** \u2014 Type `/debug` in Chat.\n\n' +
+          '**Step 2** \u2014 Look for **PostToolUse** entries in the debug output. You should see the hook command and its stdout/exit code logged for the previous edits.' }
     ],
-    bonus: { title: 'Create a no-secrets pre-edit hook', goal: 'Block any file edit in a <code>config/</code> folder to prevent credential leaks.' }
+    bonus: { title: 'Create a no-secrets pre-edit hook',
+      goal: '**Goal**: Block any file edit in a `config/` folder to prevent accidental credential commits.\n\n' +
+        '**Step 1 \u2014 Create the hook config**\n' +
+        '- Create `.github/hooks/no-secrets.json` with:\n\n' +
+        '```json\n{\n  "hooks": {\n    "PreToolUse": [{\n      "type": "command",\n      "command": "bash ./scripts/hooks/no-secrets.sh",\n      "windows": "powershell -ExecutionPolicy Bypass -File ./scripts/hooks/no-secrets.ps1",\n      "timeout": 10\n    }]\n  }\n}\n```\n\n' +
+        '**Step 2 \u2014 Create the hook script**\n' +
+        '- Create `scripts/hooks/no-secrets.ps1` that reads stdin JSON, checks if the tool is `editFiles` or `createFile`, and if the path matches `config/`, exits with code 2 to block the operation.\n\n' +
+        '**Step 3 \u2014 Test it**\n' +
+        '- In Chat, type:\n\n' +
+        '```\nCreate a file config/controller.json with a WLC connection string\n```\n\n' +
+        '- **What you see**: The hook intercepts the `createFile` call, exits 2, and Copilot reports the operation was blocked.\n\n' +
+        '**Step 4 \u2014 Verify it allows other edits**\n' +
+        '- Ask Copilot to edit `src/wifi_utils.py` \u2014 the hook should allow it (exit 0).' }
   },
   {
     id: 8, part: 'b',
     title: 'Custom Agents',
     file: '.github/agents/*.agent.md',
     link: 'README.md#chapter-8-custom-agents',
-    theory: 'Custom agents are specialized AI personas with defined tools, instructions, and behaviors. <strong>RF Analyst</strong> (<code>tools: [read, search]</code>) is read-only; <strong>Report Writer</strong> (<code>tools: [read, search, edit]</code>, <code>user-invocable: false</code>) is subagent-only.<br><br><strong>Tool restrictions are your main lever.</strong> The <code>description</code> is the discovery surface for subagent delegation \u2014 include specific trigger phrases.',
+    theory: '<p><strong>Files</strong>: <code>.github/agents/*.agent.md</code></p>' +
+      '<p><strong>Concept</strong>: Custom agents are specialized AI personas with defined tools, instructions, and behaviors. Think of each one as a team member with a specific role and limited access.</p>' +
+      '<h3>The two example agents</h3>' +
+      '<h4>1. <code>rf-analyst.agent.md</code> \u2014 Read-only analyst</h4>' +
+      '<pre><code>---\nname: RF Analyst\ndescription: \"Use when analyzing WiFi survey data, finding weak signals...\"\ntools: [read, search]\n---</code></pre>' +
+      '<ul><li><strong>User-invocable</strong>: Yes (default) \u2014 appears in the agent picker dropdown.</li>' +
+      '<li><strong>Tools</strong>: Only <code>read</code> and <code>search</code> \u2014 cannot edit files or run commands.</li>' +
+      '<li><strong>Role</strong>: Analyzes AP inventory data and answers questions about coverage.</li></ul>' +
+      '<h4>2. <code>report-writer.agent.md</code> \u2014 Subagent-only writer</h4>' +
+      '<pre><code>---\nname: Report Writer\ndescription: \"Use when generating or updating WiFi site-survey documentation...\"\ntools: [read, search, edit]\nuser-invocable: false\n---</code></pre>' +
+      '<ul><li><code>user-invocable: false</code>: Hidden from the agent picker. Only accessible when another agent delegates to it as a subagent.</li>' +
+      '<li><strong>Tools</strong>: Can <code>read</code>, <code>search</code>, and <code>edit</code> \u2014 but only Markdown files (enforced by instructions in the body).</li>' +
+      '<li><strong>Role</strong>: Generates site-survey documentation when delegated to by a parent agent.</li></ul>' +
+      '<h3>Tool restrictions are your main lever</h3>' +
+      '<p>The <code>tools:</code> field defines what the agent can do:</p>' +
+      '<pre><code>tools: [read, search]             # Read-only research\ntools: [read, search, edit]       # Can modify files\ntools: [read, edit, execute]      # Full access including terminal\ntools: []                         # Conversational only \u2014 no tools at all\ntools: [read, search, fetch/*]    # Read + MCP server tools</code></pre>' +
+      '<h3>Invocation control</h3>' +
+      '<table><tr><th>Setting</th><th>Effect</th></tr>' +
+      '<tr><td><code>user-invocable: true</code> (default)</td><td>Appears in agent picker</td></tr>' +
+      '<tr><td><code>user-invocable: false</code></td><td>Hidden \u2014 subagent only</td></tr>' +
+      '<tr><td><code>disable-model-invocation: true</code></td><td>Other agents cannot invoke as subagent</td></tr></table>' +
+      '<h3>The <code>description</code> is the discovery surface</h3>' +
+      '<p>When a parent agent decides which subagent to delegate to, it reads the <code>description</code> field. Include trigger phrases:</p>' +
+      '<pre><code># Good \u2014 specific trigger phrases\ndescription: \"Use when analyzing WiFi survey data, finding weak signals...\"\n\n# Bad \u2014 vague, won\u2019t be discovered\ndescription: \"A helpful analysis tool\"</code></pre>',
     exercises: [
-      { title: 'Use the RF Analyst (read-only)', goal: 'Switch to RF Analyst and confirm it can analyse but not edit.' },
-      { title: 'Confirm tool restrictions', goal: 'Ask the RF Analyst to fix weak-signal APs \u2014 it should explain it cannot edit.' },
-      { title: 'Trigger Report Writer via delegation', goal: 'Ask the main agent to write a summary and watch it delegate.' }
+      { title: 'Use the RF Analyst (read-only)',
+        goal: '**What you\'ll do**: Switch to the RF Analyst agent and confirm it can analyse AP data but cannot edit files.\n\n' +
+          '**Step 1** \u2014 In the Chat panel, click the **agent picker** dropdown at the top of the input area (it shows the current agent name).\n\n' +
+          '**Step 2** \u2014 Select **RF Analyst** from the list.\n\n' +
+          '**Step 3** \u2014 Type:\n\n' +
+          '```\nHow many access points have critical signal quality?\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: The RF Analyst reads `data/ap_inventory.json`, counts APs with `"signal_quality": "critical"`, and returns a Markdown table or bulleted list. It does not offer to edit any files.' },
+      { title: 'Confirm tool restrictions',
+        goal: '**Step 1** \u2014 Still using **RF Analyst**, type:\n\n' +
+          '```\nFix the weak-signal APs by increasing their tx_power to 20 dBm.\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: The agent explains it cannot edit files \u2014 it only has `read` and `search` tools. It may describe *what* would need to change without making the change.\n' +
+          '- **Why**: The `tools: [read, search]` line in the agent\'s frontmatter prevents `editFiles` from being available.' },
+      { title: 'Trigger Report Writer via delegation',
+        goal: '**Step 1** \u2014 Click the agent picker and switch back to the default **Agent**.\n\n' +
+          '**Step 2** \u2014 Type:\n\n' +
+          '```\nWrite a site-survey summary report for this project in docs/site-survey-report.md\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: The main agent may delegate the writing task to the Report Writer subagent. Watch the agent logs (type `/debug`) for a `SubagentStart`/`SubagentStop` pair with "Report Writer" as the agent name.\n' +
+          '- **Why**: The Report Writer\'s `description` contains trigger phrases like *"generating or updating WiFi site-survey documentation"*, which the main agent matches when it needs to delegate a documentation task.' }
     ],
-    bonus: { title: 'Create a code-reviewer agent', goal: 'Build a read-only agent that reviews WiFi analysis Python code.' }
+    bonus: { title: 'Create a code-reviewer agent',
+      goal: '**Goal**: Build a read-only agent that reviews WiFi analysis Python code for bugs, style, and missing tests.\n\n' +
+        '**Step 1 \u2014 Create the agent file**\n' +
+        '- Create `.github/agents/code-reviewer.agent.md` with this content:\n\n' +
+        '```markdown\n---\nname: Code Reviewer\ndescription: "Use when reviewing Python code for bugs, style violations, and missing test coverage. Read-only."\ntools: [read, search]\nuser-invocable: true\n---\n\nYou are a senior Python code reviewer. When given a file or function:\n1. Check for logic errors, off-by-one bugs, and unhandled edge cases.\n2. Verify snake_case, type hints, and docstrings.\n3. Identify functions that lack test coverage.\n\nFormat as: **Bugs**, **Style Issues**, **Missing Tests**.\nDo NOT modify any files.\n```\n\n' +
+        '**Step 2 \u2014 Test it**\n' +
+        '1. Click the agent picker and select **Code Reviewer**.\n' +
+        '2. Type: `Review src/wifi_utils.py` and press **Enter**.\n' +
+        '3. **What you see**: A three-section Markdown report without any file edits.\n\n' +
+        '**Step 3 \u2014 Verify tool restriction**\n' +
+        '- Ask: `Fix the style issues you found.`\n' +
+        '- **What you see**: It explains it cannot edit files and offers to describe the changes needed instead.' }
   },
   {
     id: 9, part: 'b',
     title: 'Skills',
     file: '.github/skills/wifi-survey-report/',
     link: 'README.md#chapter-9-skills',
-    theory: 'A skill is a folder containing <code>SKILL.md</code> plus supporting assets (scripts, templates, reference docs) representing multi-step workflows. Skills load progressively: <strong>Discovery</strong> (~100 tokens), <strong>Instructions</strong> (&lt;5000 tokens), then <strong>Resources</strong> (on demand).<br><br><strong>Critical:</strong> The <code>name</code> field must exactly match the folder name \u2014 a mismatch causes silent failure. Invoke as <code>/wifi-survey-report</code>.',
+    theory: '<p><strong>Files</strong>: <code>.github/skills/wifi-survey-report/</code></p>' +
+      '<p><strong>Concept</strong>: A skill is a folder containing a <code>SKILL.md</code> file plus supporting assets (scripts, templates, reference docs). Skills represent multi-step workflows and appear as <code>/</code> commands in chat \u2014 just like prompts, but with bundled resources.</p>' +
+      '<h3>Skill folder structure</h3>' +
+      '<pre><code>.github/skills/wifi-survey-report/\n\u251c\u2500\u2500 SKILL.md                          # Required \u2014 entry point\n\u251c\u2500\u2500 references/\n\u2502   \u2514\u2500\u2500 report-format.md             # Output format specification\n\u2514\u2500\u2500 assets/\n    \u2514\u2500\u2500 report-template.md           # Markdown template with placeholders</code></pre>' +
+      '<h3>How progressive loading works</h3>' +
+      '<p>Skills load in three stages to conserve the context window:</p>' +
+      '<table><tr><th>Stage</th><th>What loads</th><th>Size</th></tr>' +
+      '<tr><td><strong>Discovery</strong></td><td><code>name</code> + <code>description</code> from frontmatter</td><td>~100 tokens</td></tr>' +
+      '<tr><td><strong>Instructions</strong></td><td>Full <code>SKILL.md</code> body</td><td>&lt;5000 tokens</td></tr>' +
+      '<tr><td><strong>Resources</strong></td><td>Referenced files (<code>references/</code>, <code>assets/</code>)</td><td>On demand</td></tr></table>' +
+      '<p>This means the agent only loads the full skill content when it\u2019s relevant to your request.</p>' +
+      '<h3>The SKILL.md frontmatter</h3>' +
+      '<pre><code>---\nname: wifi-survey-report           # Must match the folder name!\ndescription: \"Generate a Markdown site-survey status report from data/ap_inventory.json...\"\nargument-hint: \"Optional: report scope like \u2018critical signal only\u2019\"\n---</code></pre>' +
+      '<p><strong>Critical</strong>: The <code>name</code> field <strong>must exactly match</strong> the folder name (<code>wifi-survey-report</code>). A mismatch causes a silent failure.</p>' +
+      '<h3>Slash command behavior</h3>' +
+      '<table><tr><th>Configuration</th><th>Slash command?</th><th>Auto-loaded by agents?</th></tr>' +
+      '<tr><td>Default (both omitted)</td><td>\u2705 Yes</td><td>\u2705 Yes</td></tr>' +
+      '<tr><td><code>user-invocable: false</code></td><td>\u274c No</td><td>\u2705 Yes</td></tr>' +
+      '<tr><td><code>disable-model-invocation: true</code></td><td>\u2705 Yes</td><td>\u274c No</td></tr>' +
+      '<tr><td>Both set</td><td>\u274c No</td><td>\u274c No</td></tr></table>',
     exercises: [
-      { title: 'Run the skill', goal: 'Invoke <code>/wifi-survey-report</code> and get a formatted site-survey report.' },
-      { title: 'Pass an argument', goal: 'Filter the report by passing \u201coffline APs only\u201d as an argument.' },
-      { title: 'Inspect progressive loading', goal: 'Use <code>/debug</code> to see discovery, instruction, and resource loading stages.' }
+      { title: 'Run the skill',
+        goal: '**What you\'ll do**: Invoke the `wifi-survey-report` skill as a `/` command.\n\n' +
+          '**Step 1** \u2014 Open Chat.\n\n' +
+          '**Step 2** \u2014 Type:\n\n' +
+          '```\n/wifi-survey-report\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot loads the skill (see the progress indicator), reads `data/ap_inventory.json`, applies the report template from `.github/skills/wifi-survey-report/assets/report-template.md`, and returns a formatted Markdown site-survey report with AP counts by status, weak-signal APs, and a summary table.' },
+      { title: 'Pass an argument',
+        goal: '**Step 1** \u2014 Type:\n\n' +
+          '```\n/wifi-survey-report offline APs only\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: A filtered report showing only APs with `"status": "offline"`. The argument was passed as the user\'s request context alongside the skill instructions.' },
+      { title: 'Inspect progressive loading',
+        goal: '**Step 1** \u2014 Type `/debug` after running the skill.\n\n' +
+          '- **What you look for**: In the debug output, you should see the skill loaded in stages:\n' +
+          '  1. **Discovery**: `name` and `description` from the frontmatter (~100 tokens).\n' +
+          '  2. **Instructions**: The full `SKILL.md` body.\n' +
+          '  3. **Resources**: The `report-format.md` and `report-template.md` files (only loaded when the skill ran).' }
     ],
-    bonus: { title: 'Create rf-coverage-audit skill', goal: 'Build a skill that checks <code>ap_inventory.json</code> against spec rules.' }
+    bonus: { title: 'Create rf-coverage-audit skill',
+      goal: '**Goal**: Build a skill that checks `ap_inventory.json` against the survey spec rules and reports issues.\n\n' +
+        '**Step 1 \u2014 Create the folder structure**\n\n' +
+        '**`.github/skills/rf-coverage-audit/SKILL.md`**:\n\n' +
+        '```markdown\n---\nname: rf-coverage-audit\ndescription: "Check data/ap_inventory.json for schema violations, missing fields, invalid values."\nargument-hint: "Optional: specific check to run, e.g. \'check for channel conflicts only\'"\n---\n\nYou are an RF coverage auditor.\n1. Read `data/ap_inventory.json`.\n2. Check every AP against `references/quality-rules.md`.\n3. Report violations in a Markdown table: **AP ID**, **Field**, **Issue**, **Expected Value**.\n```\n\n' +
+        '**`.github/skills/rf-coverage-audit/references/quality-rules.md`**:\n\n' +
+        '```markdown\n# Data Quality Rules\n## Required fields\nEvery AP must have: ap_id, ssid, bssid, channel, band, tx_power, location, status, firmware_version.\n## Enum constraints\n- status: planned, deployed, offline, decommissioned\n- band: 2.4 GHz, 5 GHz, 6 GHz\n- signal_quality: good, marginal, critical\n## Uniqueness\n- ap_id and bssid must be unique\n```\n\n' +
+        '**Step 2 \u2014 Test the skill**\n' +
+        '- In Chat, type `/rf-coverage-audit` and press **Enter**.\n' +
+        '- **What you see**: Copilot reads both files and validates every AP. Any violations appear in a table.\n\n' +
+        '**Step 3 \u2014 Introduce a violation**\n' +
+        '- Temporarily edit `data/ap_inventory.json` to set one AP\'s `status` to `"invalid"`. Run `/rf-coverage-audit` again \u2014 it should report the violation. Revert when done.' }
   },
   {
     id: 10, part: 'b',
     title: 'MCP Integration',
     file: '.vscode/mcp.json',
     link: 'README.md#chapter-10-mcp-integration',
-    theory: 'MCP (Model Context Protocol) connects Copilot to external tools and services. An MCP server exposes tools agents can invoke \u2014 database queries, API calls, or file system operations. Architecture: Agent \u2192 MCP Client (VS Code) \u2192 MCP Server \u2192 External Service.<br><br>Server types: <code>copilot</code> (built-in, like <code>fetch</code>), <code>stdio</code> (local process), and <code>sse</code> (remote HTTP). Agents reference MCP tools with <code>tools: [read, fetch/*]</code>.',
+    theory: '<p><strong>File</strong>: <code>.vscode/mcp.json</code></p>' +
+      '<p><strong>Concept</strong>: MCP (Model Context Protocol) lets you connect Copilot to external tools and services. An MCP server exposes tools that agents can invoke \u2014 like database queries, API calls, or file system operations on remote machines.</p>' +
+      '<h3>How MCP works</h3>' +
+      '<pre><code>Agent  \u2192  MCP Client (VS Code)  \u2192  MCP Server  \u2192  External Service</code></pre>' +
+      '<ol><li>You configure MCP servers in <code>.vscode/mcp.json</code>.</li>' +
+      '<li>VS Code discovers available tools from each server.</li>' +
+      '<li>Agents can invoke these tools during conversations.</li></ol>' +
+      '<h3>The built-in <code>fetch</code> server</h3>' +
+      '<p>This project configures the simplest possible MCP server \u2014 VS Code\u2019s built-in <code>fetch</code> server, which retrieves web content:</p>' +
+      '<pre><code>{\n  \"servers\": {\n    \"fetch\": {\n      \"type\": \"copilot\",\n      \"description\": \"Built-in web fetch tool \u2014 retrieves content from URLs.\"\n    }\n  }\n}</code></pre>' +
+      '<ul><li><code>type: \"copilot\"</code>: This is a built-in server \u2014 no installation needed.</li>' +
+      '<li>Agents can now use <code>#fetch</code> to retrieve web pages.</li></ul>' +
+      '<h3>Server types</h3>' +
+      '<table><tr><th>Type</th><th>Where it runs</th><th>Example</th></tr>' +
+      '<tr><td><code>copilot</code></td><td>Built-in to VS Code</td><td><code>fetch</code></td></tr>' +
+      '<tr><td><code>stdio</code></td><td>Local process (stdin/stdout)</td><td>Anthropic\u2019s <code>filesystem</code> MCP server</td></tr>' +
+      '<tr><td><code>sse</code></td><td>Remote HTTP server</td><td>Cloud APIs</td></tr></table>' +
+      '<h3>Referencing MCP tools in agents</h3>' +
+      '<p>You can give a custom agent access to MCP tools:</p>' +
+      '<pre><code># In an .agent.md frontmatter\ntools: [read, search, fetch/*]    # Built-in tools + all fetch server tools\ntools: [read, myserver/*]          # Built-in read + all tools from \"myserver\"</code></pre>' +
+      '<h3>Example: stdio MCP server config</h3>' +
+      '<p>For a more advanced setup, here\u2019s how you\u2019d configure a local MCP server (not included in this project, but shown for reference):</p>' +
+      '<pre><code>{\n  \"servers\": {\n    \"my-db-server\": {\n      \"type\": \"stdio\",\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@example/db-mcp-server\"],\n      \"env\": {\n        \"DB_HOST\": \"localhost\",\n        \"DB_PORT\": \"5432\"\n      }\n    }\n  }\n}</code></pre>',
     exercises: [
-      { title: 'Fetch release notes from the web', goal: 'Use the MCP <code>fetch</code> server to retrieve a live web page in chat.' },
-      { title: 'Verify the fetch tool is available', goal: 'Type <code>/tools</code> and confirm <code>fetch</code> appears in the tool list.' },
-      { title: 'Trace a fetch call in /debug', goal: 'Inspect agent logs to confirm the MCP server handled the request.' }
+      { title: 'Fetch release notes from the web',
+        goal: '**What you\'ll do**: Use the MCP `fetch` server to retrieve a live web page inside chat.\n\n' +
+          '**Step 1** \u2014 Open Chat.\n\n' +
+          '**Step 2** \u2014 Type:\n\n' +
+          '```\nSummarize the latest firmware release notes for Aruba AP-515 #fetch https://www.arubanetworks.com/techdocs/AOS-CX/latest/release-notes\n```\n\nPress **Enter**.\n\n' +
+          '- **What you see**: Copilot fetches the vendor documentation page via the MCP `fetch` server and returns a bullet-point summary of the latest firmware changes \u2014 without you opening a browser.\n' +
+          '- **How it works**: `#fetch` tells Copilot to invoke the `fetch` tool from `.vscode/mcp.json`. The MCP client sends the HTTP request and returns the page content as tool output.' },
+      { title: 'Verify the fetch tool is available',
+        goal: '**Step 1** \u2014 Type `/tools` in Chat.\n\n' +
+          '- **What you see**: A panel listing all available tools. `fetch` should appear in the list, contributed by the `fetch` MCP server in `.vscode/mcp.json`.\n\n' +
+          '**Step 2** \u2014 If `fetch` is **not** listed:\n' +
+          '1. Open `.vscode/mcp.json` and verify the JSON is valid.\n' +
+          '2. Run the VS Code command **MCP: List Servers** from the Command Palette to see if the server is registered.\n' +
+          '3. Restart VS Code if the server was recently added.' },
+      { title: 'Trace a fetch call in /debug',
+        goal: '**Step 1** \u2014 Run the fetch command from Exercise 1 again.\n\n' +
+          '**Step 2** \u2014 Type `/debug`.\n\n' +
+          '- **What you look for**: In the agent logs, find a tool invocation for `fetch` with the URL as the input. This confirms the MCP server handled the request, not a built-in Copilot capability.' }
     ],
-    bonus: { title: 'Add an MCP server for your tools', goal: 'Configure a second MCP server (filesystem, SQLite, or GitHub).' }
+    bonus: { title: 'Add an MCP server for your tools',
+      goal: '**Goal**: Configure a second MCP server in `.vscode/mcp.json`.\n\n' +
+        '**Step 1 \u2014 Choose a server**\n\n' +
+        '| Server | Purpose | Package |\n|--------|---------|---------|\n' +
+        '| Filesystem | Read/write local files via MCP | `@modelcontextprotocol/server-filesystem` |\n' +
+        '| SQLite | Query a local SQLite database | `@modelcontextprotocol/server-sqlite` |\n' +
+        '| GitHub | GitHub API (repos, issues, PRs) | `@modelcontextprotocol/server-github` |\n\n' +
+        '**Step 2 \u2014 Edit `.vscode/mcp.json`**\n' +
+        '- Add a second server entry. For example, the filesystem server:\n\n' +
+        '```json\n{\n  "servers": {\n    "fetch": {\n      "type": "copilot",\n      "description": "Built-in web fetch tool."\n    },\n    "filesystem": {\n      "type": "stdio",\n      "command": "npx",\n      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${workspaceFolder}"]\n    }\n  }\n}\n```\n\nSave the file.\n\n' +
+        '**Step 3 \u2014 Verify the new server**\n' +
+        '1. Open the Command Palette (**Ctrl+Shift+P**) and run **MCP: List Servers** \u2014 `filesystem` should appear.\n' +
+        '2. Type `/tools` in Chat \u2014 the filesystem tools should appear alongside `fetch`.\n\n' +
+        '**Step 4 \u2014 Test it in an agent**\n' +
+        '- Type in Chat:\n\n' +
+        '```\nUsing the filesystem MCP server, list all JSON files in the data/ folder and summarise the AP inventory\n```\n\n' +
+        '- **What you see**: The agent invokes the MCP filesystem server\'s `list_directory` tool, finds `ap_inventory.json`, and summarises the data.' }
   }
 ];
 
@@ -1035,7 +1932,7 @@ CHAPTERS.forEach(function(ch) {
   ch.exercises.forEach(function(ex, i) {
     exHtml += '<div class="ex-card" data-exi="' + i + '">' +
       '<h4><span class="ex-num">' + (i + 1) + '</span>' + ex.title + '</h4>' +
-      '<p class="ex-goal">' + ex.goal + '</p>' +
+      '<div class="ex-goal">' + mdToHtml(ex.goal) + '</div>' +
       '<div class="ex-actions">' +
         '<button class="btn-complete" onclick="completeExercise(' + ch.id + ',' + i + ')">Complete &amp; Next \u25B6</button>' +
         '<button class="btn-skip" onclick="completeExercise(' + ch.id + ',' + i + ')">Skip</button>' +
@@ -1044,7 +1941,7 @@ CHAPTERS.forEach(function(ch) {
   if (ch.bonus) {
     exHtml += '<div class="ex-card" data-exi="' + ch.exercises.length + '">' +
       '<h4><span class="ex-num bonus">\u2605</span>' + ch.bonus.title + ' <span style="color:#dcdcaa;font-size:0.75rem">(Bonus)</span></h4>' +
-      '<p class="ex-goal">' + ch.bonus.goal + '</p>' +
+      '<div class="ex-goal">' + mdToHtml(ch.bonus.goal) + '</div>' +
       '<div class="ex-actions">' +
         '<button class="btn-complete" onclick="completeExercise(' + ch.id + ',' + ch.exercises.length + ')">Complete \u2605</button>' +
         '<button class="btn-skip" onclick="completeExercise(' + ch.id + ',' + ch.exercises.length + ')">Skip</button>' +
@@ -1074,8 +1971,7 @@ CHAPTERS.forEach(function(ch) {
         '<button class="ch-tab" onclick="switchTab(' + ch.id + ',\'exercises\')">Exercises</button>' +
       '</div>' +
       '<div class="ch-tab-content active" data-tab="theory">' +
-        '<div class="theory"><p>' + ch.theory + '</p>' +
-        '<button class="readme-link" onclick="openChapterModal(' + ch.id + ')">Read full chapter \u2192</button></div>' +
+        '<div class="theory">' + ch.theory + '</div>' +
       '</div>' +
       '<div class="ch-tab-content" data-tab="exercises">' +
         '<div class="ex-stepper-nav">' + pipHtml + '</div>' +
@@ -1245,7 +2141,7 @@ function inlineMd(text) {
   return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/`([^`]+)`/g, function(m, c) { return '<code>' + escHtml(c) + '</code>'; })
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 }
 
@@ -1356,6 +2252,23 @@ function extractChapter(readmeText, chId) {
   return lines.slice(startLine, endLine).join('\n').trim();
 }
 
+function extractChapterTheory(readmeText, chId) {
+  var full = extractChapter(readmeText, chId);
+  if (!full) return '';
+  var lines = full.split('\n');
+  if (lines.length > 0 && /^## /.test(lines[0])) {
+    lines = lines.slice(1);
+  }
+  var endLine = lines.length;
+  for (var i = 0; i < lines.length; i++) {
+    if (/^###\s+.*Try It/.test(lines[i])) {
+      endLine = i;
+      break;
+    }
+  }
+  return lines.slice(0, endLine).join('\n').trim();
+}
+
 /* ── Reading modal ────────────────────────────────────────── */
 var readmeCache = null;
 
@@ -1398,13 +2311,15 @@ function renderChapterContent(readme, chId) {
 function showFallbackContent(chId) {
   var body = document.getElementById('modal-body');
   var ch = CHAPTERS[chId];
-  var html = '<div class="theory"><p>' + ch.theory + '</p></div>';
+  var html = '<div class="theory">' + ch.theory + '</div>';
   html += '<h3>Exercises</h3><ol>';
   ch.exercises.forEach(function(ex) {
-    html += '<li><strong>' + ex.title + '</strong><br><span style="color:#9d9d9d">' + ex.goal + '</span></li>';
+    html += '<li><strong>' + ex.title + '</strong><br><div class="ex-goal">' + mdToHtml(ex.goal) + '</div></li>';
   });
   if (ch.bonus) {
-    html += '<li><strong>' + ch.bonus.title + '</strong> <span style="color:#dcdcaa">(Bonus)</span><br><span style="color:#9d9d9d">' + ch.bonus.goal + '</span></li>';
+    ch.bonus.forEach(function(b) {
+      html += '<li><strong>' + b.title + '</strong> <span style="color:#dcdcaa">(Bonus)</span><br><div class="ex-goal">' + mdToHtml(b.goal) + '</div></li>';
+    });
   }
   html += '</ol>';
   html += '<p class="modal-fallback">For full step-by-step instructions, serve this page via a local server or open <a href="' + ch.link + '">README.md</a> directly.</p>';
@@ -1423,6 +2338,39 @@ window.closeModalOutside = function(e) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeChapterModal();
 });
+
+/* ── Load full chapter theory from README ─────────────────── */
+function populateTheoryTabs(readme) {
+  CHAPTERS.forEach(function(ch) {
+    var theory = extractChapterTheory(readme, ch.id);
+    if (theory) {
+      var block = document.getElementById('ch-' + ch.id);
+      if (block) {
+        var theoryDiv = block.querySelector('[data-tab="theory"] .theory');
+        if (theoryDiv) {
+          var btn = theoryDiv.querySelector('.readme-link');
+          theoryDiv.innerHTML = mdToHtml(theory);
+          if (btn) theoryDiv.appendChild(btn);
+        }
+      }
+    }
+  });
+}
+
+function loadFullTheory() {
+  if (readmeCache) { populateTheoryTabs(readmeCache); return; }
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'README.md', true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0) && xhr.responseText) {
+      readmeCache = xhr.responseText;
+      populateTheoryTabs(readmeCache);
+    }
+  };
+  xhr.onerror = function() {};
+  try { xhr.send(); } catch(e) {}
+}
+loadFullTheory();
 
 })();
 
