@@ -52,11 +52,11 @@ in this project.
 
 ### Project Domain
 
-This project uses a minimal **task tracker** as its domain:
-- `data/tasks.json` — 8 sample tasks with statuses, priorities, and due dates
-- `src/task_utils.py` — Python utilities for loading and querying tasks
-- `docs/task-tracker-spec.md` — the data specification
-- `scripts/validate.sh` / `validate.ps1` — data validation scripts
+This project uses a minimal **WiFi site-survey toolkit** as its domain:
+- `data/ap_inventory.json` — 8 sample access points with deployment statuses, signal quality, and locations
+- `src/wifi_utils.py` — Python utilities for loading and analysing AP data
+- `docs/wifi-survey-spec.md` — the survey data specification
+- `scripts/validate.sh` / `validate.ps1` — AP inventory validation scripts
 
 The domain is intentionally simple — the focus is on the Copilot features, not
 the application code.
@@ -99,7 +99,7 @@ your customization files with your team via version control.
 cd C:\Projects\copilot-features-demo
 git init
 git add .
-git commit -m "Initial commit: Copilot features demo"
+git commit -m "Initial commit: WiFi site-survey toolkit"
 ```
 
 **On macOS / Linux (Terminal):**
@@ -108,7 +108,7 @@ git commit -m "Initial commit: Copilot features demo"
 cd ~/path/to/copilot-features-demo
 git init
 git add .
-git commit -m "Initial commit: Copilot features demo"
+git commit -m "Initial commit: WiFi site-survey toolkit"
 ```
 
 **What each command does:**
@@ -165,9 +165,9 @@ designed to be version-controlled and shared via Git.
 | Command | What it does | Example |
 |---------|-------------|---------|
 | `git status` | Shows which files are modified, staged, or untracked | Check what changed before committing |
-| `git add <file>` | Stages a specific file for the next commit | `git add src/task_utils.py` |
+| `git add <file>` | Stages a specific file for the next commit | `git add src/wifi_utils.py` |
 | `git add .` | Stages all changed files in the current directory | Stage everything at once |
-| `git commit -m "message"` | Saves staged changes as a new commit | `git commit -m "feat: add filter function"` |
+| `git commit -m "message"` | Saves staged changes as a new commit | `git commit -m "feat(survey): add channel-overlap detection"` |
 | `git commit --amend` | Modifies the most recent commit (message or content) | Fix a typo in your last commit message |
 
 #### Viewing History
@@ -186,11 +186,11 @@ designed to be version-controlled and shared via Git.
 | Command | What it does | Example |
 |---------|-------------|---------|
 | `git branch` | Lists all local branches | See which branches exist |
-| `git branch <name>` | Creates a new branch | `git branch feature/add-filter` |
+| `git branch <name>` | Creates a new branch | `git branch feature/channel-overlap` |
 | `git checkout <branch>` | Switches to an existing branch | `git checkout main` |
-| `git checkout -b <name>` | Creates and switches to a new branch in one step | `git checkout -b fix/overdue-bug` |
-| `git merge <branch>` | Merges the specified branch into the current branch | `git merge feature/add-filter` |
-| `git branch -d <name>` | Deletes a branch that has been merged | `git branch -d feature/add-filter` |
+| `git checkout -b <name>` | Creates and switches to a new branch in one step | `git checkout -b fix/weak-signal-threshold` |
+| `git merge <branch>` | Merges the specified branch into the current branch | `git merge feature/channel-overlap` |
+| `git branch -d <name>` | Deletes a branch that has been merged | `git branch -d feature/channel-overlap` |
 
 #### Remote Repositories (GitHub)
 
@@ -208,8 +208,8 @@ designed to be version-controlled and shared via Git.
 | Command | What it does | Example |
 |---------|-------------|---------|
 | `git checkout -- <file>` | Discards unstaged changes to a file | Revert a file to its last committed state |
-| `git restore <file>` | Discards unstaged changes (modern syntax) | `git restore src/task_utils.py` |
-| `git restore --staged <file>` | Unstages a file (keeps your edits) | `git restore --staged data/tasks.json` |
+| `git restore <file>` | Discards unstaged changes (modern syntax) | `git restore src/wifi_utils.py` |
+| `git restore --staged <file>` | Unstages a file (keeps your edits) | `git restore --staged data/ap_inventory.json` |
 | `git reset --soft HEAD~1` | Undoes the last commit but keeps changes staged | Redo a commit with a better message |
 | `git stash` | Temporarily shelves uncommitted changes | Switch branches without committing |
 | `git stash pop` | Restores the most recently stashed changes | Resume work after switching back |
@@ -222,8 +222,8 @@ designed to be version-controlled and shared via Git.
 | **Fork** (GitHub UI) | Creates your own copy of someone else's repository | Contribute to open-source projects |
 | **Pull Request** (GitHub UI) | Requests that your branch be merged into the main branch | Code review before merging |
 | **Issue** (GitHub UI) | Tracks a bug, feature request, or task | Organize project work |
-| `gh pr create` | Creates a pull request from the CLI (GitHub CLI) | `gh pr create --title "Add filter" --body "..."` |
-| `gh issue list` | Lists open issues from the CLI (GitHub CLI) | `gh issue list --label bug` |
+| `gh pr create` | Creates a pull request from the CLI (GitHub CLI) | `gh pr create --title "Add channel-overlap detection" --body "..."` |
+| `gh issue list` | Lists open issues from the CLI (GitHub CLI) | `gh issue list --label rf-issue` |
 
 ### 🧪 Try It — Interactive Exercises
 
@@ -266,11 +266,12 @@ designed to be version-controlled and shared via Git.
 
 #### Exercise 2 · Track changes with `git status` and `git diff`
 
-**What you'll do**: Make a small edit and observe how Git tracks it.
+**What you'll do**: Make a small edit to the WiFi utilities and observe
+how Git tracks it.
 
-**Step 1** — Open `src/task_utils.py` and add a comment at the top:
+**Step 1** — Open `src/wifi_utils.py` and add a comment at the top:
 ```python
-# Practice edit for Git exercise
+# Channel planning constants
 ```
 Save the file (**Ctrl+S**).
 
@@ -278,7 +279,7 @@ Save the file (**Ctrl+S**).
 ```powershell
 git status
 ```
-- **What you see**: `src/task_utils.py` listed under **Changes not staged for
+- **What you see**: `src/wifi_utils.py` listed under **Changes not staged for
   commit** — Git detected your edit.
 
 **Step 3** — Run:
@@ -290,8 +291,8 @@ git diff
 
 **Step 4 — Stage and commit**
 ```powershell
-git add src/task_utils.py
-git commit -m "docs: add practice comment to task_utils"
+git add src/wifi_utils.py
+git commit -m "docs(wifi_utils): add channel planning constants comment"
 ```
 
 **Step 5 — Verify**
@@ -301,9 +302,9 @@ git log --oneline
 - **What you see**: Two commits — your new one on top.
 
 **Step 6 — Clean up**
-- Remove the practice comment from `src/task_utils.py` and commit:
+- Remove the practice comment from `src/wifi_utils.py` and commit:
   ```powershell
-  git add src/task_utils.py
+  git add src/wifi_utils.py
   git commit -m "chore: remove practice comment"
   ```
 
@@ -311,41 +312,41 @@ git log --oneline
 
 #### Exercise 3 · Create and merge a branch
 
-**What you'll do**: Practice the branch-edit-merge workflow used in
-real projects.
+**What you'll do**: Practice the branch-edit-merge workflow — simulating
+a new AP deployment update on a feature branch.
 
 **Step 1 — Create a branch**
 ```powershell
-git checkout -b exercise/git-practice
+git checkout -b feature/add-floor3-aps
 ```
-- **What you see**: `Switched to a new branch 'exercise/git-practice'`.
+- **What you see**: `Switched to a new branch 'feature/add-floor3-aps'`.
 
 **Step 2 — Make an edit on the branch**
-- Open `data/tasks.json` and add a temporary comment field to any task
-  (e.g., `"note": "testing branches"`).
+- Open `data/ap_inventory.json` and add a temporary field to any AP
+  (e.g., `"note": "pending floor 3 survey"`).
 - Stage and commit:
   ```powershell
-  git add data/tasks.json
-  git commit -m "test: add temporary note field for branch exercise"
+  git add data/ap_inventory.json
+  git commit -m "feat(survey): add floor 3 deployment note"
   ```
 
 **Step 3 — Switch back and merge**
 ```powershell
 git checkout main
-git merge exercise/git-practice
+git merge feature/add-floor3-aps
 ```
 - **What you see**: A fast-forward merge message — the change from your
   branch is now on `main`.
 
 **Step 4 — Delete the branch**
 ```powershell
-git branch -d exercise/git-practice
+git branch -d feature/add-floor3-aps
 ```
 
 **Step 5 — Clean up**
 - Revert the temporary edit:
   ```powershell
-  git checkout -- data/tasks.json
+  git checkout -- data/ap_inventory.json
   git commit -am "chore: revert temporary note field"
   ```
 
@@ -354,9 +355,13 @@ git branch -d exercise/git-practice
 #### Exercise 4 · Use `git stash` to shelve work temporarily
 
 **What you'll do**: Stash uncommitted changes so you can switch context
-without losing work.
+without losing work — for example, pausing an AP config update to handle
+an urgent channel-conflict fix.
 
-**Step 1** — Open `src/task_utils.py` and add a new comment anywhere.
+**Step 1** — Open `src/wifi_utils.py` and add a new comment:
+```python
+# TODO: add DFS channel fallback logic
+```
 Save but **do not commit**.
 
 **Step 2** — Run:
@@ -381,7 +386,7 @@ git stash pop
 **Step 5 — Clean up**
 - Discard the practice edit:
   ```powershell
-  git checkout -- src/task_utils.py
+  git checkout -- src/wifi_utils.py
   ```
 
 ---
@@ -420,20 +425,21 @@ git log --graph --oneline --all
 
 #### Exercise 6 · Undo mistakes safely
 
-**What you'll do**: Practice reverting changes without losing work.
+**What you'll do**: Practice reverting changes without losing work —
+essential when experimenting with AP configuration updates.
 
 **Step 1 — Discard an unstaged edit**
-- Edit `src/task_utils.py` (add any text), save, then run:
+- Edit `src/wifi_utils.py` (e.g., change a tx_power default), save, then run:
   ```powershell
-  git restore src/task_utils.py
+  git restore src/wifi_utils.py
   ```
 - **What you see**: The file reverts to its last committed state.
 
 **Step 2 — Unstage a file**
 - Make an edit, stage it, then unstage:
   ```powershell
-  git add src/task_utils.py
-  git restore --staged src/task_utils.py
+  git add src/wifi_utils.py
+  git restore --staged src/wifi_utils.py
   ```
 - **What you see**: `git status` now shows the file as modified but
   **not staged**. Your edits are still in the file.
@@ -441,7 +447,7 @@ git log --graph --oneline --all
 **Step 3 — Soft-reset the last commit**
 - Make a throwaway commit:
   ```powershell
-  git add src/task_utils.py
+  git add src/wifi_utils.py
   git commit -m "throwaway commit"
   ```
 - Undo it (keeps changes staged):
@@ -453,28 +459,29 @@ git log --graph --oneline --all
 
 **Step 4 — Clean up**
 ```powershell
-git restore --staged src/task_utils.py
-git restore src/task_utils.py
+git restore --staged src/wifi_utils.py
+git restore src/wifi_utils.py
 ```
 
 ---
 
 #### Exercise 7 · Connect to GitHub and push
 
-**What you'll do**: Link your local repository to GitHub and push your commits.
+**What you'll do**: Link your local WiFi survey repository to GitHub and
+push your commits so the team can access the AP inventory.
 
 > **Prerequisite**: You need a GitHub account and a repository created on
 > GitHub (empty — no README or .gitignore).
 
 **Step 1 — Create a GitHub repository**
 - Go to [https://github.com/new](https://github.com/new).
-- Name it `copilot-features-demo` (or any name).
+- Name it `wifi-site-survey` (or any name).
 - Leave it **empty** (no README, no .gitignore, no license).
 - Click **Create repository**.
 
 **Step 2 — Add the remote**
 ```powershell
-git remote add origin https://github.com/YOUR-USERNAME/copilot-features-demo.git
+git remote add origin https://github.com/YOUR-USERNAME/wifi-site-survey.git
 ```
 (Replace `YOUR-USERNAME` with your GitHub username.)
 
@@ -496,9 +503,10 @@ git remote -v
 #### Exercise 8 · Use Copilot with Git context
 
 **What you'll do**: Combine Copilot's `#changes` context mention with Git
-to generate a commit message automatically.
+to generate a commit message automatically for an AP inventory update.
 
-**Step 1** — Make a small edit to any file and save. **Do not commit.**
+**Step 1** — Open `data/ap_inventory.json` and update the `tx_power` value
+of any access point. Save the file. **Do not commit.**
 
 **Step 2** — Open Chat (**Ctrl+Alt+I**) and type:
 ```
@@ -507,7 +515,7 @@ Write a conventional commit message for #changes
 Press **Enter**.
 
 - **What you see**: Copilot reads your uncommitted diff via Git and produces
-  a Conventional Commits message (e.g., `feat(task_utils): add helper function`).
+  a Conventional Commits message (e.g., `fix(survey): update tx_power for AP-03`).
 
 **Step 3** — Copy the message and use it:
 ```powershell
@@ -539,9 +547,9 @@ These operate on code you select or reference in your prompt.
 
 | Command | What it does | Example |
 |---------|-------------|--------|
-| `/explain` | Explains selected code — purpose, logic, edge cases | You inherited `count_overdue` and don't know what it does — select it and use `/explain` |
+| `/explain` | Explains selected code — purpose, logic, edge cases | You inherited `find_weak_signals` and don't know what it does — select it and use `/explain` |
 | `/fix` | Proposes fixes for errors (reads Problems panel / stack traces) | A red underline appears under your code and you're unsure why — use `/fix` to let Copilot read the error and suggest a fix |
-| `/tests` | Generates tests for selected code using your project's test framework | You just wrote `filter_by_status` but have no tests yet — select it and use `/tests` |
+| `/tests` | Generates tests for selected code using your project's test framework | You just wrote `filter_aps_by_band` but have no tests yet — select it and use `/tests` |
 | `/doc` | Generates documentation comments (inline chat) | You wrote a utility function but left no docstring — select it and use `/doc` in inline chat |
 | `/setupTests` | Scaffolds a test framework (config, dependencies, example tests) | Your project has no test framework and you don't want to configure it manually — use `/setupTests` |
 | `/fixTestFailure` | Analyzes failing tests and suggests fixes | A pytest run just failed with an unclear error — use `/fixTestFailure` to let Copilot diagnose it |
@@ -551,7 +559,7 @@ These operate on code you select or reference in your prompt.
 | Command | What it does | Example |
 |---------|-------------|--------|
 | `/new` | Creates a new file or project from a description | You need a new utility script but don't want to write boilerplate — use `/new Python script that reads a CSV` |
-| `/newNotebook` | Creates a new Jupyter notebook from a description | You want to explore `tasks.json` interactively — use `/newNotebook analyze tasks.json` |
+| `/newNotebook` | Creates a new Jupyter notebook from a description | You want to explore `ap_inventory.json` interactively — use `/newNotebook analyze ap_inventory.json` |
 
 ### Category 3: Session Management
 
@@ -560,15 +568,15 @@ These operate on code you select or reference in your prompt.
 | `/clear` | Starts a fresh chat session (archives current one) | You finished one task and want a clean slate for the next — use `/clear` |
 | `/fork` | Copies the conversation into a new independent session | You want to try a different approach without losing the current conversation — use `/fork` |
 | `/compact` | Summarizes conversation history to free context window space | Your chat history grew long and Copilot is losing early context — use `/compact` |
-| `/rename` | Renames the current chat session (for organization) | You want to find this session later by topic — use `/rename Fix task validation bug` |
+| `/rename` | Renames the current chat session (for organization) | You want to find this session later by topic — use `/rename Fix channel-overlap detection` |
 
 ### Category 4: Planning & Search
 
 | Command | What it does | Example |
 |---------|-------------|--------|
-| `/plan` | Creates a step-by-step implementation plan before writing code | Before coding a new feature, you want to see all steps outlined first — use `/plan Add search by assignee to task_utils.py` |
-| `/search` | Semantic search across your workspace | You can't remember where status validation is implemented — use `/search where is task status validated` |
-| `/startDebugging` | Generates a `launch.json` and starts a debug session | You want to debug `task_utils.py` but have no launch config — use `/startDebugging` |
+| `/plan` | Creates a step-by-step implementation plan before writing code | Before coding a new feature, you want to see all steps outlined first — use `/plan Add channel-overlap detection to wifi_utils.py` |
+| `/search` | Semantic search across your workspace | You can't remember where AP schema validation is implemented — use `/search where is AP status validated` |
+| `/startDebugging` | Generates a `launch.json` and starts a debug session | You want to debug `wifi_utils.py` but have no launch config — use `/startDebugging` |
 
 ### Category 5: Customization Creators
 
@@ -579,8 +587,8 @@ These create the files you'll learn about in Part B:
 | `/init` | Generates `copilot-instructions.md` from your project structure | You opened a new project and want Copilot to generate workspace instructions automatically — use `/init` |
 | `/create-prompt` | Creates a `.prompt.md` file | You keep typing the same changelog task in chat — turn it into a reusable command with `/create-prompt Generate a changelog` |
 | `/create-instruction` | Creates a `.instructions.md` file | You want all TypeScript files to follow specific style rules — use `/create-instruction for TypeScript files` |
-| `/create-skill` | Creates a `SKILL.md` and skill folder | You want to package a multi-step data quality workflow with templates — use `/create-skill data-quality` |
-| `/create-agent` | Creates an `.agent.md` file | You need a read-only agent that can only review code, not edit it — use `/create-agent security-reviewer` |
+| `/create-skill` | Creates a `SKILL.md` and skill folder | You want to package a multi-step RF coverage audit workflow with templates — use `/create-skill rf-coverage-audit` |
+| `/create-agent` | Creates an `.agent.md` file | You need a read-only agent that can only review AP data, not edit it — use `/create-agent rf-analyst` |
 | `/create-hook` | Creates a hook `.json` config | You want to automatically block any edit that produces invalid JSON — use `/create-hook to block invalid JSON` |
 | `/agent-customization` | Opens the agent customization workflow | You're new to agent config and want a guided setup walkthrough — use `/agent-customization` |
 
@@ -594,7 +602,7 @@ These open configuration panels for managing customization files:
 | `/hooks` | Hook configuration | You want to verify that `validate-json.json` is configured correctly — use `/hooks` |
 | `/instructions` | Instruction files | You want to see which instruction files are currently active — use `/instructions` |
 | `/prompts` | Prompt files | You forgot the name of the test-generation prompt — use `/prompts` to find it |
-| `/skills` | Agent skills | You want to review the `task-report` skill before invoking it — use `/skills` |
+| `/skills` | Agent skills | You want to review the `wifi-survey-report` skill before invoking it — use `/skills` |
 | `/tools` | Tool availability and permissions | Your agent isn't finding files and you suspect a tool is disabled — use `/tools` |
 | `/models` | AI model picker | You want a faster model for a quick question — use `/models` to switch |
 | `/plugins` | Chat plugins/extensions | You want to see which chat extensions are installed and active — use `/plugins` |
@@ -624,37 +632,38 @@ These open configuration panels for managing customization files:
 **Custom prompts and skills also appear as `/` commands.** Once you create a
 prompt file (`.prompt.md`) or a skill (`SKILL.md`), you can invoke them by
 typing `/` followed by the file name. For example, this project includes
-`/generate-test-cases` and `/summarize-tasks` (prompts) and `/task-report`
+`/generate-test-cases` and `/summarize-aps` (prompts) and `/wifi-survey-report`
 (skill).
 
 ### 🧪 Try It — Interactive Exercises
 
 #### Exercise 1 · Explain then test a function
 
-**What you'll do**: Use `/explain` and `/tests` on a real function in this project.
+**What you'll do**: Use `/explain` and `/tests` on a real WiFi analysis
+function in this project.
 
 **Step 1 — Open the file**
 - In VS Code, press **Ctrl+P** (Windows/Linux) or **Cmd+P** (macOS).
-- Type `task_utils.py` and press **Enter**.
+- Type `wifi_utils.py` and press **Enter**.
 
 **Step 2 — Select the function**
-- Scroll to the `count_overdue` function (around line 30).
+- Scroll to the `find_weak_signals` function (around line 30).
 - Click the function name, then press **Ctrl+Shift+K** to select the whole block,
   or click and drag to highlight the entire function body.
 
 **Step 3 — Explain it**
 - Open Chat: **Ctrl+Alt+I** (Windows/Linux) or **Cmd+Alt+I** (macOS).
 - Type `/explain` and press **Enter**.
-- **What you see**: Copilot describes what `count_overdue` does, what parameters
-  it takes, what it returns, and any edge cases (e.g., what happens if the date
-  is malformed).
+- **What you see**: Copilot describes what `find_weak_signals` does, what
+  parameters it takes, what it returns, and any edge cases (e.g., what happens
+  if the signal threshold is missing or a tx_power value is malformed).
 
 **Step 4 — Generate tests**
 - Keep the same selection in the editor.
 - In Chat, type `/tests` and press **Enter**.
-- **What you see**: Copilot generates a `test_count_overdue.py` file (or inline
-  code) with at least three pytest test cases: a happy path, an empty list
-  case, and an edge case with a malformed date.
+- **What you see**: Copilot generates a `test_find_weak_signals.py` file (or
+  inline code) with at least three pytest test cases: a happy path, an empty
+  list case, and an edge case with a missing tx_power field.
 
 > **Why it works**: `/explain` and `/tests` use the current editor *selection* as
 > context. If nothing is selected, Copilot uses the entire active file.
@@ -663,24 +672,25 @@ typing `/` followed by the file name. For example, this project includes
 
 #### Exercise 2 · Plan before coding
 
-**What you'll do**: Use `/plan` to get a structured implementation plan.
+**What you'll do**: Use `/plan` to get a structured implementation plan for
+a new WiFi analysis feature.
 
 **Step 1** — In Chat, type exactly:
 ```
-/plan Add a function to find tasks assigned to a specific person
+/plan Add a function to detect channel conflicts between nearby access points
 ```
 Press **Enter**.
 
 **Step 2 — Read the plan**
 - **What you see**: Copilot returns a numbered list of steps — e.g.,
-  *"1. Define function signature with type hints"*, *"2. Filter tasks list by
-  assignee field"*, *"3. Handle case-insensitive matching"*, etc. — without
-  writing any code yet.
+  *"1. Define function signature with type hints"*, *"2. Group APs by
+  channel and band"*, *"3. Flag overlapping channels within the same
+  location zone"*, etc. — without writing any code yet.
 - Notice that `/plan` **does not modify any files**. It only plans.
 
 **Step 3 — Approve and implement**
 - Reply in Chat: `Looks good, implement it.`
-- **What you see**: Copilot now writes the function into `task_utils.py`,
+- **What you see**: Copilot now writes the function into `wifi_utils.py`,
   following the plan it just outlined.
 
 ---
@@ -705,7 +715,8 @@ Press **Enter**.
 **What you'll do**: Use `/compact` after a long conversation.
 
 **Step 1** — Send 4–5 messages in the same chat session (e.g., ask a few
-questions about `tasks.json`).
+questions about `ap_inventory.json` or the channel-overlap function you
+just planned).
 
 **Step 2** — In Chat, type `/compact` and press **Enter**.
 - **What you see**: Copilot summarises the conversation history into a short
@@ -724,7 +735,7 @@ questions about `tasks.json`).
 docstring through inline chat.
 
 **Step 1 — Introduce an error**
-- Open `src/task_utils.py`.
+- Open `src/wifi_utils.py`.
 - Temporarily break a function: delete the `:` at the end of any `def` line
   and save (**Ctrl+S**).
 - The Problems panel (View → Problems) will show a red error.
@@ -736,7 +747,7 @@ docstring through inline chat.
   the file.
 
 **Step 3 — Add a docstring with `/doc`**
-- Select any function that has no docstring.
+- Select the `find_weak_signals` function (or any function without a docstring).
 - Press **Ctrl+I** (Windows/Linux) or **Cmd+I** (macOS) to open **inline chat**.
 - Type `/doc` and press **Enter**.
 - **What you see**: Copilot inserts a docstring directly above the function body
@@ -752,7 +763,7 @@ writing boilerplate.
 **Step 1 — Create a new utility script**
 - In Chat, type:
   ```
-  /new Python script that reads tasks.json and prints a summary table
+  /new Python script that reads ap_inventory.json and prints a signal-strength summary table
   ```
   Press **Enter**.
 - **What you see**: Copilot creates a new `.py` file with boilerplate imports,
@@ -762,11 +773,12 @@ writing boilerplate.
 **Step 2 — Create a Jupyter notebook**
 - In Chat, type:
   ```
-  /newNotebook analyze tasks.json — show status distribution as a bar chart
+  /newNotebook analyze ap_inventory.json — show AP distribution by band as a bar chart
   ```
   Press **Enter**.
 - **What you see**: A new `.ipynb` file opens with cells for loading the JSON,
-  computing counts, and plotting with matplotlib.
+  computing counts by band (2.4 GHz / 5 GHz / 6 GHz), and plotting with
+  matplotlib.
 
 **Step 3 — Scaffold a test framework**
 - In Chat, type `/setupTests` and press **Enter**.
@@ -784,11 +796,11 @@ work in parallel without losing context.
 **Step 1 — Rename the current session**
 - In Chat, type:
   ```
-  /rename Chapter 1 slash commands practice
+  /rename Chapter 1 WiFi analysis slash commands
   ```
   Press **Enter**.
-- **What you see**: The session tab or title updates to *"Chapter 1 slash
-  commands practice"*. Useful for finding sessions in Chat history.
+- **What you see**: The session tab or title updates to *"Chapter 1 WiFi
+  analysis slash commands"*. Useful for finding sessions in Chat history.
 
 **Step 2 — Fork a session**
 - In Chat, type `/fork` and press **Enter**.
@@ -811,17 +823,17 @@ work in parallel without losing context.
 **Step 1 — Semantic search**
 - In Chat, type:
   ```
-  /search where is task status validated
+  /search where is AP status validated
   ```
   Press **Enter**.
 - **What you see**: Copilot searches the workspace and returns file paths and
   line references — likely pointing to `scripts/validate.sh` and
-  `docs/task-tracker-spec.md`. Click a result to jump to that location.
+  `docs/wifi-survey-spec.md`. Click a result to jump to that location.
 
 **Step 2 — Generate a debug configuration**
 - In Chat, type `/startDebugging` and press **Enter**.
 - **What you see**: Copilot creates a `.vscode/launch.json` with a Python
-  configuration targeting `src/task_utils.py`, then starts a debug session.
+  configuration targeting `src/wifi_utils.py`, then starts a debug session.
   The Run & Debug panel opens with a breakpoint-ready environment.
 
 ---
@@ -844,36 +856,36 @@ primitive directly from chat.
 **Step 2 — Create a prompt file**
 - In Chat, type:
   ```
-  /create-prompt Generate a changelog from recent git commits
+  /create-prompt Generate an RF coverage summary from ap_inventory.json
   ```
   Press **Enter**.
 - **What you see**: Copilot creates
-  `.github/prompts/generate-changelog.prompt.md` with appropriate
+  `.github/prompts/generate-rf-coverage-summary.prompt.md` with appropriate
   frontmatter and a body describing the task. You can now invoke it with
-  `/generate-changelog`.
+  `/generate-rf-coverage-summary`.
 
 **Step 3 — Create an instruction file**
 - In Chat, type:
   ```
-  /create-instruction for all TypeScript files — enforce strict null checks and no-any rule
+  /create-instruction for all Python files in src/ — enforce type hints and RF-analysis naming conventions
   ```
   Press **Enter**.
 - **What you see**: A new `.instructions.md` file is created with
-  `applyTo: "**/*.ts"` and the rules you described.
+  `applyTo: "src/**/*.py"` and the rules you described.
 
 **Step 4 — Create an agent**
 - In Chat, type:
   ```
-  /create-agent security-reviewer — read-only, focuses on OWASP Top 10 issues
+  /create-agent rf-analyst — read-only, focuses on WiFi survey data analysis
   ```
   Press **Enter**.
-- **What you see**: `.github/agents/security-reviewer.agent.md` is created
-  with `tools: [read, search]` and a body describing the security review role.
+- **What you see**: `.github/agents/rf-analyst.agent.md` is created
+  with `tools: [read, search]` and a body describing the RF analysis role.
 
 **Step 5 — Create a hook**
 - In Chat, type:
   ```
-  /create-hook to block any edit that produces invalid JSON
+  /create-hook to block any edit that produces invalid AP inventory JSON
   ```
   Press **Enter**.
 - **What you see**: A `.github/hooks/*.json` file is created with a
@@ -882,10 +894,10 @@ primitive directly from chat.
 **Step 6 — Create a skill**
 - In Chat, type:
   ```
-  /create-skill data-quality — audits tasks.json for schema violations
+  /create-skill rf-coverage-audit — audits ap_inventory.json for schema violations
   ```
   Press **Enter**.
-- **What you see**: The folder `.github/skills/data-quality/` is created with
+- **What you see**: The folder `.github/skills/rf-coverage-audit/` is created with
   a `SKILL.md` frontmatter and a stub body.
 
 **Step 7 — Open the guided setup**
@@ -906,11 +918,11 @@ Observe what each panel shows.
 
 | Command | What to look for |
 |---------|-----------------|
-| `/agents` | Lists `task-analyst` and `doc-writer` — note their tool sets |
+| `/agents` | Lists `rf-analyst` and `report-writer` — note their tool sets |
 | `/hooks` | Shows `validate-json.json` with its `PostToolUse` event |
 | `/instructions` | Lists all three `.instructions.md` files and their `applyTo` globs |
-| `/prompts` | Lists `generate-test-cases` and `summarize-tasks` with descriptions |
-| `/skills` | Lists `task-report` — note the `argument-hint` displayed |
+| `/prompts` | Lists `generate-test-cases` and `summarize-aps` with descriptions |
+| `/skills` | Lists `wifi-survey-report` — note the `argument-hint` displayed |
 | `/tools` | Lists every tool currently available — including MCP tools |
 | `/models` | Opens the model picker — note the model currently selected |
 | `/plugins` | Lists any chat extensions installed |
@@ -933,7 +945,7 @@ Observe what each panel shows.
 - In Chat, type `/autoApprove` and press **Enter**.
 - Now ask Copilot to make a small edit:
   ```
-  Add a comment at the top of src/task_utils.py saying "# reviewed"
+  Add a comment at the top of src/wifi_utils.py saying "# RF analysis module"
   ```
 - **What you see**: Copilot makes the edit **without** showing a confirmation
   dialog. No "Apply" button appears.
@@ -948,7 +960,7 @@ Observe what each panel shows.
 - Type `/yolo` and press **Enter**.
 - Ask Copilot a multi-step task:
   ```
-  Add a function get_tasks_by_priority, generate a test for it, then run the test
+  Add a function get_aps_by_location, generate a test for it, then run the test
   ```
 - **What you see**: Copilot completes all three steps back-to-back — edit,
   create test, run terminal — without any confirmation or clarification prompts.
@@ -956,7 +968,7 @@ Observe what each panel shows.
 **Step 4 — Return to normal**
 - Type `/disableYolo` and press **Enter**.
 - Confirmation prompts are restored.
-- **Clean up**: Run `git checkout src/task_utils.py` in the terminal to revert
+- **Clean up**: Run `git checkout src/wifi_utils.py` in the terminal to revert
   the practice edits.
 
 ---
@@ -1029,37 +1041,39 @@ Examples: Docker extensions may add `@docker`, database extensions may add
 
 #### Exercise 1 · Ask `@vscode` a settings question
 
-**What you'll do**: Use the `@vscode` participant to get VS Code-specific help.
+**What you'll do**: Use the `@vscode` participant to get VS Code help relevant
+to your WiFi engineering workflow.
 
 **Step 1** — Open Chat (**Ctrl+Alt+I** / **Cmd+Alt+I**).
 
 **Step 2** — Type exactly:
 ```
-@vscode how do I change the font size?
+@vscode what extensions are useful for network engineers working with JSON data?
 ```
 Press **Enter**.
 
-- **What you see**: Copilot responds with instructions specific to VS Code's
-  `editor.fontSize` setting — with the exact setting path and how to open
-  Settings UI. It does **not** give a generic "go to preferences" answer.
+- **What you see**: Copilot responds with VS Code-specific extension
+  recommendations — JSON tools, REST clients, remote SSH extensions —
+  with exact extension IDs and how to install them.
 - **Why the difference matters**: Without `@vscode`, Copilot might answer about
-  font size in general editors. The participant scopes the answer to VS Code.
+  general networking tools. The participant scopes the answer to VS Code.
 
 ---
 
 #### Exercise 2 · Ask `@terminal` for a shell command
 
-**What you'll do**: Use `@terminal` to get a shell command without leaving chat.
+**What you'll do**: Use `@terminal` to get a WiFi diagnostic shell command
+without leaving chat.
 
 **Step 1** — In Chat, type:
 ```
-@terminal what command shows disk usage on Windows?
+@terminal how do I list available WiFi networks on Windows using netsh?
 ```
 Press **Enter**.
 
 - **What you see**: Copilot returns a PowerShell or `cmd` command
-  (e.g., `Get-PSDrive` or `dir`), not a bash command. The `@terminal`
-  participant is aware of your OS and active shell.
+  (e.g., `netsh wlan show networks mode=bssid`), not a Linux command.
+  The `@terminal` participant is aware of your OS and active shell.
 
 **Step 2** — Click **Insert into Terminal** (if the button appears) to run
 the command without copy-pasting.
@@ -1072,24 +1086,24 @@ the command without copy-pasting.
 
 **Step 1** — In a fresh chat, type (no `@`):
 ```
-What's the keyboard shortcut for multi-cursor?
+How do I view WiFi signal strength from a terminal?
 ```
 
 **Step 2** — Then type:
 ```
-@vscode What's the keyboard shortcut for multi-cursor?
+@vscode Is there an extension to visualise WiFi heatmaps or signal data?
 ```
 
-- **What you see**: The `@vscode` version returns the exact platform-specific
-  keybinding for *this* installation (**Ctrl+Alt+↓** on Windows, **Opt+Cmd+↓**
-  on macOS). The plain version may give a generic answer or multiple options.
+- **What you see**: The `@vscode` version returns VS Code-specific answers —
+  extension names, install commands, or setting paths. The plain version may
+  give a generic answer about OS-level tools or third-party apps.
 
 ---
 
 #### Exercise 4 · Use `@github` for repository information
 
-**What you'll do**: Query GitHub directly from chat using the `@github`
-participant.
+**What you'll do**: Query GitHub directly from chat to check the status of
+your WiFi survey project's pull requests.
 
 > **Prerequisite**: Install the [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 > extension and sign in to GitHub. If you are not signed in, VS Code will
@@ -1106,7 +1120,7 @@ Press **Enter**.
 
 **Step 2** — Try a search query:
 ```
-@github show recent issues labelled "bug" in this repo
+@github show recent issues labelled "rf-issue" in this repo
 ```
 - **What you see**: GitHub issues matching the filter, with titles and links.
   You can click through to open them in a browser.
@@ -1152,10 +1166,10 @@ These add specific items from your workspace as context:
 
 | Reference | What it adds | Example |
 |-----------|-------------|--------|
-| `#file:path/to/file` | A specific file's contents | You want Copilot to explain a whole file without copy-pasting it — use `Explain #file:src/task_utils.py` |
+| `#file:path/to/file` | A specific file's contents | You want Copilot to explain a whole file without copy-pasting it — use `Explain #file:src/wifi_utils.py` |
 | `#folder:path/to/dir` | Files within a directory | You want Copilot to review all source files at once — use `Review #folder:src` |
-| `#symbol:functionName` | A specific code symbol (function, class, variable) | You want docs generated for one specific function — use `Document #symbol:count_overdue` |
-| `#codebase` | Searches your entire codebase for relevant context | You can't find where status validation is implemented — use `Where is status validated? #codebase` |
+| `#symbol:functionName` | A specific code symbol (function, class, variable) | You want docs generated for one specific function — use `Document #symbol:find_weak_signals` |
+| `#codebase` | Searches your entire codebase for relevant context | You can't find where AP schema validation is implemented — use `Where is AP status validated? #codebase` |
 | `#selection` | The current editor text selection | You highlighted a complex block and want an explanation — select it and ask about `#selection` |
 | `#changes` | Uncommitted source control changes | You want a commit message based on everything you've changed — use `Summarize my changes #changes` |
 
@@ -1199,13 +1213,13 @@ You can also add context without `#` mentions:
 
 #### Exercise 1 · Attach a file with `#file`
 
-**What you'll do**: Give Copilot the full context of `task_utils.py` using `#file`.
+**What you'll do**: Give Copilot the full context of `wifi_utils.py` using `#file`.
 
 **Step 1** — Open Chat.
 
 **Step 2** — Type exactly (do **not** open the file first):
 ```
-Explain #file:src/task_utils.py
+Explain #file:src/wifi_utils.py
 ```
 Press **Enter**.
 
@@ -1221,29 +1235,30 @@ Press **Enter**.
 
 **Step 1** — In Chat, type:
 ```
-What tasks are overdue based on #file:data/tasks.json
+Which access points have weak signal quality based on #file:data/ap_inventory.json
 ```
 Press **Enter**.
 
-- **What you see**: Copilot reads the JSON and lists any tasks whose `due_date`
-  is in the past (relative to today). It identifies them by `id` and `title`.
+- **What you see**: Copilot reads the JSON and lists any APs with low
+  tx_power or `"signal_quality": "critical"`. It identifies them by `ap_id`
+  and `location`.
 
 ---
 
 #### Exercise 3 · Search the whole project with `#codebase`
 
-**What you'll do**: Find where validation rules are defined — without knowing
+**What you'll do**: Find where AP validation rules are defined — without knowing
 which file to open.
 
 **Step 1** — In Chat, type:
 ```
-What are the validation rules? #codebase
+What are the AP inventory validation rules? #codebase
 ```
 Press **Enter**.
 
 - **What you see**: Copilot searches across all project files and cites the
   specific files where validation rules appear — likely
-  `docs/task-tracker-spec.md` and `scripts/validate.sh`.
+  `docs/wifi-survey-spec.md` and `scripts/validate.sh`.
 - **How to verify**: Click the file names in Copilot's response to jump to
   those locations in your editor.
 
@@ -1251,13 +1266,14 @@ Press **Enter**.
 
 #### Exercise 4 · Use `#terminalLastCommand` to diagnose output
 
-**What you'll do**: Run a Python script, then ask Copilot to explain the output.
+**What you'll do**: Run the WiFi analysis script, then ask Copilot to explain
+the output.
 
 **Step 1** — Open the integrated terminal: **Ctrl+`** (backtick).
 
 **Step 2** — Run:
 ```powershell
-python src/task_utils.py
+python src/wifi_utils.py
 ```
 
 **Step 3** — Switch back to Chat and type:
@@ -1265,8 +1281,8 @@ python src/task_utils.py
 Explain the output #terminalLastCommand
 ```
 - **What you see**: Copilot reads the exact terminal output (it does not ask
-  you to paste it) and explains what the task summary means — counts, overdue
-  items, or any errors.
+  you to paste it) and explains what the AP inventory summary means — counts
+  by status, weak signals, or any errors.
 
 ---
 
@@ -1303,12 +1319,12 @@ context.
 **Step 2 — `#symbol`**
 - In Chat, type:
   ```
-  Document #symbol:count_overdue
+  Document #symbol:find_weak_signals
   ```
   Press **Enter**.
-- **What you see**: Copilot generates a docstring for `count_overdue` using
+- **What you see**: Copilot generates a docstring for `find_weak_signals` using
   only that function's source, not the whole file. The response is more
-  focused than attaching the entire `task_utils.py`.
+  focused than attaching the entire `wifi_utils.py`.
 
 ---
 
@@ -1317,8 +1333,8 @@ context.
 **What you'll do**: Reference your current editor selection so Copilot does not
 need you to copy-paste code into chat.
 
-**Step 1** — Open `src/task_utils.py` and highlight any multi-line block
-(e.g., the body of `filter_by_status`).
+**Step 1** — Open `src/wifi_utils.py` and highlight any multi-line block
+(e.g., the body of `filter_aps_by_band`).
 
 **Step 2** — In Chat, type:
 ```
@@ -1327,8 +1343,8 @@ What edge cases are not handled in #selection?
 Press **Enter**.
 
 - **What you see**: Copilot analyses specifically the selected lines and lists
-  edge cases — e.g., empty list input, case-sensitive string comparison,
-  `None` values.
+  edge cases — e.g., empty AP list, unknown band string, `None` values
+  in the `band` field.
 - **Why use this instead of `/explain`**: `#selection` works mid-sentence in
   any prompt; `/explain` is a standalone command. Use `#selection` when you
   want to compose a more specific question.
@@ -1340,8 +1356,9 @@ Press **Enter**.
 **What you'll do**: Use `#changes` to generate a commit message from your
 current git diff.
 
-**Step 1** — Make a small edit anywhere in the project (e.g., add a comment to
-`src/task_utils.py`) and save the file. **Do not commit yet.**
+**Step 1** — Make a small edit anywhere in the project (e.g., update a
+`tx_power` value in `data/ap_inventory.json`) and save the file.
+**Do not commit yet.**
 
 **Step 2** — In Chat, type:
 ```
@@ -1351,7 +1368,7 @@ Press **Enter**.
 
 - **What you see**: Copilot reads your uncommitted diff from source control and
   produces a commit message following the Conventional Commits format (e.g.,
-  `docs(task_utils): add inline comment explaining overdue logic`).
+  `fix(survey): update tx_power for AP-03 in Building North`).
 - **How to verify**: Open the Source Control panel (**Ctrl+Shift+G**) — the
   diff Copilot read is the same as what appears there.
 
@@ -1364,11 +1381,11 @@ a new command.
 
 **Step 1** — Open the integrated terminal (**Ctrl+`**) and run:
 ```powershell
-python src/task_utils.py
+python src/wifi_utils.py
 ```
 
 **Step 2** — In the terminal, **click and drag** to select a portion of the
-output — for example, just the line that shows the overdue count.
+output — for example, just the line that shows the count of offline APs.
 
 **Step 3** — In Chat, type:
 ```
@@ -1391,7 +1408,7 @@ Press **Enter**.
 request.
 
 **Step 1 — Introduce some problems**
-- Open `src/task_utils.py` and make two small syntax errors (e.g., remove
+- Open `src/wifi_utils.py` and make two small syntax errors (e.g., remove
   two closing parentheses on separate lines). Save the file.
 - Open the Problems panel: **View → Problems** (or **Ctrl+Shift+M**).
   You should see at least two errors listed.
@@ -1444,7 +1461,7 @@ Open it and you'll see:
 1. **Minimal by default** — Only include what's relevant to *every* task. This
    file is loaded into every chat interaction, so bloat costs context-window
    space.
-2. **Link, don't embed** — Reference `docs/task-tracker-spec.md` instead of
+2. **Link, don't embed** — Reference `docs/wifi-survey-spec.md` instead of
    copying its contents.
 3. **Concise and actionable** — Every line should guide Copilot's behavior.
 
@@ -1491,7 +1508,7 @@ Press **Enter**.
 
 **Step 1** — In Chat, type:
 ```
-How do I validate the task data?
+How do I validate the AP inventory data?
 ```
 - **What you see**: Copilot mentions the `bash scripts/validate.sh` and
   `powershell scripts/validate.ps1` commands from the Quick Start section —
@@ -1515,7 +1532,7 @@ section.
 ### 📝 Exercise — Add a new convention and verify it
 
 **Goal**: Add a JSON indentation rule and confirm Copilot obeys it when
-creating a new file.
+creating a new AP inventory file.
 
 **Step 1 — Edit the instructions file**
 
@@ -1532,17 +1549,17 @@ Save the file.
 
 In Chat, type:
 ```
-Create a new file data/sample.json with a single example task object
+Create a new file data/sample_ap.json with a single example access-point object
 ```
 Press **Enter**.
 
-- **What you see**: The generated `sample.json` uses 2-space indentation —
+- **What you see**: The generated `sample_ap.json` uses 2-space indentation —
   Copilot picked up the new rule you just added.
 
 **Step 3 — Verify and clean up**
 
-- Open `data/sample.json` and confirm the indentation.
-- Delete the file: in the Explorer, right-click `sample.json` → **Delete**.
+- Open `data/sample_ap.json` and confirm the indentation.
+- Delete the file: in the Explorer, right-click `sample_ap.json` → **Delete**.
 
 ---
 
@@ -1611,22 +1628,23 @@ file. If trigger phrases aren't in the description, the agent won't find it.
 
 #### Exercise 1 · Trigger `data-files` instructions automatically
 
-**What you'll do**: Ask Copilot to add a task while `tasks.json` is in context
-and watch it enforce the schema rules from `data-files.instructions.md`.
+**What you'll do**: Ask Copilot to add an AP while `ap_inventory.json` is in
+context and watch it enforce the schema rules from `data-files.instructions.md`.
 
-**Step 1** — Open `data/tasks.json` in the editor (**Ctrl+P** → `tasks.json`).
+**Step 1** — Open `data/ap_inventory.json` in the editor (**Ctrl+P** →
+`ap_inventory.json`).
 
 **Step 2** — Open Chat and type:
 ```
-Add a new task to tasks.json
+Add a new access point to ap_inventory.json
 ```
 Press **Enter**.
 
-- **What you see**: Copilot generates a complete task object with *all* required
-  fields (`id`, `title`, `status`, `priority`, `assignee`, `due_date`,
-  `tags`, `description`) and only uses valid enum values like `"todo"`,
-  `"in-progress"`, `"done"` for `status`.
-- **What's loading this**: Because `tasks.json` is the active file, the
+- **What you see**: Copilot generates a complete AP object with *all* required
+  fields (`ap_id`, `ssid`, `bssid`, `channel`, `band`, `tx_power`, `location`,
+  `status`, `firmware_version`) and only uses valid enum values like
+  `"planned"`, `"deployed"`, `"offline"` for `status`.
+- **What's loading this**: Because `ap_inventory.json` is the active file, the
   `applyTo: "data/**/*.json"` glob in `data-files.instructions.md` matches,
   and the instruction file is injected automatically.
 
@@ -1634,19 +1652,19 @@ Press **Enter**.
 
 #### Exercise 2 · Trigger `python-style` instructions automatically
 
-**What you'll do**: Ask Copilot to add a function while `task_utils.py` is open
+**What you'll do**: Ask Copilot to add a function while `wifi_utils.py` is open
 and confirm it follows the Python style guide.
 
-**Step 1** — Open `src/task_utils.py` in the editor.
+**Step 1** — Open `src/wifi_utils.py` in the editor.
 
 **Step 2** — In Chat, type:
 ```
-Add a function that returns all tasks with a specific tag
+Add a function that returns all APs in a specific location zone
 ```
 Press **Enter**.
 
 - **What you see**: Copilot writes a function with:
-  - A snake_case name (e.g., `get_tasks_by_tag`)
+  - A snake_case name (e.g., `get_aps_by_location`)
   - Type hints on parameters and return value
   - A docstring describing purpose, parameters, and return type
   - An f-string (not `.format()` or `%`) if string formatting is needed
@@ -1664,7 +1682,7 @@ is loaded (no `applyTo` — purely description-based).
 
 **Step 2** — In Chat, type:
 ```
-Write a user guide for the task tracker
+Write a user guide for the WiFi site-survey toolkit
 ```
 Press **Enter**.
 
@@ -1679,13 +1697,13 @@ Press **Enter**.
 
 #### Exercise 4 · Confirm with `/debug`
 
-**Step 1** — Open `data/tasks.json` in the editor.
+**Step 1** — Open `data/ap_inventory.json` in the editor.
 
 **Step 2** — Type `/debug` in Chat.
 
 - **What you look for**: In the debug panel, under **Instructions**, you should
   see `data-files.instructions.md` listed as loaded. Open
-  `src/task_utils.py` and type `/debug` again — this time you should see
+  `src/wifi_utils.py` and type `/debug` again — this time you should see
   `python-style.instructions.md` loaded instead.
 
 ---
@@ -1758,19 +1776,19 @@ agent: "agent"
 - The body defines what kind of tests to generate (pytest conventions, edge
   cases, descriptive names).
 
-#### 2. `summarize-tasks.prompt.md`
+#### 2. `summarize-aps.prompt.md`
 
 ```yaml
 ---
-description: "Summarize tasks from data/tasks.json..."
-argument-hint: "Optional: path to tasks.json or filter criteria"
+description: "Summarize AP data from data/ap_inventory.json..."
+argument-hint: "Optional: path to ap_inventory.json or filter criteria"
 ---
 ```
 
-- **Invocation**: Type `/summarize-tasks` in chat.
+- **Invocation**: Type `/summarize-aps` in chat.
 - **`argument-hint`** shows help text in the chat input field, guiding the
   user on what to type after the command.
-- The body defines the report structure (counts, overdue, in-progress, blockers).
+- The body defines the report structure (counts by status, offline APs, signal quality).
 
 ### Prompts vs Skills
 
@@ -1799,11 +1817,11 @@ tools: [search, web]         # Tools available during execution
 #### Exercise 1 · Run the `generate-test-cases` prompt
 
 **What you'll do**: Use the prompt file as a `/` command to generate tests for
-a real function.
+a real WiFi analysis function.
 
-**Step 1** — Open `src/task_utils.py` in the editor.
+**Step 1** — Open `src/wifi_utils.py` in the editor.
 
-**Step 2** — Scroll to `filter_by_status` and select the entire function
+**Step 2** — Scroll to `filter_aps_by_band` and select the entire function
 (click the function name → **Ctrl+Shift+K** or click-drag).
 
 **Step 3** — Open Chat and type:
@@ -1813,36 +1831,36 @@ a real function.
 Press **Enter**.
 
 - **What you see**: Copilot generates a pytest test file containing:
-  - A happy-path test (valid status, tasks returned)
-  - An empty-result test (status with no matching tasks)
-  - An invalid-input test (unrecognised status string)
-  - Descriptive test names (e.g., `test_filter_by_status_returns_matching_tasks`)
+  - A happy-path test (valid band, APs returned)
+  - An empty-result test (band with no matching APs)
+  - An invalid-input test (unrecognised band string like `"7 GHz"`)
+  - Descriptive test names (e.g., `test_filter_aps_by_band_returns_matching_aps`)
 - **Why it knows to use pytest**: The prompt body in
   `generate-test-cases.prompt.md` specifies pytest conventions.
 
 ---
 
-#### Exercise 2 · Run the `summarize-tasks` prompt
+#### Exercise 2 · Run the `summarize-aps` prompt
 
 **Step 1** — In Chat, type:
 ```
-/summarize-tasks
+/summarize-aps
 ```
 Press **Enter**.
 
 - **What you see**: A formatted Markdown report with totals by status
-  (to-do, in-progress, done), overdue items, and any blockers.
+  (planned, deployed, offline), weak-signal APs, and any blockers.
 
 **Step 2 — Try the argument hint**
 
 Type:
 ```
-/summarize-tasks only high priority
+/summarize-aps only critical signal quality
 ```
 Press **Enter**.
 
-- **What you see**: A filtered report showing only tasks where `priority` is
-  `"high"`.
+- **What you see**: A filtered report showing only APs where `signal_quality`
+  is `"critical"`.
 - **Why the hint appeared**: The `argument-hint` in the prompt frontmatter
   displayed help text below the chat input while you were typing.
 
@@ -1892,7 +1910,7 @@ Save the file.
 
 **Step 2 — Test it**
 
-1. Open `src/task_utils.py` and select the `count_overdue` function.
+1. Open `src/wifi_utils.py` and select the `find_weak_signals` function.
 2. In Chat, type `/code-review` and press **Enter**.
 3. **What you see**: A three-section Markdown report — Bugs, Style, Tests —
    each with bullet points or "No issues found."
@@ -1960,11 +1978,11 @@ This project uses a `PostToolUse` hook:
 ```
 
 **What it does**: After every file edit, the hook script checks:
-1. Was the edited file `tasks.json`?
+1. Was the edited file `ap_inventory.json`?
 2. If yes, run `scripts/validate.sh` to check the data structure.
 3. If validation fails → exit 2 (blocking error) → Copilot sees the failure
    and can self-correct.
-4. If the edit wasn't `tasks.json` → exit 0 (do nothing).
+4. If the edit wasn't `ap_inventory.json` → exit 0 (do nothing).
 
 ### The hook script flow
 
@@ -1973,7 +1991,7 @@ stdin (JSON payload)
   │
   ├─ toolName != "editFiles" or "createFile"?  →  exit 0 (skip)
   │
-  ├─ no "tasks.json" in edited files?  →  exit 0 (skip)
+  ├─ no "ap_inventory.json" in edited files?  →  exit 0 (skip)
   │
   └─ run validate.sh/validate.ps1
        ├─ passes  →  exit 0 (continue)
@@ -1993,39 +2011,41 @@ stdin (JSON payload)
 
 #### Exercise 1 · Force a hook failure
 
-**What you'll do**: Ask Copilot to write an *invalid* task to `tasks.json` and
-watch the `PostToolUse` hook catch it.
+**What you'll do**: Ask Copilot to write an *invalid* AP entry to
+`ap_inventory.json` and watch the `PostToolUse` hook catch it.
 
 **Step 1** — Open Chat and type:
 ```
-Add a new task to tasks.json. Include the id and title fields only — skip all
-other fields.
+Add a new access point to ap_inventory.json. Include the ap_id and ssid fields
+only — skip all other fields.
 ```
 Press **Enter**.
 
-- **What happens**: Copilot writes the incomplete task object to `tasks.json`.
-  The `PostToolUse` hook fires immediately after the file is saved.
-  `scripts/validate.ps1` (Windows) or `scripts/validate.sh` (macOS/Linux) runs.
-  Validation fails and exits with code 2.
+- **What happens**: Copilot writes the incomplete AP object to
+  `ap_inventory.json`. The `PostToolUse` hook fires immediately after the file
+  is saved. `scripts/validate.ps1` (Windows) or `scripts/validate.sh`
+  (macOS/Linux) runs. Validation fails and exits with code 2.
 - **What you see in chat**: Copilot receives the exit-2 error and reports it.
-  It then attempts to self-correct by adding the missing required fields.
+  It then attempts to self-correct by adding the missing required fields
+  (bssid, channel, band, tx_power, location, status, firmware_version).
 - **Key insight**: You did not manually catch this error — the hook
-  *automatically* enforced the schema.
+  *automatically* enforced the AP inventory schema.
 
 ---
 
-#### Exercise 2 · Confirm a valid task passes the hook
+#### Exercise 2 · Confirm a valid AP passes the hook
 
 **Step 1** — In Chat, type:
 ```
-Add a valid task TASK-009 to tasks.json with all required fields populated.
+Add a valid access point AP-09 to ap_inventory.json with all required fields
+populated.
 ```
 Press **Enter**.
 
-- **What happens**: Copilot writes a complete task. The hook fires, validation
-  passes (exit 0), and no error is shown.
-- **Verify**: Open `data/tasks.json` and confirm TASK-009 was added with all
-  required fields.
+- **What happens**: Copilot writes a complete AP entry. The hook fires,
+  validation passes (exit 0), and no error is shown.
+- **Verify**: Open `data/ap_inventory.json` and confirm AP-09 was added with
+  all required fields.
 
 ---
 
@@ -2041,7 +2061,8 @@ see the hook command and its stdout/exit code logged for the previous edits.
 ### 📝 Exercise — Create a `no-secrets` pre-edit hook
 
 **Goal**: Block any file edit in a `config/` folder to prevent accidental
-credential commits.
+credential commits — important when your WiFi controller configs may contain
+SNMP community strings or admin passwords.
 
 **Step 1 — Create the hook config**
 
@@ -2098,14 +2119,14 @@ exit 0
 
 In Chat, type:
 ```
-Create a file config/database.json with a connection string
+Create a file config/controller.json with a WLC connection string
 ```
 - **What you see**: The hook intercepts the `createFile` call, exits 2, and
   Copilot reports that the operation was blocked.
 
 **Step 4 — Verify it allows other edits**
 
-Ask Copilot to edit `src/task_utils.py` — the hook should allow it (exit 0).
+Ask Copilot to edit `src/wifi_utils.py` — the hook should allow it (exit 0).
 
 ---
 
@@ -2119,26 +2140,26 @@ role and limited access.
 
 ### The two example agents
 
-#### 1. `task-analyst.agent.md` — Read-only analyst
+#### 1. `rf-analyst.agent.md` — Read-only analyst
 
 ```yaml
 ---
-name: Task Analyst
-description: "Use when analyzing task data, finding overdue items..."
+name: RF Analyst
+description: "Use when analyzing WiFi survey data, finding weak signals..."
 tools: [read, search]
 ---
 ```
 
 - **User-invocable**: Yes (default) — appears in the agent picker dropdown.
 - **Tools**: Only `read` and `search` — cannot edit files or run commands.
-- **Role**: Analyzes task data and answers questions about project status.
+- **Role**: Analyzes AP inventory data and answers questions about coverage.
 
-#### 2. `doc-writer.agent.md` — Subagent-only writer
+#### 2. `report-writer.agent.md` — Subagent-only writer
 
 ```yaml
 ---
-name: Doc Writer
-description: "Use when generating or updating project documentation..."
+name: Report Writer
+description: "Use when generating or updating WiFi site-survey documentation..."
 tools: [read, search, edit]
 user-invocable: false
 ---
@@ -2148,7 +2169,8 @@ user-invocable: false
   when another agent delegates to it as a subagent.
 - **Tools**: Can `read`, `search`, and `edit` — but only Markdown files
   (enforced by instructions in the body).
-- **Role**: Generates documentation when delegated to by a parent agent.
+- **Role**: Generates site-survey documentation when delegated to by a parent
+  agent.
 
 ### Tool restrictions are your main lever
 
@@ -2177,7 +2199,7 @@ When a parent agent decides which subagent to delegate to, it reads the
 
 ```yaml
 # Good — specific trigger phrases
-description: "Use when analyzing task data, finding overdue items..."
+description: "Use when analyzing WiFi survey data, finding weak signals..."
 
 # Bad — vague, won't be discovered
 description: "A helpful analysis tool"
@@ -2185,34 +2207,34 @@ description: "A helpful analysis tool"
 
 ### 🧪 Try It — Interactive Exercises
 
-#### Exercise 1 · Use the Task Analyst (read-only)
+#### Exercise 1 · Use the RF Analyst (read-only)
 
-**What you'll do**: Switch to the Task Analyst agent and confirm it can analyse
-but cannot edit.
+**What you'll do**: Switch to the RF Analyst agent and confirm it can analyse
+AP data but cannot edit files.
 
 **Step 1** — In the Chat panel, click the **agent picker** dropdown at the
 top of the input area (it shows the current agent name, e.g., "Agent" or a
 model name).
 
-**Step 2** — Select **Task Analyst** from the list.
+**Step 2** — Select **RF Analyst** from the list.
 
 **Step 3** — Type:
 ```
-How many tasks are overdue?
+How many access points have critical signal quality?
 ```
 Press **Enter**.
 
-- **What you see**: The Task Analyst reads `data/tasks.json`, counts tasks
-  whose `due_date` is past today, and returns a Markdown table or bulleted
-  list. It does not offer to edit any files.
+- **What you see**: The RF Analyst reads `data/ap_inventory.json`, counts APs
+  with `"signal_quality": "critical"`, and returns a Markdown table or
+  bulleted list. It does not offer to edit any files.
 
 ---
 
 #### Exercise 2 · Confirm tool restrictions
 
-**Step 1** — Still using **Task Analyst**, type:
+**Step 1** — Still using **RF Analyst**, type:
 ```
-Fix the overdue tasks by updating their due dates to next week.
+Fix the weak-signal APs by increasing their tx_power to 20 dBm.
 ```
 Press **Enter**.
 
@@ -2224,29 +2246,29 @@ Press **Enter**.
 
 ---
 
-#### Exercise 3 · Trigger the Doc Writer via delegation
+#### Exercise 3 · Trigger the Report Writer via delegation
 
 **Step 1** — Click the agent picker and switch back to the default **Agent**.
 
 **Step 2** — Type:
 ```
-Write a contributor guide for this project in docs/contributing.md
+Write a site-survey summary report for this project in docs/site-survey-report.md
 ```
 Press **Enter**.
 
-- **What you see**: The main agent may delegate the writing task to the Doc
+- **What you see**: The main agent may delegate the writing task to the Report
   Writer subagent. Watch the agent logs (type `/debug`) for a
-  `SubagentStart`/`SubagentStop` pair with "Doc Writer" as the agent name.
-- **Why**: The Doc Writer's `description` contains trigger phrases like
-  *"generating or updating project documentation"*, which the main agent
-  matches when it needs to delegate a documentation task.
+  `SubagentStart`/`SubagentStop` pair with "Report Writer" as the agent name.
+- **Why**: The Report Writer's `description` contains trigger phrases like
+  *"generating or updating WiFi site-survey documentation"*, which the main
+  agent matches when it needs to delegate a documentation task.
 
 ---
 
 ### 📝 Exercise — Create a `code-reviewer` agent
 
-**Goal**: Build a read-only agent that reviews Python code for bugs, style,
-and missing tests.
+**Goal**: Build a read-only agent that reviews WiFi analysis Python code for
+bugs, style, and missing tests.
 
 **Step 1 — Create the agent file**
 
@@ -2285,7 +2307,7 @@ Save the file.
    `user-invocable: true`).
 3. Type:
 ```
-Review src/task_utils.py
+Review src/wifi_utils.py
 ```
 Press **Enter**.
 
@@ -2305,7 +2327,7 @@ Fix the style issues you found.
 
 ## Chapter 9: Skills
 
-**Files**: `.github/skills/task-report/`
+**Files**: `.github/skills/wifi-survey-report/`
 
 **Concept**: A skill is a folder containing a `SKILL.md` file plus supporting
 assets (scripts, templates, reference docs). Skills represent multi-step
@@ -2315,7 +2337,7 @@ bundled resources.
 ### Skill folder structure
 
 ```
-.github/skills/task-report/
+.github/skills/wifi-survey-report/
 ├── SKILL.md                          # Required — entry point
 ├── references/
 │   └── report-format.md             # Output format specification
@@ -2340,14 +2362,14 @@ your request.
 
 ```yaml
 ---
-name: task-report           # Must match the folder name!
-description: "Generate a Markdown status report from data/tasks.json..."
-argument-hint: "Optional: report scope like 'high priority only'"
+name: wifi-survey-report           # Must match the folder name!
+description: "Generate a Markdown site-survey status report from data/ap_inventory.json..."
+argument-hint: "Optional: report scope like 'critical signal only'"
 ---
 ```
 
 Critical: The `name` field **must exactly match** the folder name
-(`task-report`). A mismatch causes a silent failure.
+(`wifi-survey-report`). A mismatch causes a silent failure.
 
 ### Slash command behavior
 
@@ -2362,21 +2384,21 @@ Critical: The `name` field **must exactly match** the folder name
 
 #### Exercise 1 · Run the skill
 
-**What you'll do**: Invoke the `task-report` skill as a `/` command.
+**What you'll do**: Invoke the `wifi-survey-report` skill as a `/` command.
 
 **Step 1** — Open Chat.
 
 **Step 2** — Type:
 ```
-/task-report
+/wifi-survey-report
 ```
 Press **Enter**.
 
 - **What you see**: Copilot loads the skill (see the progress indicator), reads
-  `data/tasks.json`, applies the report template from
-  `.github/skills/task-report/assets/report-template.md`, and returns a
-  formatted Markdown status report with task counts by status, overdue items,
-  and a summary table.
+  `data/ap_inventory.json`, applies the report template from
+  `.github/skills/wifi-survey-report/assets/report-template.md`, and returns a
+  formatted Markdown site-survey report with AP counts by status, weak-signal
+  APs, and a summary table.
 
 ---
 
@@ -2384,13 +2406,13 @@ Press **Enter**.
 
 **Step 1** — Type:
 ```
-/task-report overdue items only
+/wifi-survey-report offline APs only
 ```
 Press **Enter**.
 
-- **What you see**: A filtered report showing only tasks with a `due_date` in
-  the past. The argument was passed as the user's request context alongside
-  the skill instructions.
+- **What you see**: A filtered report showing only APs with
+  `"status": "offline"`. The argument was passed as the user's request context
+  alongside the skill instructions.
 
 ---
 
@@ -2407,80 +2429,83 @@ Press **Enter**.
 
 ---
 
-### 📝 Exercise — Create a `data-quality` skill
+### 📝 Exercise — Create a `rf-coverage-audit` skill
 
-**Goal**: Build a skill that checks `tasks.json` against the spec rules and
-reports issues.
+**Goal**: Build a skill that checks `ap_inventory.json` against the survey spec
+rules and reports issues.
 
 **Step 1 — Create the folder structure**
 
 Create these files:
 
-**`.github/skills/data-quality/SKILL.md`**:
+**`.github/skills/rf-coverage-audit/SKILL.md`**:
 
 ```markdown
 ---
-name: data-quality
-description: "Check data/tasks.json for schema violations, missing fields, invalid values, and duplicate IDs. Use when auditing task data quality."
-argument-hint: "Optional: specific check to run, e.g. 'check for duplicates only'"
+name: rf-coverage-audit
+description: "Check data/ap_inventory.json for schema violations, missing fields, invalid values, and duplicate AP IDs. Use when auditing WiFi survey data quality."
+argument-hint: "Optional: specific check to run, e.g. 'check for channel conflicts only'"
 ---
 
-You are a data quality auditor for this task-tracker project.
+You are an RF coverage auditor for this WiFi site-survey project.
 
 ## Your job
 
-1. Read `data/tasks.json`.
-2. Check every task against the rules in `references/quality-rules.md`.
+1. Read `data/ap_inventory.json`.
+2. Check every AP against the rules in `references/quality-rules.md`.
 3. Report all violations in a Markdown table with columns:
-   **Task ID**, **Field**, **Issue**, **Expected Value**.
-4. If no issues are found, write: "✅ All tasks pass quality checks."
+   **AP ID**, **Field**, **Issue**, **Expected Value**.
+4. If no issues are found, write: "✅ All access points pass quality checks."
 
 ## Steps
 
-1. Use the `read` tool to load `data/tasks.json`.
-2. Use the `read` tool to load `.github/skills/data-quality/references/quality-rules.md`.
-3. Validate each task against every rule.
+1. Use the `read` tool to load `data/ap_inventory.json`.
+2. Use the `read` tool to load `.github/skills/rf-coverage-audit/references/quality-rules.md`.
+3. Validate each AP against every rule.
 4. Produce the report.
 ```
 
-**`.github/skills/data-quality/references/quality-rules.md`**:
+**`.github/skills/rf-coverage-audit/references/quality-rules.md`**:
 
 ```markdown
 # Data Quality Rules
 
 ## Required fields
-Every task must have: `id`, `title`, `status`, `priority`, `assignee`,
-`due_date`, `tags`, `description`.
+Every access point must have: `ap_id`, `ssid`, `bssid`, `channel`, `band`,
+`tx_power`, `location`, `status`, `firmware_version`.
 
 ## Enum constraints
-- `status` must be one of: `todo`, `in-progress`, `done`, `blocked`
-- `priority` must be one of: `low`, `medium`, `high`
+- `status` must be one of: `planned`, `deployed`, `offline`, `decommissioned`
+- `band` must be one of: `2.4 GHz`, `5 GHz`, `6 GHz`
+- `signal_quality` must be one of: `good`, `marginal`, `critical`
 
 ## Format constraints
-- `id` must match the pattern `TASK-NNN` (e.g., `TASK-001`)
-- `due_date` must be an ISO 8601 date string (`YYYY-MM-DD`)
-- `tags` must be an array (can be empty)
+- `ap_id` must match the pattern `AP-NN` (e.g., `AP-01`)
+- `bssid` must be a valid MAC address (`XX:XX:XX:XX:XX:XX`)
+- `channel` must be a positive integer
+- `tx_power` must be a number (in dBm)
 
 ## Uniqueness
-- `id` must be unique across all tasks
+- `ap_id` must be unique across all access points
+- `bssid` must be unique across all access points
 ```
 
 **Step 2 — Test the skill**
 
 In Chat, type:
 ```
-/data-quality
+/rf-coverage-audit
 ```
 Press **Enter**.
 
-- **What you see**: Copilot reads both files and validates every task. Any
-  tasks with missing fields, invalid enum values, or duplicate IDs appear in
+- **What you see**: Copilot reads both files and validates every AP. Any
+  APs with missing fields, invalid enum values, or duplicate IDs appear in
   a violations table.
 
 **Step 3 — Introduce a violation to test it**
 
-Temporarily edit `data/tasks.json` to set one task's `status` to `"invalid"`.
-Run `/data-quality` again — it should report the violation.
+Temporarily edit `data/ap_inventory.json` to set one AP's `status` to
+`"invalid"`. Run `/rf-coverage-audit` again — it should report the violation.
 
 Revert the edit when done.
 
@@ -2573,13 +2598,13 @@ inside chat.
 
 **Step 2** — Type:
 ```
-Summarize the latest VS Code release notes #fetch https://code.visualstudio.com/updates
+Summarize the latest firmware release notes for Aruba AP-515 #fetch https://www.arubanetworks.com/techdocs/AOS-CX/latest/release-notes
 ```
 Press **Enter**.
 
-- **What you see**: Copilot fetches the VS Code updates page via the MCP
-  `fetch` server and returns a bullet-point summary of the latest release —
-  without you opening a browser.
+- **What you see**: Copilot fetches the vendor documentation page via the MCP
+  `fetch` server and returns a bullet-point summary of the latest firmware
+  changes — without you opening a browser.
 - **How it works**: `#fetch` tells Copilot to invoke the `fetch` tool from
   `.vscode/mcp.json`. The MCP client sends the HTTP request and returns the
   page content as tool output.
@@ -2665,10 +2690,11 @@ Save the file.
 
 Type in Chat:
 ```
-Using the filesystem MCP server, list all files in the data/ folder
+Using the filesystem MCP server, list all JSON files in the data/ folder and summarise the AP inventory
 ```
 - **What you see**: The agent invokes the MCP filesystem server's
-  `list_directory` tool and returns the file listing.
+  `list_directory` tool, finds `ap_inventory.json`, and summarises the
+  access-point data.
 
 ---
 
@@ -2731,7 +2757,7 @@ Is this guidance that should apply to EVERY request?
 |---------|-------|-----|
 | Instruction not loading | Vague `description` without trigger keywords | Use `"Use when..."` pattern with specific keywords |
 | Instruction always loading | `applyTo: "**"` on a narrow concern | Use specific globs: `"src/**/*.py"` |
-| Skill not appearing as `/` command | Folder name doesn't match `name` in SKILL.md | Ensure exact match: folder `task-report` → `name: task-report` |
+| Skill not appearing as `/` command | Folder name doesn't match `name` in SKILL.md | Ensure exact match: folder `wifi-survey-report` → `name: wifi-survey-report` |
 | Hook not firing | Wrong event or JSON syntax error | Validate JSON, check event name matches exactly |
 | YAML frontmatter silently failing | Unescaped colons, tabs instead of spaces | Quote descriptions with colons: `description: "Use when: doing X"` |
 | Agent not discovered as subagent | Vague description | Include specific trigger phrases in description |
@@ -2784,9 +2810,9 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 
 | Command | Description | Example |
 |---------|-------------|--------|
-| `/explain` | Explain selected code — purpose, logic, edge cases | You inherited `count_overdue` and don't know what it does — select it and use `/explain` |
+| `/explain` | Explain selected code — purpose, logic, edge cases | You inherited `find_weak_signals` and don't know what it does — select it and use `/explain` |
 | `/fix` | Propose fixes for errors guided by Problems panel or stack traces | A red underline appears under your code and you're unsure why — use `/fix` to let Copilot read the error and suggest a fix |
-| `/tests` | Generate tests using your project's test framework conventions | You just wrote `filter_by_status` but have no tests yet — select it and use `/tests` |
+| `/tests` | Generate tests using your project's test framework conventions | You just wrote `filter_aps_by_band` but have no tests yet — select it and use `/tests` |
 | `/doc` | Generate documentation comments (inline chat) | You wrote a utility function but left no docstring — select it and use `/doc` in inline chat |
 | `/setupTests` | Scaffold a test framework — config, deps, example tests | Your project has no test framework and you don't want to configure it manually — use `/setupTests` |
 | `/fixTestFailure` | Analyze failing tests and suggest fixes | A pytest run just failed with an unclear error — use `/fixTestFailure` to let Copilot diagnose it |
@@ -2796,7 +2822,7 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 | Command | Description | Example |
 |---------|-------------|--------|
 | `/new` | Create a new file or project from natural language description | You need a new utility script but don't want to write boilerplate — use `/new Python script that reads a CSV` |
-| `/newNotebook` | Create a new Jupyter notebook from a description | You want to explore `tasks.json` interactively — use `/newNotebook analyze tasks.json` |
+| `/newNotebook` | Create a new Jupyter notebook from a description | You want to explore `ap_inventory.json` interactively — use `/newNotebook analyze ap_inventory.json` |
 
 ### Session Management
 
@@ -2811,9 +2837,9 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 
 | Command | Description | Example |
 |---------|-------------|--------|
-| `/plan` | Create a detailed step-by-step implementation plan | Before coding a new feature, you want to see all steps outlined first — use `/plan Add search by assignee to task_utils.py` |
-| `/search` | Semantic search across workspace | You can't remember where status validation is implemented — use `/search where is task status validated` |
-| `/startDebugging` | Generate `launch.json` and start a debug session | You want to debug `task_utils.py` but have no launch config — use `/startDebugging` |
+| `/plan` | Create a detailed step-by-step implementation plan | Before coding a new feature, you want to see all steps outlined first — use `/plan Add search by location to wifi_utils.py` |
+| `/search` | Semantic search across workspace | You can't remember where band validation is implemented — use `/search where is AP band validated` |
+| `/startDebugging` | Generate `launch.json` and start a debug session | You want to debug `wifi_utils.py` but have no launch config — use `/startDebugging` |
 
 ### Customization Creators
 
@@ -2822,7 +2848,7 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 | `/init` | `copilot-instructions.md` from project structure | You opened a new project and want Copilot to generate workspace instructions automatically — use `/init` |
 | `/create-prompt` | `.prompt.md` file | You keep typing the same changelog task in chat — turn it into a reusable command with `/create-prompt Generate a changelog` |
 | `/create-instruction` | `.instructions.md` file | You want all TypeScript files to follow specific style rules — use `/create-instruction for TypeScript files` |
-| `/create-skill` | Skill folder with `SKILL.md` | You want to package a multi-step data quality workflow with templates — use `/create-skill data-quality` |
+| `/create-skill` | Skill folder with `SKILL.md` | You want to package a multi-step RF coverage audit workflow with templates — use `/create-skill rf-coverage-audit` |
 | `/create-agent` | `.agent.md` file | You need a read-only agent that can only review code, not edit it — use `/create-agent security-reviewer` |
 | `/create-hook` | Hook `.json` configuration | You want to automatically block any edit that produces invalid JSON — use `/create-hook to block invalid JSON` |
 | `/agent-customization` | Opens the agent customization workflow | You're new to agent config and want a guided setup walkthrough — use `/agent-customization` |
@@ -2835,7 +2861,7 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 | `/hooks` | Hook configurations | You want to verify that `validate-json.json` is configured correctly — use `/hooks` |
 | `/instructions` | Instruction files | You want to see which instruction files are currently active — use `/instructions` |
 | `/prompts` | Prompt files | You forgot the name of the test-generation prompt — use `/prompts` to find it |
-| `/skills` | Agent skills | You want to review the `task-report` skill before invoking it — use `/skills` |
+| `/skills` | Agent skills | You want to review the `wifi-survey-report` skill before invoking it — use `/skills` |
 | `/tools` | Tool availability and permissions | Your agent isn't finding files and you suspect a tool is disabled — use `/tools` |
 | `/models` | AI model picker | You want a faster model for a quick question — use `/models` to switch |
 | `/plugins` | Chat plugins and extensions | You want to see which chat extensions are installed and active — use `/plugins` |
@@ -2861,7 +2887,7 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 | Command | Description | Example |
 |---------|-------------|--------|
 | `/<prompt-name>` | Run a prompt file (e.g., `/generate-test-cases`) | You want to generate tests without typing the full instructions each time — use `/generate-test-cases` after selecting a function |
-| `/<skill-name>` | Run a skill (e.g., `/task-report`) | You need a formatted sprint summary from `tasks.json` — use `/task-report high priority only` |
+| `/<skill-name>` | Run a skill (e.g., `/wifi-survey-report`) | You need a formatted site-survey summary from `ap_inventory.json` — use `/wifi-survey-report critical signal only` |
 
 ---
 
@@ -2881,10 +2907,10 @@ All `/` commands available in VS Code Copilot Chat, organized by category.
 
 | Reference | What it adds to context | Example |
 |-----------|------------------------|--------|
-| `#file:path` | A specific file | You want Copilot to explain a whole file without copy-pasting it — use `Explain #file:src/task_utils.py` |
+| `#file:path` | A specific file | You want Copilot to explain a whole file without copy-pasting it — use `Explain #file:src/wifi_utils.py` |
 | `#folder:path` | All files in a directory | You want Copilot to review all source files at once — use `Review #folder:src` |
-| `#symbol:name` | A function, class, or variable | You want docs generated for one specific function — use `Document #symbol:count_overdue` |
-| `#codebase` | Semantic search across the entire workspace | You can't find where status validation is implemented — use `Where is status validated? #codebase` |
+| `#symbol:name` | A function, class, or variable | You want docs generated for one specific function — use `Document #symbol:find_weak_signals` |
+| `#codebase` | Semantic search across the entire workspace | You can't find where band validation is implemented — use `Where is band validated? #codebase` |
 | `#selection` | Current editor text selection | You highlighted a complex block and want an explanation — select it and ask about `#selection` |
 | `#changes` | Uncommitted source control changes | You want a commit message based on everything you've changed — use `Summarize my changes #changes` |
 
@@ -2935,23 +2961,23 @@ copilot-features-demo/
 │   │   └── documentation.instructions.md    ← Ch. 5: On-demand (description)
 │   ├── prompts/
 │   │   ├── generate-test-cases.prompt.md    ← Ch. 6: Prompt (agent mode)
-│   │   └── summarize-tasks.prompt.md        ← Ch. 6: Prompt (argument-hint)
+│   │   └── summarize-aps.prompt.md          ← Ch. 6: Prompt (argument-hint)
 │   ├── hooks/
 │   │   └── validate-json.json               ← Ch. 7: PostToolUse hook
 │   ├── agents/
-│   │   ├── task-analyst.agent.md            ← Ch. 8: Read-only agent
-│   │   └── doc-writer.agent.md              ← Ch. 8: Subagent-only
+│   │   ├── rf-analyst.agent.md              ← Ch. 8: Read-only agent
+│   │   └── report-writer.agent.md           ← Ch. 8: Subagent-only
 │   └── skills/
-│       └── task-report/                     ← Ch. 9: Skill
+│       └── wifi-survey-report/              ← Ch. 9: Skill
 │           ├── SKILL.md
 │           ├── references/report-format.md
 │           └── assets/report-template.md
 ├── .vscode/
 │   └── mcp.json                             ← Ch. 10: MCP config
 ├── data/
-│   └── tasks.json                           ← Sample task data
+│   └── ap_inventory.json                   ← Sample AP data
 ├── docs/
-│   └── task-tracker-spec.md                 ← Domain specification
+│   └── wifi-survey-spec.md                  ← Domain specification
 ├── scripts/
 │   ├── validate.sh                          ← Data validation (macOS/Linux)
 │   ├── validate.ps1                         ← Data validation (Windows)
@@ -2959,7 +2985,7 @@ copilot-features-demo/
 │       ├── enforce-todo-format.sh           ← Hook script (macOS/Linux)
 │       └── enforce-todo-format.ps1          ← Hook script (Windows)
 ├── src/
-│   └── task_utils.py                        ← Python utilities
+│   └── wifi_utils.py                        ← Python utilities
 ├── .gitignore
 └── README.md                                ← This file
 ```

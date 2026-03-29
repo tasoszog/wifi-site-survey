@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Copilot Features — Hands-On Tutorial</title>
+<style>
+/* ── Reset & Base ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: #569cd6; text-decoration: none; }
+a:hover { text-decoration: underline; color: #79b8f8; }
+code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  background: #1a1a1a;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.88em;
+  color: #ce9178;
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Sticky Nav ─────────────────────────────────────────────── */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  background: #252526; border-bottom: 1px solid #3e3e3e;
+  padding: 10px 0;
+}
+.topnav .container {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.topnav-brand {
+  font-weight: 700; font-size: 0.95rem; color: #fff;
+  white-space: nowrap; display: flex; align-items: center; gap: 8px;
+}
+.topnav-brand svg { flex-shrink: 0; }
+.topnav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.topnav-links a {
+  font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;
+  color: #9d9d9d; transition: background .15s, color .15s;
+}
+.topnav-links a:hover { background: #3e3e3e; color: #fff; text-decoration: none; }
+.topnav-links a.active { background: #0078d4; color: #fff; }
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero {
+  text-align: center; padding: 64px 0 48px;
+  background: linear-gradient(180deg, #252526 0%, #1e1e1e 100%);
+  border-bottom: 1px solid #3e3e3e;
+}
+.hero h1 {
+  font-size: 2.4rem; color: #fff; font-weight: 700; margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.hero .subtitle {
+  font-size: 1.15rem; color: #9d9d9d; margin-bottom: 28px;
+}
+.hero .subtitle span { color: #4ec9b0; font-weight: 600; }
+.badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #2d2d2d; border: 1px solid #3e3e3e; border-radius: 20px;
+  padding: 6px 16px; font-size: 0.82rem; color: #b0b0b0;
+}
+.badge svg { width: 14px; height: 14px; fill: currentColor; opacity: .7; }
+.badge strong { color: #d4d4d4; }
+
+/* ── Progress ───────────────────────────────────────────────── */
+.progress-section { padding: 32px 0 8px; }
+.progress-bar-wrapper {
+  background: #2d2d2d; border-radius: 8px; overflow: hidden;
+  height: 8px; position: relative; border: 1px solid #3e3e3e;
+}
+.progress-bar-fill {
+  height: 100%; background: #0078d4; border-radius: 8px;
+  transition: width .4s ease;
+}
+.progress-label {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px; font-size: 0.82rem; color: #9d9d9d;
+}
+.progress-label strong { color: #fff; }
+
+/* ── Quick Start ────────────────────────────────────────────── */
+.quickstart {
+  margin: 32px 0; background: #252526; border: 1px solid #3e3e3e;
+  border-radius: 10px; padding: 28px 32px;
+}
+.quickstart h2 {
+  font-size: 1.2rem; color: #fff; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.quickstart-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.qs-step {
+  background: #2d2d2d; border: 1px solid #3e3e3e; border-radius: 8px;
+  padding: 16px 20px; position: relative;
+}
+.qs-step .step-num {
+  position: absolute; top: -10px; left: 16px;
+  background: #0078d4; color: #fff; font-size: 0.72rem; font-weight: 700;
+  padding: 2px 10px; border-radius: 10px;
+}
+.qs-step h3 { font-size: 0.9rem; color: #fff; margin: 6px 0 4px; }
+.qs-step p { font-size: 0.82rem; color: #9d9d9d; line-height: 1.5; }
+.qs-step code { font-size: 0.78rem; }
+.copy-btn {
+  background: #3e3e3e; border: 1px solid #4e4e4e; color: #d4d4d4;
+  border-radius: 4px; padding: 3px 10px; font-size: 0.72rem;
+  cursor: pointer; margin-top: 6px; transition: background .15s;
+}
+.copy-btn:hover { background: #4e4e4e; }
+
+/* ── Section Headers ────────────────────────────────────────── */
+.section-header {
+  padding: 40px 0 16px;
+  border-bottom: 1px solid #3e3e3e; margin-bottom: 24px;
+}
+.section-header h2 {
+  font-size: 1.35rem; color: #fff; display: flex; align-items: center; gap: 10px;
+}
+.section-header p { font-size: 0.88rem; color: #9d9d9d; margin-top: 6px; }
+.part-badge {
+  display: inline-block; background: #0078d4; color: #fff;
+  font-size: 0.68rem; font-weight: 700; padding: 3px 10px;
+  border-radius: 10px; text-transform: uppercase; letter-spacing: .05em;
+}
+
+/* ── Chapter Blocks (Accordion) ─────────────────────────────── */
+.chapter-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+.ch-block {
+  background: #2d2d2d; border: 1px solid #3e3e3e; border-radius: 10px;
+  overflow: hidden; transition: border-color .2s;
+}
+.ch-block.expanded { border-color: #0078d4; }
+.ch-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px; cursor: pointer; user-select: none;
+  transition: background .15s;
+}
+.ch-header:hover { background: #333; }
+.ch-number {
+  flex-shrink: 0; width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  background: #0078d4; color: #fff; font-weight: 700; font-size: 1rem;
+  border-radius: 8px; transition: background .2s;
+}
+.ch-number.done { background: #16825d; }
+.ch-meta { flex: 1; min-width: 0; }
+.ch-title { font-size: 1.05rem; color: #fff; font-weight: 600; }
+.ch-file {
+  font-size: 0.75rem; color: #6a9955; margin-top: 1px;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ch-badges { display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
+.ex-count {
+  background: #1a3a5c; color: #79b8f8; font-size: 0.73rem; font-weight: 600;
+  padding: 4px 12px; border-radius: 14px; white-space: nowrap;
+}
+.bonus-tag {
+  background: #3a2f1a; color: #dcdcaa; font-size: 0.7rem;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+}
+.ch-arrow {
+  flex-shrink: 0; width: 20px; height: 20px; fill: #9d9d9d;
+  transition: transform .25s; margin-left: 8px;
+}
+.ch-block.expanded .ch-arrow { transform: rotate(180deg); }
+
+/* ── Expanded Panel ─────────────────────────────────────────── */
+.ch-panel { display: none; }
+.ch-block.expanded .ch-panel { display: block; }
+
+/* ── Tabs (Theory / Exercises) ──────────────────────────────── */
+.ch-tabs { display: flex; border-bottom: 1px solid #3e3e3e; background: #252526; }
+.ch-tab {
+  padding: 10px 24px; font-size: 0.85rem; font-weight: 600;
+  color: #9d9d9d; cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all .15s; background: none; border-top: 0; border-left: 0; border-right: 0;
+  font-family: inherit;
+}
+.ch-tab:hover { color: #d4d4d4; }
+.ch-tab.active { color: #79b8f8; border-bottom-color: #0078d4; }
+.ch-tab-content { display: none; padding: 24px; }
+.ch-tab-content.active { display: block; }
+
+/* ── Theory ─────────────────────────────────────────────────── */
+.theory { font-size: 0.88rem; color: #b0b0b0; line-height: 1.75; }
+.theory p { margin-bottom: 12px; }
+.theory strong { color: #d4d4d4; }
+.theory .readme-link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+  font-size: 0.82rem; color: #569cd6; background: none; border: 1px solid #3e3e3e;
+  padding: 6px 16px; border-radius: 6px; cursor: pointer; transition: all .15s;
+  font-family: inherit;
+}
+.theory .readme-link:hover { background: #2d2d2d; border-color: #569cd6; }
+
+/* ── Reading Modal ──────────────────────────────────────────── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.7); justify-content: center; align-items: center;
+  padding: 20px;
+}
+.modal-overlay.visible { display: flex; }
+.modal-content {
+  background: #1e1e1e; border: 1px solid #3e3e3e; border-radius: 12px;
+  width: 100%; max-width: 820px; max-height: 90vh;
+  display: flex; flex-direction: column; box-shadow: 0 16px 48px rgba(0,0,0,.5);
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; border-bottom: 1px solid #3e3e3e; flex-shrink: 0;
+}
+.modal-header h2 { font-size: 1.1rem; color: #fff; margin: 0; }
+.modal-close {
+  background: none; border: none; color: #9d9d9d; font-size: 1.5rem;
+  cursor: pointer; padding: 0 4px; line-height: 1; font-family: inherit;
+}
+.modal-close:hover { color: #fff; }
+.modal-body {
+  padding: 24px; overflow-y: auto; flex: 1;
+  font-size: 0.88rem; color: #b0b0b0; line-height: 1.75;
+}
+.modal-body h1 { font-size: 1.25rem; color: #fff; margin: 28px 0 12px; }
+.modal-body h2 { font-size: 1.15rem; color: #fff; margin: 24px 0 12px; }
+.modal-body h3 { font-size: 1rem; color: #d4d4d4; margin: 20px 0 10px; }
+.modal-body h4 { font-size: 0.92rem; color: #d4d4d4; margin: 16px 0 8px; }
+.modal-body p { margin-bottom: 10px; }
+.modal-body strong { color: #d4d4d4; }
+.modal-body table {
+  width: 100%; border-collapse: collapse; margin: 12px 0;
+}
+.modal-body th, .modal-body td {
+  text-align: left; padding: 8px 12px; border-bottom: 1px solid #3e3e3e;
+  font-size: 0.82rem;
+}
+.modal-body th { color: #fff; font-weight: 600; background: #252526; }
+.modal-body pre {
+  background: #1a1a1a; padding: 14px; border-radius: 6px;
+  overflow-x: auto; font-size: 0.8rem; line-height: 1.6;
+  color: #d4d4d4; border: 1px solid #3e3e3e; margin: 12px 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+}
+.modal-body code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  background: #1a1a1a; padding: 0.15em 0.4em; border-radius: 3px;
+  font-size: 0.86em; color: #ce9178;
+}
+.modal-body pre code { background: none; padding: 0; }
+.modal-body blockquote {
+  border-left: 3px solid #0078d4; padding: 8px 16px; margin: 12px 0;
+  background: #252526; border-radius: 0 6px 6px 0;
+}
+.modal-body hr { border: none; border-top: 1px solid #3e3e3e; margin: 20px 0; }
+.modal-body ul, .modal-body ol { padding-left: 24px; margin: 8px 0; }
+.modal-body li { margin: 4px 0; }
+.modal-body a { color: #569cd6; }
+.modal-fallback {
+  text-align: center; padding: 20px; color: #6d6d6d; font-size: 0.82rem;
+}
+
+/* ── Exercise Stepper ───────────────────────────────────────── */
+.ex-stepper-nav {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
+  padding-bottom: 14px; border-bottom: 1px solid #3e3e3e;
+}
+.ex-pip {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; cursor: pointer;
+  border: 2px solid #4e4e4e; background: transparent; color: #9d9d9d;
+  transition: all .2s; font-family: inherit;
+}
+.ex-pip.current { border-color: #0078d4; color: #fff; background: #0078d4; }
+.ex-pip.done { border-color: #16825d; color: #fff; background: #16825d; }
+.ex-pip.locked { opacity: .4; cursor: default; }
+.ex-card {
+  display: none; background: #252526; border: 1px solid #3e3e3e;
+  border-radius: 8px; padding: 20px 24px; animation: fadeSlide .25s ease;
+}
+.ex-card.active { display: block; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ex-card h4 {
+  font-size: 0.95rem; color: #fff; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ex-card h4 .ex-num {
+  background: #0078d4; color: #fff; font-size: 0.68rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px; flex-shrink: 0;
+}
+.ex-card h4 .ex-num.bonus { background: #8a6c2a; }
+.ex-card .ex-goal { font-size: 0.84rem; color: #b0b0b0; margin-bottom: 16px; line-height: 1.6; }
+.ex-actions { display: flex; gap: 10px; align-items: center; }
+.btn-complete {
+  background: #16825d; color: #fff; border: none; border-radius: 6px;
+  padding: 8px 20px; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: background .15s; font-family: inherit;
+}
+.btn-complete:hover { background: #1a9e6f; }
+.btn-complete:disabled { opacity: .5; cursor: default; }
+.btn-skip {
+  background: none; border: 1px solid #4e4e4e; color: #9d9d9d;
+  border-radius: 6px; padding: 7px 16px; font-size: 0.8rem;
+  cursor: pointer; transition: all .15s; font-family: inherit;
+}
+.btn-skip:hover { border-color: #79b8f8; color: #79b8f8; }
+.ex-done-msg {
+  display: none; text-align: center; padding: 32px 20px;
+  color: #4ec9b0; font-size: 0.95rem; font-weight: 600;
+}
+.ex-done-msg.visible { display: block; }
+.ex-done-msg .ch-complete-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.ex-done-msg .ex-reset {
+  display: inline-block; margin-top: 12px; font-size: 0.78rem;
+  color: #569cd6; cursor: pointer; background: none; border: none;
+  text-decoration: underline; font-family: inherit;
+}
+
+/* ── Decision Flow ──────────────────────────────────────────── */
+.decision-section {
+  margin: 40px 0; background: #252526; border: 1px solid #3e3e3e;
+  border-radius: 10px; padding: 28px 32px;
+}
+.decision-section h2 {
+  color: #fff; font-size: 1.2rem; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.decision-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.decision-item {
+  background: #2d2d2d; border: 1px solid #3e3e3e; border-radius: 8px;
+  padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px;
+}
+.decision-icon {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; font-weight: 700; color: #fff;
+}
+.decision-item .di-text strong { color: #d4d4d4; font-size: 0.85rem; }
+.decision-item .di-text p { color: #9d9d9d; font-size: 0.78rem; margin-top: 2px; }
+
+/* ── Appendices ─────────────────────────────────────────────── */
+.appendices { margin: 40px 0; }
+.appendices h2 { color: #fff; font-size: 1.2rem; margin-bottom: 16px; }
+.appendix-list { display: flex; flex-direction: column; gap: 8px; }
+.appendix-item {
+  border: 1px solid #3e3e3e; border-radius: 8px; overflow: hidden;
+}
+.appendix-item summary {
+  background: #2d2d2d; padding: 14px 20px; cursor: pointer;
+  list-style: none; display: flex; align-items: center; gap: 12px;
+  font-size: 0.9rem; color: #d4d4d4; transition: background .15s;
+}
+.appendix-item summary:hover { background: #353535; }
+.appendix-item summary::before {
+  content: '▸'; font-size: 0.8rem; color: #9d9d9d;
+  transition: transform .2s; flex-shrink: 0;
+}
+.appendix-item[open] summary::before { transform: rotate(90deg); }
+.appendix-item summary::-webkit-details-marker { display: none; }
+.appendix-badge {
+  background: #3e3e3e; color: #b0b0b0; font-size: 0.68rem;
+  padding: 2px 8px; border-radius: 8px; font-weight: 600;
+}
+.appendix-content {
+  padding: 16px 20px; background: #1e1e1e; border-top: 1px solid #3e3e3e;
+  font-size: 0.82rem; color: #b0b0b0; line-height: 1.7;
+}
+.appendix-content pre {
+  background: #1a1a1a; padding: 16px; border-radius: 6px;
+  overflow-x: auto; font-size: 0.78rem; line-height: 1.6;
+  color: #d4d4d4; border: 1px solid #3e3e3e;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+}
+.appendix-content table {
+  width: 100%; border-collapse: collapse; margin: 8px 0;
+}
+.appendix-content th, .appendix-content td {
+  text-align: left; padding: 8px 12px; border-bottom: 1px solid #3e3e3e;
+  font-size: 0.8rem;
+}
+.appendix-content th { color: #fff; font-weight: 600; }
+
+/* ── File Map ───────────────────────────────────────────────── */
+.filemap {
+  margin: 40px 0; background: #252526; border: 1px solid #3e3e3e;
+  border-radius: 10px; padding: 28px 32px;
+}
+.filemap h2 { color: #fff; font-size: 1.2rem; margin-bottom: 16px; }
+.filemap pre {
+  background: #1a1a1a; padding: 20px; border-radius: 8px;
+  overflow-x: auto; font-size: 0.8rem; line-height: 1.65;
+  color: #d4d4d4; border: 1px solid #3e3e3e;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+}
+.filemap .fm-comment { color: #6a9955; }
+.filemap .fm-folder { color: #dcdcaa; }
+.filemap .fm-file { color: #9cdcfe; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  text-align: center; padding: 32px 0; margin-top: 40px;
+  border-top: 1px solid #3e3e3e; font-size: 0.78rem; color: #6d6d6d;
+}
+.footer a { color: #569cd6; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .quickstart-grid { grid-template-columns: 1fr; }
+  .decision-grid { grid-template-columns: 1fr; }
+  .topnav-links { display: none; }
+  .container { padding: 0 16px; }
+  .ch-header { padding: 16px; gap: 12px; }
+  .ch-badges { display: none; }
+}
+@media print {
+  body { background: #fff; color: #222; }
+  .ch-block { background: #f5f5f5; border-color: #ccc; }
+  .ch-panel { display: block !important; }
+  .topnav { display: none; }
+  .hero { background: #fff; }
+  .hero h1, .section-header h2, .ch-title { color: #111; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Top Nav ═══════════════════════════════════════════════ -->
+<nav class="topnav">
+  <div class="container">
+    <div class="topnav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      Copilot Tutorial
+    </div>
+    <div class="topnav-links">
+      <a href="#quickstart">Quick Start</a>
+      <a href="#part-a">Part A</a>
+      <a href="#part-b">Part B</a>
+      <a href="#decision-flow">Decision Flow</a>
+      <a href="#appendices-section">Appendices</a>
+      <a href="#file-map">File Map</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ Hero ══════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="container">
+    <h1>GitHub Copilot Features</h1>
+    <p class="subtitle">Hands-On Tutorial &mdash; <span>WiFi Site-Survey Toolkit</span> Edition</p>
+    <div class="badges">
+      <span class="badge">
+        <svg viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        <strong>Team members</strong> learning Copilot
+      </span>
+      <span class="badge">
+        <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 14.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zM8.5 4H7v5l4.25 2.55.75-1.23-3.5-2.08V4z"/></svg>
+        <strong>60&ndash;90 min</strong>
+      </span>
+      <span class="badge">
+        <svg viewBox="0 0 16 16"><path d="M14.25 1H1.75A.75.75 0 0 0 1 1.75v12.5c0 .414.336.75.75.75h12.5a.75.75 0 0 0 .75-.75V1.75a.75.75 0 0 0-.75-.75zM8 12l-4-4h3V4h2v4h3l-4 4z"/></svg>
+        <strong>VS Code 1.100+</strong> &bull; Copilot Extension
+      </span>
+      <span class="badge">
+        <svg viewBox="0 0 16 16"><path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 12.5v-9zM4 5v1h8V5H4zm0 3v1h5V8H4z"/></svg>
+        <strong>11 chapters</strong> &bull; 57+ exercises
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Progress Tracker ═════════════════════════════════════ -->
+<div class="container progress-section">
+  <div class="progress-label">
+    <span>Your Progress</span>
+    <strong id="progress-text">0 / 11 chapters</strong>
+  </div>
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ═══ Quick Start ══════════════════════════════════════════ -->
+<div class="container" id="quickstart">
+  <div class="quickstart">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="#4ec9b0"><path d="M6 3.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5v-9zM3.5 2A1.5 1.5 0 0 0 2 3.5v9A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 12.5 2h-9z"/></svg>
+      Quick Start
+    </h2>
+    <div class="quickstart-grid">
+      <div class="qs-step">
+        <span class="step-num">Step 1</span>
+        <h3>Open the project</h3>
+        <p>Open this folder in VS Code:</p>
+        <code>code copilot-features-demo</code>
+        <br>
+        <button class="copy-btn" onclick="copyText('code copilot-features-demo',this)">Copy</button>
+      </div>
+      <div class="qs-step">
+        <span class="step-num">Step 2</span>
+        <h3>Verify Copilot</h3>
+        <p>Look for the <strong>sparkle icon</strong> in the status bar. Open Chat with <code>Ctrl+Alt+I</code> and type &ldquo;Hello&rdquo;.</p>
+      </div>
+      <div class="qs-step">
+        <span class="step-num">Step 3</span>
+        <h3>Enable agent mode</h3>
+        <p>In VS Code settings, set:</p>
+        <code>"chat.agent.enabled": true</code>
+      </div>
+      <div class="qs-step">
+        <span class="step-num">Step 4</span>
+        <h3>Initialize git</h3>
+        <p>Create the initial snapshot:</p>
+        <code>git init &amp;&amp; git add . &amp;&amp; git commit -m "Initial commit"</code>
+        <br>
+        <button class="copy-btn" onclick="copyText('git init && git add . && git commit -m &quot;Initial commit: WiFi site-survey toolkit&quot;',this)">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Part A — Built-in Chat Interface ════════════════════ -->
+<div class="container" id="part-a">
+  <div class="section-header">
+    <h2><span class="part-badge">Part A</span> Built-in Chat Interface</h2>
+    <p>Features available out of the box &mdash; no files to create, just open Chat and start typing.</p>
+  </div>
+
+  <div class="chapter-list" id="chapters-a"></div>
+</div><!-- /Part A -->
+
+<!-- ═══ Part B — Customization Primitives ═══════════════════ -->
+<div class="container" id="part-b">
+  <div class="section-header">
+    <h2><span class="part-badge">Part B</span> Customization Primitives</h2>
+    <p>Create files in <code>.github/</code> to shape how the AI understands your project. Version-controlled, team-shared.</p>
+  </div>
+
+  <div class="chapter-list" id="chapters-b"></div>
+</div><!-- /Part B -->
+
+<!-- ═══ Decision Flow ════════════════════════════════════════ -->
+<div class="container" id="decision-flow">
+  <div class="decision-section">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="#dcdcaa"><path d="M8 1L1 8l7 7 7-7-7-7zm0 2.83L12.17 8 8 12.17 3.83 8 8 3.83z"/></svg>
+      Which Primitive Should I Use?
+    </h2>
+    <div class="decision-grid">
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#264f78">WI</div>
+        <div class="di-text"><strong>&ldquo;Always follow these conventions&rdquo;</strong><p>Workspace Instructions &mdash; <code>.github/copilot-instructions.md</code></p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#3b5249">FI</div>
+        <div class="di-text"><strong>&ldquo;Python files should use type hints&rdquo;</strong><p>File Instructions with <code>applyTo</code> glob</p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#4b3b26">FI</div>
+        <div class="di-text"><strong>&ldquo;When writing docs, follow this style&rdquo;</strong><p>File Instructions with <code>description</code> only</p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#4a3060">PF</div>
+        <div class="di-text"><strong>&ldquo;Generate tests for selected code&rdquo;</strong><p>Prompt File &mdash; <code>.github/prompts/*.prompt.md</code></p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#1e4d5c">SK</div>
+        <div class="di-text"><strong>&ldquo;Run this complete reporting workflow&rdquo;</strong><p>Skill &mdash; <code>.github/skills/&lt;name&gt;/SKILL.md</code></p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#5c1e1e">CA</div>
+        <div class="di-text"><strong>&ldquo;This agent can only read, not edit&rdquo;</strong><p>Custom Agent &mdash; <code>.github/agents/*.agent.md</code></p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#5c4d1e">HK</div>
+        <div class="di-text"><strong>&ldquo;Block edits if validation fails&rdquo;</strong><p>Hook &mdash; <code>.github/hooks/*.json</code></p></div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:#1e5c3b">MC</div>
+        <div class="di-text"><strong>&ldquo;Query our Jira/database from chat&rdquo;</strong><p>MCP Server &mdash; <code>.vscode/mcp.json</code></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Appendices ═══════════════════════════════════════════ -->
+<div class="container appendices" id="appendices-section">
+  <h2>Appendices</h2>
+  <div class="appendix-list">
+
+    <!-- Appendix A -->
+    <details class="appendix-item">
+      <summary>
+        <span class="appendix-badge">A</span>
+        Decision Flow &mdash; Choose the right primitive
+      </summary>
+      <div class="appendix-content">
+<pre>Is this guidance that should apply to EVERY request?
+&#9500;&#9472;&#9472; Yes &#8594; Workspace Instructions (.github/copilot-instructions.md)
+&#9492;&#9472;&#9472; No
+    &#9500;&#9472;&#9472; Does it apply to specific FILE TYPES?
+    &#9474;   &#9492;&#9472;&#9472; Yes &#8594; File Instructions with applyTo
+    &#9500;&#9472;&#9472; Does it apply to specific TASKS?
+    &#9474;   &#9492;&#9472;&#9472; Yes &#8594; File Instructions with description only
+    &#9500;&#9472;&#9472; Is it a REPEATABLE single task?
+    &#9474;   &#9492;&#9472;&#9472; Yes &#8594; Prompt File (.github/prompts/)
+    &#9500;&#9472;&#9472; Is it a MULTI-STEP workflow with templates?
+    &#9474;   &#9492;&#9472;&#9472; Yes &#8594; Skill (.github/skills/)
+    &#9500;&#9472;&#9472; Does it need ROLE-BASED tool restrictions?
+    &#9474;   &#9492;&#9472;&#9472; Yes &#8594; Custom Agent (.github/agents/)
+    &#9500;&#9472;&#9472; Must behavior be DETERMINISTICALLY enforced?
+    &#9474;   &#9492;&#9472;&#9472; Yes &#8594; Hook (.github/hooks/)
+    &#9492;&#9472;&#9472; Does it need EXTERNAL tools/services?
+        &#9492;&#9472;&#9472; Yes &#8594; MCP Server (.vscode/mcp.json)</pre>
+      </div>
+    </details>
+
+    <!-- Appendix B -->
+    <details class="appendix-item">
+      <summary>
+        <span class="appendix-badge">B</span>
+        Common Pitfalls &amp; Debugging
+      </summary>
+      <div class="appendix-content">
+        <table>
+          <thead><tr><th>Problem</th><th>Cause</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>Instruction not loading</td><td>Vague <code>description</code></td><td>Use <code>"Use when..."</code> pattern with keywords</td></tr>
+            <tr><td>Instruction always loading</td><td><code>applyTo: "**"</code></td><td>Use specific globs: <code>"src/**/*.py"</code></td></tr>
+            <tr><td>Skill not appearing as <code>/</code></td><td>Folder name ≠ SKILL.md <code>name</code></td><td>Ensure exact match</td></tr>
+            <tr><td>Hook not firing</td><td>Wrong event or JSON error</td><td>Validate JSON, check event name</td></tr>
+            <tr><td>YAML frontmatter failing</td><td>Unescaped colons or tabs</td><td>Quote descriptions: <code>"Use when: X"</code></td></tr>
+            <tr><td>Agent not found as subagent</td><td>Vague description</td><td>Add specific trigger phrases</td></tr>
+            <tr><td>MCP server unavailable</td><td>Config error</td><td>Check <code>.vscode/mcp.json</code> syntax</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px"><strong>Debugging tools:</strong> <code>/debug</code> (inspect prompts &amp; context), <code>/troubleshoot</code> (AI log analysis), Agent Logs (View &rarr; Output &rarr; Agent channel)</p>
+      </div>
+    </details>
+
+    <!-- Appendix C -->
+    <details class="appendix-item">
+      <summary>
+        <span class="appendix-badge">C</span>
+        File Reference &mdash; All customization types
+      </summary>
+      <div class="appendix-content">
+        <table>
+          <thead><tr><th>Type</th><th>Location</th><th>Discovery</th></tr></thead>
+          <tbody>
+            <tr><td>Workspace Instructions</td><td><code>.github/copilot-instructions.md</code></td><td>Always loaded</td></tr>
+            <tr><td>File Instructions</td><td><code>.github/instructions/*.instructions.md</code></td><td>Glob or description</td></tr>
+            <tr><td>Prompts</td><td><code>.github/prompts/*.prompt.md</code></td><td><code>/</code> command</td></tr>
+            <tr><td>Hooks</td><td><code>.github/hooks/*.json</code></td><td>Automatic at events</td></tr>
+            <tr><td>Custom Agents</td><td><code>.github/agents/*.agent.md</code></td><td>Agent picker / subagent</td></tr>
+            <tr><td>Skills</td><td><code>.github/skills/&lt;name&gt;/SKILL.md</code></td><td><code>/</code> command</td></tr>
+            <tr><td>MCP Config</td><td><code>.vscode/mcp.json</code></td><td>Auto tool discovery</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <!-- Appendix D -->
+    <details class="appendix-item">
+      <summary>
+        <span class="appendix-badge">D</span>
+        Complete Slash Command Reference &mdash; 30+ commands
+      </summary>
+      <div class="appendix-content">
+        <table>
+          <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>/explain</code></td><td>Explain selected code</td></tr>
+            <tr><td><code>/fix</code></td><td>Fix errors from Problems panel</td></tr>
+            <tr><td><code>/tests</code></td><td>Generate tests for selection</td></tr>
+            <tr><td><code>/doc</code></td><td>Generate docstring (inline chat)</td></tr>
+            <tr><td><code>/setupTests</code></td><td>Scaffold test framework</td></tr>
+            <tr><td><code>/fixTestFailure</code></td><td>Analyse failing tests</td></tr>
+            <tr><td><code>/new</code></td><td>Create file from description</td></tr>
+            <tr><td><code>/newNotebook</code></td><td>Create Jupyter notebook</td></tr>
+            <tr><td><code>/clear</code></td><td>Fresh session</td></tr>
+            <tr><td><code>/fork</code></td><td>Copy conversation</td></tr>
+            <tr><td><code>/compact</code></td><td>Summarise &amp; free context</td></tr>
+            <tr><td><code>/rename</code></td><td>Rename session</td></tr>
+            <tr><td><code>/plan</code></td><td>Step-by-step implementation plan</td></tr>
+            <tr><td><code>/search</code></td><td>Semantic workspace search</td></tr>
+            <tr><td><code>/startDebugging</code></td><td>Generate launch.json &amp; debug</td></tr>
+            <tr><td><code>/init</code></td><td>Generate copilot-instructions.md</td></tr>
+            <tr><td><code>/create-prompt</code></td><td>Create .prompt.md file</td></tr>
+            <tr><td><code>/create-instruction</code></td><td>Create .instructions.md file</td></tr>
+            <tr><td><code>/create-skill</code></td><td>Create skill folder</td></tr>
+            <tr><td><code>/create-agent</code></td><td>Create .agent.md file</td></tr>
+            <tr><td><code>/create-hook</code></td><td>Create hook .json config</td></tr>
+            <tr><td><code>/agents</code></td><td>List custom agents</td></tr>
+            <tr><td><code>/hooks</code></td><td>View hook configs</td></tr>
+            <tr><td><code>/instructions</code></td><td>View instruction files</td></tr>
+            <tr><td><code>/prompts</code></td><td>View prompt files</td></tr>
+            <tr><td><code>/skills</code></td><td>View agent skills</td></tr>
+            <tr><td><code>/tools</code></td><td>Tool availability</td></tr>
+            <tr><td><code>/autoApprove</code></td><td>Skip confirmations</td></tr>
+            <tr><td><code>/yolo</code></td><td>Full autonomy mode</td></tr>
+            <tr><td><code>/debug</code></td><td>Inspect prompts &amp; context</td></tr>
+            <tr><td><code>/troubleshoot</code></td><td>AI log analysis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <!-- Appendix E -->
+    <details class="appendix-item">
+      <summary>
+        <span class="appendix-badge">E</span>
+        <code>@</code> and <code>#</code> Cheat Sheet
+      </summary>
+      <div class="appendix-content">
+        <h4 style="color:#fff;margin-bottom:8px">@ Participants</h4>
+        <table>
+          <thead><tr><th>Participant</th><th>Domain</th></tr></thead>
+          <tbody>
+            <tr><td><code>@vscode</code></td><td>VS Code features, settings, keybindings</td></tr>
+            <tr><td><code>@terminal</code></td><td>Shell commands, terminal help</td></tr>
+            <tr><td><code>@github</code></td><td>Repos, PRs, issues, commits</td></tr>
+          </tbody>
+        </table>
+        <h4 style="color:#fff;margin:16px 0 8px"># Context References</h4>
+        <table>
+          <thead><tr><th>Reference</th><th>What it adds</th></tr></thead>
+          <tbody>
+            <tr><td><code>#file:path</code></td><td>A specific file</td></tr>
+            <tr><td><code>#folder:path</code></td><td>All files in a directory</td></tr>
+            <tr><td><code>#symbol:name</code></td><td>Function, class, or variable</td></tr>
+            <tr><td><code>#codebase</code></td><td>Semantic search across workspace</td></tr>
+            <tr><td><code>#selection</code></td><td>Current editor selection</td></tr>
+            <tr><td><code>#changes</code></td><td>Uncommitted changes</td></tr>
+          </tbody>
+        </table>
+        <h4 style="color:#fff;margin:16px 0 8px"># Tool References</h4>
+        <table>
+          <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>#fetch</code></td><td>Retrieve URL content</td></tr>
+            <tr><td><code>#terminalSelection</code></td><td>Read terminal selection</td></tr>
+            <tr><td><code>#terminalLastCommand</code></td><td>Last command &amp; output</td></tr>
+            <tr><td><code>#problems</code></td><td>Workspace errors &amp; warnings</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+  </div><!-- /appendix-list -->
+</div>
+
+<!-- ═══ Project File Map ════════════════════════════════════ -->
+<div class="container" id="file-map">
+  <div class="filemap">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="#9cdcfe"><path d="M1.5 1h5l1 1H14.5a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"/></svg>
+      Project File Map
+    </h2>
+    <pre>copilot-features-demo/
+├── <span class="fm-folder">.github/</span>
+│   ├── copilot-instructions.md              <span class="fm-comment">← Ch. 4: Workspace Instructions</span>
+│   ├── <span class="fm-folder">instructions/</span>
+│   │   ├── <span class="fm-file">data-files.instructions.md</span>       <span class="fm-comment">← Ch. 5: Explicit (glob)</span>
+│   │   ├── <span class="fm-file">python-style.instructions.md</span>     <span class="fm-comment">← Ch. 5: Explicit (glob)</span>
+│   │   └── <span class="fm-file">documentation.instructions.md</span>    <span class="fm-comment">← Ch. 5: On-demand (description)</span>
+│   ├── <span class="fm-folder">prompts/</span>
+│   │   ├── <span class="fm-file">generate-test-cases.prompt.md</span>    <span class="fm-comment">← Ch. 6: Prompt (agent mode)</span>
+│   │   └── <span class="fm-file">summarize-aps.prompt.md</span>          <span class="fm-comment">← Ch. 6: Prompt (argument-hint)</span>
+│   ├── <span class="fm-folder">hooks/</span>
+│   │   └── <span class="fm-file">validate-json.json</span>               <span class="fm-comment">← Ch. 7: PostToolUse hook</span>
+│   ├── <span class="fm-folder">agents/</span>
+│   │   ├── <span class="fm-file">rf-analyst.agent.md</span>              <span class="fm-comment">← Ch. 8: Read-only agent</span>
+│   │   └── <span class="fm-file">report-writer.agent.md</span>           <span class="fm-comment">← Ch. 8: Subagent-only</span>
+│   └── <span class="fm-folder">skills/</span>
+│       └── <span class="fm-folder">wifi-survey-report/</span>              <span class="fm-comment">← Ch. 9: Skill</span>
+│           ├── <span class="fm-file">SKILL.md</span>
+│           ├── <span class="fm-folder">references/</span>report-format.md
+│           └── <span class="fm-folder">assets/</span>report-template.md
+├── <span class="fm-folder">.vscode/</span>
+│   └── <span class="fm-file">mcp.json</span>                             <span class="fm-comment">← Ch. 10: MCP config</span>
+├── <span class="fm-folder">data/</span>
+│   └── <span class="fm-file">ap_inventory.json</span>                    <span class="fm-comment">← Sample AP data</span>
+├── <span class="fm-folder">docs/</span>
+│   └── <span class="fm-file">wifi-survey-spec.md</span>                  <span class="fm-comment">← Domain specification</span>
+├── <span class="fm-folder">scripts/</span>
+│   ├── <span class="fm-file">validate.sh</span>                          <span class="fm-comment">← Validation (macOS/Linux)</span>
+│   ├── <span class="fm-file">validate.ps1</span>                         <span class="fm-comment">← Validation (Windows)</span>
+│   └── <span class="fm-folder">hooks/</span>
+│       ├── <span class="fm-file">enforce-todo-format.sh</span>           <span class="fm-comment">← Hook script (macOS/Linux)</span>
+│       └── <span class="fm-file">enforce-todo-format.ps1</span>          <span class="fm-comment">← Hook script (Windows)</span>
+├── <span class="fm-folder">src/</span>
+│   └── <span class="fm-file">wifi_utils.py</span>                        <span class="fm-comment">← Python utilities</span>
+├── <span class="fm-file">.gitignore</span>
+└── <span class="fm-file">README.md</span>                                <span class="fm-comment">← Full tutorial</span></pre>
+  </div>
+</div>
+
+<!-- ═══ Reading Modal ════════════════════════════════════════ -->
+<div class="modal-overlay" id="chapter-modal" onclick="closeModalOutside(event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modal-title">Chapter</h2>
+      <button class="modal-close" onclick="closeChapterModal()" title="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ═══ Footer ═══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    GitHub Copilot Features &mdash; Hands-On Tutorial &bull;
+    WiFi Site-Survey Toolkit Edition &bull;
+    <a href="README.md">View full README</a>
+  </div>
+</footer>
+
+<!-- ═══ JavaScript ═══════════════════════════════════════════ -->
+<script>
+(function() {
+'use strict';
+
+/* ── Chapter data ─────────────────────────────────────────── */
+var CHAPTERS = [
+  {
+    id: 0, part: 'a',
+    title: 'Git &amp; GitHub Essentials',
+    file: 'git commands \u2022 GitHub workflows',
+    link: 'README.md#chapter-0--git--github-essentials',
+    theory: 'Git is the version control system that tracks every change you make to your project. GitHub is the cloud platform that hosts your repositories and enables collaboration. Understanding both is essential \u2014 Copilot\u2019s customization files (instructions, prompts, hooks, agents, skills) are all designed to be version-controlled and shared via Git.<br><br>Every customization file you create in <code>.github/</code> should be committed so your team shares the same AI behavior. Copilot can read your Git history (<code>#changes</code>, <code>git log</code>) to generate commit messages, summarize work, and understand project evolution. Hooks (Chapter 7) rely on Git to revert failed edits.',
+    exercises: [
+      { title: 'Configure Git and make your first commit', goal: 'Set up Git identity and create an initial commit for your WiFi site-survey project.' },
+      { title: 'Track changes with git status and git diff', goal: 'Make a small edit to <code>wifi_utils.py</code> and observe how Git tracks it.' },
+      { title: 'Create and merge a branch', goal: 'Practice the branch-edit-merge workflow \u2014 simulating a new AP deployment update on a feature branch.' },
+      { title: 'Use git stash to shelve work temporarily', goal: 'Stash uncommitted changes so you can switch context without losing work.' },
+      { title: 'View detailed commit history', goal: 'Explore different ways to read the project history with <code>git log</code>.' },
+      { title: 'Undo mistakes safely', goal: 'Practice reverting changes without losing work \u2014 essential when experimenting with AP configuration updates.' },
+      { title: 'Connect to GitHub and push', goal: 'Link your local WiFi survey repository to GitHub and push your commits.' },
+      { title: 'Use Copilot with Git context', goal: 'Combine Copilot\u2019s <code>#changes</code> context mention with Git to generate a commit message automatically.' }
+    ],
+    bonus: { title: 'Practice a pull request workflow', goal: 'Create a branch, push it, and open a pull request on GitHub.' }
+  },
+  {
+    id: 1, part: 'a',
+    title: '<code>/</code> Slash Commands',
+    file: '8 categories \u2022 30+ built-in commands',
+    link: 'README.md#chapter-1--slash-commands',
+    theory: 'Slash commands are shortcuts to specific functionality. Type <code>/</code> in chat to see all available commands. They fall into eight categories: <strong>Coding Actions</strong> (<code>/explain</code>, <code>/fix</code>, <code>/tests</code>, <code>/doc</code>), <strong>Scaffolding</strong> (<code>/new</code>, <code>/newNotebook</code>), <strong>Session Management</strong> (<code>/clear</code>, <code>/fork</code>, <code>/compact</code>), <strong>Planning &amp; Search</strong> (<code>/plan</code>, <code>/search</code>), <strong>Customization Creators</strong> (generate prompts, skills, agents), <strong>Management UIs</strong> (inspect configs), <strong>Permission Control</strong> (<code>/autoApprove</code>, <code>/yolo</code>), and <strong>Debugging</strong> (<code>/debug</code>, <code>/troubleshoot</code>).<br><br><strong>Key insight:</strong> Custom prompts and skills also appear as <code>/</code> commands. Once you create a <code>.prompt.md</code> or <code>SKILL.md</code>, invoke them by typing <code>/</code> followed by the file name.',
+    exercises: [
+      { title: 'Explain then test a function', goal: 'Use <code>/explain</code> and <code>/tests</code> on a real WiFi analysis function.' },
+      { title: 'Plan before coding', goal: 'Use <code>/plan</code> to get a structured implementation plan for a new feature.' },
+      { title: 'Inspect what Copilot sees', goal: 'Use <code>/debug</code> to see the exact context injected into each request.' },
+      { title: 'Free up context window space', goal: 'Use <code>/compact</code> after a long conversation to reclaim context.' },
+      { title: 'Fix an error and add docs', goal: 'Use <code>/fix</code> to resolve an error and <code>/doc</code> to generate a docstring.' },
+      { title: 'Scaffold with /new, /newNotebook, /setupTests', goal: 'Create new files and scaffold a test framework without writing boilerplate.' },
+      { title: 'Manage sessions', goal: 'Organise sessions with <code>/clear</code>, <code>/fork</code>, and <code>/rename</code>.' },
+      { title: 'Search and debug', goal: 'Find code semantically with <code>/search</code> and set up debugging with <code>/startDebugging</code>.' },
+      { title: 'Create customization files', goal: 'Use <code>/create-*</code> commands to scaffold each customization primitive.' },
+      { title: 'Browse configuration', goal: 'Use management <code>/</code> commands to inspect all configured primitives.' },
+      { title: 'Control permissions', goal: 'Experience how <code>/autoApprove</code> and <code>/yolo</code> change the approval flow.' },
+      { title: 'Troubleshoot behaviour', goal: 'Use <code>/troubleshoot</code> and <code>/fixTestFailure</code> to investigate problems.' }
+    ]
+  },
+  {
+    id: 2, part: 'a',
+    title: '<code>@</code> Chat Participants',
+    file: '@vscode \u2022 @terminal \u2022 @github',
+    link: 'README.md#chapter-2--chat-participants',
+    theory: 'Chat participants are domain-specific assistants invoked with <code>@</code>. Built-in participants include <code>@vscode</code> (VS Code features, settings, keybindings), <code>@terminal</code> (shell commands and terminal help), and <code>@github</code> (repos, PRs, issues, commits).<br><br>Participants <strong>scope</strong> the answer to their domain \u2014 without <code>@vscode</code>, Copilot might answer about general networking tools rather than VS Code extensions. Extensions can add more <code>@</code> participants; type <code>@</code> in chat to discover all available ones.',
+    exercises: [
+      { title: 'Ask @vscode a settings question', goal: 'Get VS Code help relevant to your WiFi engineering workflow.' },
+      { title: 'Ask @terminal for a shell command', goal: 'Get a WiFi diagnostic shell command without leaving chat.' },
+      { title: 'Spot the difference', goal: 'Compare <code>@vscode</code> vs plain chat to see scoping in action.' },
+      { title: 'Use @github for repository information', goal: 'Query GitHub directly from chat for pull requests and issues.' },
+      { title: 'Discover extension-contributed participants', goal: 'See all <code>@</code> participants available, including extension-contributed ones.' }
+    ]
+  },
+  {
+    id: 3, part: 'a',
+    title: '<code>#</code> Context Mentions &amp; Tools',
+    file: '#file \u2022 #folder \u2022 #symbol \u2022 #codebase \u2022 #fetch',
+    link: 'README.md#chapter-3--context-mentions--tools',
+    theory: 'The <code>#</code> symbol lets you explicitly control what context and tools are available to Copilot. <strong>Context references</strong> include <code>#file</code>, <code>#folder</code>, <code>#symbol</code>, <code>#codebase</code>, <code>#selection</code>, and <code>#changes</code>. <strong>Tool references</strong> include <code>#fetch</code> (retrieve URL content), <code>#terminalSelection</code>, <code>#terminalLastCommand</code>, and <code>#problems</code>.<br><br>You can also add context via drag &amp; drop \u2014 dragging files, folders, problems, or images directly onto Chat. Tool sets in frontmatter use aliases like <code>read</code>, <code>edit</code>, <code>execute</code>, <code>search</code>, <code>web</code>, <code>agent</code>.',
+    exercises: [
+      { title: 'Attach a file with #file', goal: 'Give Copilot the full context of <code>wifi_utils.py</code>.' },
+      { title: 'Answer a data question with #file', goal: 'Query which access points have weak signal quality.' },
+      { title: 'Search the whole project with #codebase', goal: 'Find where AP validation rules are defined across the project.' },
+      { title: 'Use #terminalLastCommand to diagnose output', goal: 'Run a script and ask Copilot to explain the terminal output.' },
+      { title: 'Fetch external content with #fetch', goal: 'Summarize external documentation without leaving VS Code.' },
+      { title: 'Reference a folder and a symbol', goal: 'Attach an entire directory with <code>#folder</code> and a named symbol with <code>#symbol</code>.' },
+      { title: 'Use #selection for in-place context', goal: 'Reference your current editor selection for analysis.' },
+      { title: 'Summarise uncommitted changes', goal: 'Use <code>#changes</code> to generate a commit message from your diff.' },
+      { title: 'Diagnose a terminal selection', goal: 'Read a specific portion of terminal output with <code>#terminalSelection</code>.' },
+      { title: 'Fix all Problems panel errors', goal: 'Feed the entire Problems panel into Copilot with <code>#problems</code>.' }
+    ],
+    bonus: { title: 'Combine multiple # references', goal: 'Use two or more <code>#</code> references in a single prompt for combined context.' }
+  },
+  {
+    id: 4, part: 'b',
+    title: 'Workspace Instructions',
+    file: '.github/copilot-instructions.md',
+    link: 'README.md#chapter-4-workspace-instructions',
+    theory: 'The <code>.github/copilot-instructions.md</code> file provides <strong>always-on context</strong> that Copilot reads with every request. It\u2019s like a brief project orientation for the AI \u2014 shared via version control with your whole team.<br><br><strong>Design principles:</strong> Minimal by default (every line costs context-window space), link don\u2019t embed (reference <code>docs/wifi-survey-spec.md</code> instead of copying), and concise and actionable (every line should guide behavior).',
+    exercises: [
+      { title: 'Verify it loads automatically', goal: 'Confirm that workspace instructions load without any explicit attachment.' },
+      { title: 'Verify the quick-start command', goal: 'Ask how to validate AP inventory data and confirm Copilot references the correct path.' },
+      { title: 'Inspect with /debug', goal: 'Look for the instructions in the system prompt via <code>/debug</code>.' }
+    ],
+    bonus: { title: 'Add a new convention and verify it', goal: 'Add a JSON indentation rule and confirm Copilot obeys it when creating a new file.' }
+  },
+  {
+    id: 5, part: 'b',
+    title: 'File-Specific Instructions',
+    file: '.github/instructions/*.instructions.md',
+    link: 'README.md#chapter-5-file-specific-instructions',
+    theory: 'While workspace instructions apply everywhere, <strong>file instructions</strong> apply only to specific files or tasks using two discovery modes: <strong>Explicit</strong> (<code>applyTo</code>) loads automatically when matching files are in context, while <strong>On-demand</strong> (<code>description</code>) loads when the task description matches.<br><br>Three examples: <code>data-files.instructions.md</code> with <code>applyTo: "data/**/*.json"</code>, <code>python-style.instructions.md</code> with <code>applyTo: "src/**/*.py"</code>, and <code>documentation.instructions.md</code> with only a description (on-demand).',
+    exercises: [
+      { title: 'Trigger data-files instructions', goal: 'Ask Copilot to add an AP while <code>ap_inventory.json</code> is in context.' },
+      { title: 'Trigger python-style instructions', goal: 'Ask Copilot to add a function while <code>wifi_utils.py</code> is open.' },
+      { title: 'Trigger documentation instructions on demand', goal: 'Ask for documentation and confirm the on-demand instruction loads.' },
+      { title: 'Confirm with /debug', goal: 'Verify which instruction files load when editing different file types.' }
+    ],
+    bonus: { title: 'Create a new instruction file', goal: 'Create instructions enforcing shell scripting standards for <code>scripts/*.sh</code>.' }
+  },
+  {
+    id: 6, part: 'b',
+    title: 'Prompt Files',
+    file: '.github/prompts/*.prompt.md',
+    link: 'README.md#chapter-6-prompt-files',
+    theory: 'Prompt files are reusable task templates that appear as <code>/</code> commands in chat. Each defines a focused, repeatable task. Two examples: <code>generate-test-cases.prompt.md</code> with <code>agent: "agent"</code> (full agent mode) and <code>summarize-aps.prompt.md</code> with <code>argument-hint</code> (shows help text).<br><br>Frontmatter options: <code>description</code>, <code>argument-hint</code>, <code>agent</code> (agent/ask/plan/custom), <code>model</code>, and <code>tools</code>. Prompts are simpler than skills \u2014 a single focused task vs. a multi-step workflow with bundled resources.',
+    exercises: [
+      { title: 'Run generate-test-cases', goal: 'Use the prompt as a <code>/</code> command to generate tests for a WiFi function.' },
+      { title: 'Run summarize-aps', goal: 'Generate a formatted report and try the argument hint filter.' },
+      { title: 'Inspect the prompt frontmatter', goal: 'Read the frontmatter to understand <code>agent:</code> mode and body instructions.' }
+    ],
+    bonus: { title: 'Create a code-review prompt', goal: 'Build a reusable prompt that reviews selected code for bugs and style.' }
+  },
+  {
+    id: 7, part: 'b',
+    title: 'Hooks',
+    file: '.github/hooks/*.json',
+    link: 'README.md#chapter-7-hooks',
+    theory: 'Hooks are <strong>deterministic</strong> automation \u2014 shell commands that run at specific agent lifecycle events. Unlike instructions that <em>guide</em>, hooks <em>enforce</em>. Events include <code>PostToolUse</code>, <code>PreToolUse</code>, <code>SessionStart</code>, <code>UserPromptSubmit</code>, and more.<br><br>Your script communicates via exit code: <strong>0</strong> = continue, <strong>2</strong> = blocking error (stop). The example <code>validate-json.json</code> hook runs after <code>ap_inventory.json</code> is edited \u2014 if validation fails, Copilot receives the error and can self-correct.',
+    exercises: [
+      { title: 'Force a hook failure', goal: 'Ask Copilot to write an invalid AP entry and watch the hook catch it.' },
+      { title: 'Confirm a valid AP passes', goal: 'Add a valid access point and verify the hook allows it (exit 0).' },
+      { title: 'Watch the hook in agent logs', goal: 'Use <code>/debug</code> to see PostToolUse entries with exit codes.' }
+    ],
+    bonus: { title: 'Create a no-secrets pre-edit hook', goal: 'Block any file edit in a <code>config/</code> folder to prevent credential leaks.' }
+  },
+  {
+    id: 8, part: 'b',
+    title: 'Custom Agents',
+    file: '.github/agents/*.agent.md',
+    link: 'README.md#chapter-8-custom-agents',
+    theory: 'Custom agents are specialized AI personas with defined tools, instructions, and behaviors. <strong>RF Analyst</strong> (<code>tools: [read, search]</code>) is read-only; <strong>Report Writer</strong> (<code>tools: [read, search, edit]</code>, <code>user-invocable: false</code>) is subagent-only.<br><br><strong>Tool restrictions are your main lever.</strong> The <code>description</code> is the discovery surface for subagent delegation \u2014 include specific trigger phrases.',
+    exercises: [
+      { title: 'Use the RF Analyst (read-only)', goal: 'Switch to RF Analyst and confirm it can analyse but not edit.' },
+      { title: 'Confirm tool restrictions', goal: 'Ask the RF Analyst to fix weak-signal APs \u2014 it should explain it cannot edit.' },
+      { title: 'Trigger Report Writer via delegation', goal: 'Ask the main agent to write a summary and watch it delegate.' }
+    ],
+    bonus: { title: 'Create a code-reviewer agent', goal: 'Build a read-only agent that reviews WiFi analysis Python code.' }
+  },
+  {
+    id: 9, part: 'b',
+    title: 'Skills',
+    file: '.github/skills/wifi-survey-report/',
+    link: 'README.md#chapter-9-skills',
+    theory: 'A skill is a folder containing <code>SKILL.md</code> plus supporting assets (scripts, templates, reference docs) representing multi-step workflows. Skills load progressively: <strong>Discovery</strong> (~100 tokens), <strong>Instructions</strong> (&lt;5000 tokens), then <strong>Resources</strong> (on demand).<br><br><strong>Critical:</strong> The <code>name</code> field must exactly match the folder name \u2014 a mismatch causes silent failure. Invoke as <code>/wifi-survey-report</code>.',
+    exercises: [
+      { title: 'Run the skill', goal: 'Invoke <code>/wifi-survey-report</code> and get a formatted site-survey report.' },
+      { title: 'Pass an argument', goal: 'Filter the report by passing \u201coffline APs only\u201d as an argument.' },
+      { title: 'Inspect progressive loading', goal: 'Use <code>/debug</code> to see discovery, instruction, and resource loading stages.' }
+    ],
+    bonus: { title: 'Create rf-coverage-audit skill', goal: 'Build a skill that checks <code>ap_inventory.json</code> against spec rules.' }
+  },
+  {
+    id: 10, part: 'b',
+    title: 'MCP Integration',
+    file: '.vscode/mcp.json',
+    link: 'README.md#chapter-10-mcp-integration',
+    theory: 'MCP (Model Context Protocol) connects Copilot to external tools and services. An MCP server exposes tools agents can invoke \u2014 database queries, API calls, or file system operations. Architecture: Agent \u2192 MCP Client (VS Code) \u2192 MCP Server \u2192 External Service.<br><br>Server types: <code>copilot</code> (built-in, like <code>fetch</code>), <code>stdio</code> (local process), and <code>sse</code> (remote HTTP). Agents reference MCP tools with <code>tools: [read, fetch/*]</code>.',
+    exercises: [
+      { title: 'Fetch release notes from the web', goal: 'Use the MCP <code>fetch</code> server to retrieve a live web page in chat.' },
+      { title: 'Verify the fetch tool is available', goal: 'Type <code>/tools</code> and confirm <code>fetch</code> appears in the tool list.' },
+      { title: 'Trace a fetch call in /debug', goal: 'Inspect agent logs to confirm the MCP server handled the request.' }
+    ],
+    bonus: { title: 'Add an MCP server for your tools', goal: 'Configure a second MCP server (filesystem, SQLite, or GitHub).' }
+  }
+];
+
+var TOTAL = CHAPTERS.length;
+var STORAGE_KEY = 'copilot-tutorial-v2';
+
+function loadState() {
+  try { var r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : {}; }
+  catch(e) { return {}; }
+}
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+/* ── Build chapter blocks ─────────────────────────────────── */
+var listA = document.getElementById('chapters-a');
+var listB = document.getElementById('chapters-b');
+
+CHAPTERS.forEach(function(ch) {
+  var totalEx = ch.exercises.length + (ch.bonus ? 1 : 0);
+  var block = document.createElement('div');
+  block.className = 'ch-block';
+  block.setAttribute('data-ch', ch.id);
+  block.id = 'ch-' + ch.id;
+
+  var exHtml = '';
+  ch.exercises.forEach(function(ex, i) {
+    exHtml += '<div class="ex-card" data-exi="' + i + '">' +
+      '<h4><span class="ex-num">' + (i + 1) + '</span>' + ex.title + '</h4>' +
+      '<p class="ex-goal">' + ex.goal + '</p>' +
+      '<div class="ex-actions">' +
+        '<button class="btn-complete" onclick="completeExercise(' + ch.id + ',' + i + ')">Complete &amp; Next \u25B6</button>' +
+        '<button class="btn-skip" onclick="completeExercise(' + ch.id + ',' + i + ')">Skip</button>' +
+      '</div></div>';
+  });
+  if (ch.bonus) {
+    exHtml += '<div class="ex-card" data-exi="' + ch.exercises.length + '">' +
+      '<h4><span class="ex-num bonus">\u2605</span>' + ch.bonus.title + ' <span style="color:#dcdcaa;font-size:0.75rem">(Bonus)</span></h4>' +
+      '<p class="ex-goal">' + ch.bonus.goal + '</p>' +
+      '<div class="ex-actions">' +
+        '<button class="btn-complete" onclick="completeExercise(' + ch.id + ',' + ch.exercises.length + ')">Complete \u2605</button>' +
+        '<button class="btn-skip" onclick="completeExercise(' + ch.id + ',' + ch.exercises.length + ')">Skip</button>' +
+      '</div></div>';
+  }
+
+  var pipHtml = '';
+  for (var p = 0; p < totalEx; p++) {
+    var label = p < ch.exercises.length ? (p + 1) : '\u2605';
+    pipHtml += '<button class="ex-pip" data-exi="' + p + '" onclick="goToExercise(' + ch.id + ',' + p + ')">' + label + '</button>';
+  }
+
+  block.innerHTML =
+    '<div class="ch-header" onclick="toggleChapter(' + ch.id + ')">' +
+      '<div class="ch-number">' + ch.id + '</div>' +
+      '<div class="ch-meta"><div class="ch-title">' + ch.title + '</div>' +
+        '<div class="ch-file">' + ch.file + '</div></div>' +
+      '<div class="ch-badges">' +
+        '<span class="ex-count">' + totalEx + ' exercises</span>' +
+        (ch.bonus ? '<span class="bonus-tag">+bonus</span>' : '') +
+      '</div>' +
+      '<svg class="ch-arrow" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
+    '</div>' +
+    '<div class="ch-panel">' +
+      '<div class="ch-tabs">' +
+        '<button class="ch-tab active" onclick="switchTab(' + ch.id + ',\'theory\')">Theory</button>' +
+        '<button class="ch-tab" onclick="switchTab(' + ch.id + ',\'exercises\')">Exercises</button>' +
+      '</div>' +
+      '<div class="ch-tab-content active" data-tab="theory">' +
+        '<div class="theory"><p>' + ch.theory + '</p>' +
+        '<button class="readme-link" onclick="openChapterModal(' + ch.id + ')">Read full chapter \u2192</button></div>' +
+      '</div>' +
+      '<div class="ch-tab-content" data-tab="exercises">' +
+        '<div class="ex-stepper-nav">' + pipHtml + '</div>' +
+        exHtml +
+        '<div class="ex-done-msg"><span class="ch-complete-icon">\u2705</span>All exercises completed!<br>' +
+          '<button class="ex-reset" onclick="resetChapter(' + ch.id + ')">Reset progress</button></div>' +
+      '</div>' +
+    '</div>';
+
+  if (ch.part === 'a') listA.appendChild(block);
+  else listB.appendChild(block);
+});
+
+/* ── Toggle chapter expand/collapse ───────────────────────── */
+window.toggleChapter = function(id) {
+  var block = document.querySelector('.ch-block[data-ch="' + id + '"]');
+  var isOpen = block.classList.contains('expanded');
+  document.querySelectorAll('.ch-block.expanded').forEach(function(b) {
+    b.classList.remove('expanded');
+  });
+  if (!isOpen) {
+    block.classList.add('expanded');
+    setTimeout(function() {
+      block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+    initExerciseStepper(id);
+  }
+};
+
+/* ── Tab switching ────────────────────────────────────────── */
+window.switchTab = function(id, tab) {
+  var block = document.querySelector('.ch-block[data-ch="' + id + '"]');
+  block.querySelectorAll('.ch-tab').forEach(function(t) {
+    t.classList.toggle('active', t.textContent.toLowerCase() === tab);
+  });
+  block.querySelectorAll('.ch-tab-content').forEach(function(c) {
+    c.classList.toggle('active', c.getAttribute('data-tab') === tab);
+  });
+  if (tab === 'exercises') initExerciseStepper(id);
+};
+
+/* ── Exercise stepper ─────────────────────────────────────── */
+function initExerciseStepper(chId) {
+  var state = loadState();
+  var key = 'ch' + chId;
+  var exState = state[key] || { current: 0, done: [] };
+  renderStepper(chId, exState);
+}
+
+function renderStepper(chId, exState) {
+  var block = document.querySelector('.ch-block[data-ch="' + chId + '"]');
+  var ch = CHAPTERS[chId];
+  var totalEx = ch.exercises.length + (ch.bonus ? 1 : 0);
+  var pips = block.querySelectorAll('.ex-pip');
+  var cards = block.querySelectorAll('.ex-card');
+  var doneMsg = block.querySelector('.ex-done-msg');
+  var allDone = exState.done.length >= totalEx;
+
+  pips.forEach(function(pip, i) {
+    pip.classList.remove('current', 'done', 'locked');
+    if (exState.done.indexOf(i) !== -1) pip.classList.add('done');
+    else if (i === exState.current) pip.classList.add('current');
+    else if (i > exState.current) pip.classList.add('locked');
+  });
+
+  cards.forEach(function(card) { card.classList.remove('active'); });
+
+  if (allDone) {
+    doneMsg.classList.add('visible');
+    updateChapterDone(chId, true);
+  } else {
+    doneMsg.classList.remove('visible');
+    var activeCard = block.querySelector('.ex-card[data-exi="' + exState.current + '"]');
+    if (activeCard) activeCard.classList.add('active');
+  }
+}
+
+window.completeExercise = function(chId, exIdx) {
+  var state = loadState();
+  var key = 'ch' + chId;
+  var exState = state[key] || { current: 0, done: [] };
+  if (exState.done.indexOf(exIdx) === -1) exState.done.push(exIdx);
+  var ch = CHAPTERS[chId];
+  var totalEx = ch.exercises.length + (ch.bonus ? 1 : 0);
+  var next = exIdx + 1;
+  while (next < totalEx && exState.done.indexOf(next) !== -1) next++;
+  exState.current = next >= totalEx ? totalEx : next;
+  state[key] = exState;
+  saveState(state);
+  renderStepper(chId, exState);
+  updateGlobalProgress();
+};
+
+window.goToExercise = function(chId, exIdx) {
+  var state = loadState();
+  var key = 'ch' + chId;
+  var exState = state[key] || { current: 0, done: [] };
+  if (exState.done.indexOf(exIdx) !== -1 || exIdx <= exState.current) {
+    exState.current = exIdx;
+    state[key] = exState;
+    saveState(state);
+    renderStepper(chId, exState);
+  }
+};
+
+window.resetChapter = function(chId) {
+  var state = loadState();
+  delete state['ch' + chId];
+  saveState(state);
+  initExerciseStepper(chId);
+  updateChapterDone(chId, false);
+  updateGlobalProgress();
+};
+
+function updateChapterDone(chId, done) {
+  var block = document.querySelector('.ch-block[data-ch="' + chId + '"]');
+  var num = block.querySelector('.ch-number');
+  if (done) num.classList.add('done');
+  else num.classList.remove('done');
+}
+
+/* ── Global progress ──────────────────────────────────────── */
+var progressBar = document.getElementById('progress-bar');
+var progressText = document.getElementById('progress-text');
+
+function updateGlobalProgress() {
+  var state = loadState();
+  var done = 0;
+  CHAPTERS.forEach(function(ch) {
+    var key = 'ch' + ch.id;
+    var exState = state[key];
+    var totalEx = ch.exercises.length + (ch.bonus ? 1 : 0);
+    var isDone = exState && exState.done && exState.done.length >= totalEx;
+    updateChapterDone(ch.id, isDone);
+    if (isDone) done++;
+  });
+  var pct = Math.round((done / TOTAL) * 100);
+  progressBar.style.width = pct + '%';
+  progressText.textContent = done + ' / ' + TOTAL + ' chapters';
+}
+
+updateGlobalProgress();
+
+/* ── Nav scroll tracking ──────────────────────────────────── */
+var sections = ['quickstart','part-a','part-b','decision-flow','appendices-section','file-map'];
+var navLinks = document.querySelectorAll('.topnav-links a');
+function onScroll() {
+  var scrollY = window.scrollY + 80;
+  var active = '';
+  for (var i = sections.length - 1; i >= 0; i--) {
+    var el = document.getElementById(sections[i]);
+    if (el && el.offsetTop <= scrollY) { active = sections[i]; break; }
+  }
+  navLinks.forEach(function(a) {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ── Markdown to HTML renderer ────────────────────────────── */
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function inlineMd(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+
+function mdToHtml(md) {
+  var codeBlocks = [];
+  md = md.replace(/```(\w*)\n([\s\S]*?)```/g, function(m, lang, code) {
+    codeBlocks.push('<pre><code>' + escHtml(code.replace(/\n$/, '')) + '</code></pre>');
+    return '\x00CB' + (codeBlocks.length - 1) + '\x00';
+  });
+
+  var lines = md.split('\n');
+  var out = [];
+  var inTable = false, tableRow = 0;
+  var inUl = false, inOl = false;
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var trimmed = line.trim();
+
+    if (inUl && !/^[-*] /.test(trimmed) && trimmed !== '' && !/^  /.test(line)) {
+      out.push('</ul>'); inUl = false;
+    }
+    if (inOl && !/^\d+\. /.test(trimmed) && trimmed !== '' && !/^  /.test(line)) {
+      out.push('</ol>'); inOl = false;
+    }
+    if (inTable && !/^\|/.test(trimmed)) {
+      out.push('</table>'); inTable = false; tableRow = 0;
+    }
+
+    if (trimmed === '') continue;
+    if (/^\x00CB\d+\x00$/.test(trimmed)) { out.push(trimmed); continue; }
+
+    if (/^#{1,4} /.test(trimmed)) {
+      var level = trimmed.match(/^(#+)/)[1].length;
+      var hText = trimmed.replace(/^#+\s+/, '');
+      out.push('<h' + level + '>' + inlineMd(hText) + '</h' + level + '>');
+      continue;
+    }
+
+    if (/^---+$/.test(trimmed)) { out.push('<hr>'); continue; }
+
+    if (/^\|/.test(trimmed)) {
+      if (/^\|[\s\-:|]+\|$/.test(trimmed)) { tableRow++; continue; }
+      if (!inTable) { out.push('<table>'); inTable = true; tableRow = 0; }
+      var cells = trimmed.split('|').slice(1, -1);
+      var tag = tableRow === 0 ? 'th' : 'td';
+      out.push('<tr>' + cells.map(function(c) {
+        return '<' + tag + '>' + inlineMd(c.trim()) + '</' + tag + '>';
+      }).join('') + '</tr>');
+      tableRow++;
+      continue;
+    }
+
+    if (/^> (.*)/.test(trimmed)) {
+      out.push('<blockquote>' + inlineMd(RegExp.$1) + '</blockquote>');
+      continue;
+    }
+
+    if (/^[-*] (.+)/.test(trimmed)) {
+      if (!inUl) { out.push('<ul>'); inUl = true; }
+      out.push('<li>' + inlineMd(RegExp.$1) + '</li>');
+      continue;
+    }
+
+    if (/^\d+\. (.+)/.test(trimmed)) {
+      if (!inOl) { out.push('<ol>'); inOl = true; }
+      out.push('<li>' + inlineMd(RegExp.$1) + '</li>');
+      continue;
+    }
+
+    if ((inUl || inOl) && /^  /.test(line)) {
+      out.push('<p style="margin-left:24px">' + inlineMd(trimmed) + '</p>');
+      continue;
+    }
+
+    out.push('<p>' + inlineMd(trimmed) + '</p>');
+  }
+
+  if (inUl) out.push('</ul>');
+  if (inOl) out.push('</ol>');
+  if (inTable) out.push('</table>');
+
+  var html = out.join('\n');
+  html = html.replace(/\x00CB(\d+)\x00/g, function(m, idx) {
+    return codeBlocks[parseInt(idx)];
+  });
+  return html;
+}
+
+/* ── Chapter extraction from README ───────────────────────── */
+function extractChapter(readmeText, chId) {
+  var lines = readmeText.split('\n');
+  var chapterRe = /^## Chapter (\d+)/;
+  var sectionRe = /^# /;
+  var startLine = -1, endLine = lines.length;
+
+  for (var i = 0; i < lines.length; i++) {
+    var m = lines[i].match(chapterRe);
+    if (m) {
+      if (parseInt(m[1]) === chId) { startLine = i; }
+      else if (startLine !== -1) { endLine = i; break; }
+    }
+    if (startLine !== -1 && startLine !== i && sectionRe.test(lines[i])) {
+      endLine = i; break;
+    }
+  }
+  if (startLine === -1) return '';
+  return lines.slice(startLine, endLine).join('\n').trim();
+}
+
+/* ── Reading modal ────────────────────────────────────────── */
+var readmeCache = null;
+
+window.openChapterModal = function(chId) {
+  var modal = document.getElementById('chapter-modal');
+  var modalBody = document.getElementById('modal-body');
+  var modalTitle = document.getElementById('modal-title');
+  var ch = CHAPTERS[chId];
+  var plainTitle = ch.title.replace(/<[^>]+>/g, '');
+  modalTitle.textContent = 'Chapter ' + ch.id + ' \u00b7 ' + plainTitle;
+  modalBody.innerHTML = '<p style="color:#9d9d9d;text-align:center;padding:40px 0">Loading\u2026</p>';
+  modal.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+
+  if (readmeCache) { renderChapterContent(readmeCache, chId); return; }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'README.md', true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if ((xhr.status === 200 || xhr.status === 0) && xhr.responseText) {
+        readmeCache = xhr.responseText;
+        renderChapterContent(readmeCache, chId);
+      } else {
+        showFallbackContent(chId);
+      }
+    }
+  };
+  xhr.onerror = function() { showFallbackContent(chId); };
+  try { xhr.send(); } catch(e) { showFallbackContent(chId); }
+};
+
+function renderChapterContent(readme, chId) {
+  var body = document.getElementById('modal-body');
+  var chapter = extractChapter(readme, chId);
+  if (chapter) { body.innerHTML = mdToHtml(chapter); }
+  else { showFallbackContent(chId); }
+}
+
+function showFallbackContent(chId) {
+  var body = document.getElementById('modal-body');
+  var ch = CHAPTERS[chId];
+  var html = '<div class="theory"><p>' + ch.theory + '</p></div>';
+  html += '<h3>Exercises</h3><ol>';
+  ch.exercises.forEach(function(ex) {
+    html += '<li><strong>' + ex.title + '</strong><br><span style="color:#9d9d9d">' + ex.goal + '</span></li>';
+  });
+  if (ch.bonus) {
+    html += '<li><strong>' + ch.bonus.title + '</strong> <span style="color:#dcdcaa">(Bonus)</span><br><span style="color:#9d9d9d">' + ch.bonus.goal + '</span></li>';
+  }
+  html += '</ol>';
+  html += '<p class="modal-fallback">For full step-by-step instructions, serve this page via a local server or open <a href="' + ch.link + '">README.md</a> directly.</p>';
+  body.innerHTML = html;
+}
+
+window.closeChapterModal = function() {
+  document.getElementById('chapter-modal').classList.remove('visible');
+  document.body.style.overflow = '';
+};
+
+window.closeModalOutside = function(e) {
+  if (e.target.id === 'chapter-modal') closeChapterModal();
+};
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeChapterModal();
+});
+
+})();
+
+function copyText(text, btn) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(function() { btn.textContent = orig; }, 1500);
+    });
+  }
+}
+</script>
+
+</body>
+</html>

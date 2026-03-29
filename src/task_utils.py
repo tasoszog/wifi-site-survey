@@ -21,10 +21,27 @@ def load_tasks(path=None):
 
 
 def filter_by_status(tasks, status):
-    """Return tasks matching the given status."""
+    """Return tasks matching the given status.
+
+    Args:
+        tasks: List of task dicts to filter.
+        status: The status to filter by. Must be one of 'todo', 'in-progress', or 'done'.
+
+    Returns:
+        A list of task dicts whose 'status' field matches the given status.
+
+    Raises:
+        ValueError: If status is not a valid value.
+    """
     if status not in VALID_STATUSES:
         raise ValueError(f"Invalid status '{status}'. Must be one of {VALID_STATUSES}")
     return [t for t in tasks if t.get("status") == status]
+
+
+def filter_by_assignee(tasks: list[dict], assignee: str) -> list[dict]:
+    """Return tasks assigned to the given person (case-insensitive)."""
+    name = assignee.lower()
+    return [t for t in tasks if (t.get("assignee") or "").lower() == name]
 
 
 def count_overdue(tasks, today=None):
