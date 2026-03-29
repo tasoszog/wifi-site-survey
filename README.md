@@ -4,7 +4,7 @@ A self-contained example project that demonstrates **every** GitHub Copilot
 customization primitive with working files you can test immediately.
 
 > **Audience**: Team members learning Copilot's customization system.
-> **Time**: ~60–90 minutes to complete all chapters.
+> **Time**: ~3–5 days to complete all chapters.
 > **Prerequisites**: VS Code 1.100+, GitHub Copilot extension, an active Copilot subscription.
 
 ---

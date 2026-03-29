@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GitHub Copilot Features — Hands-On Tutorial</title>
+<title>GitHub Copilot in VS Code — Hands-On Tutorial</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%230078d4' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 5.5a.75.75 0 0 1 0 1.5h-2v2a.75.75 0 0 1-1.5 0v-2h-2a.75.75 0 0 1 0-1.5h2v-2a.75.75 0 0 1 1.5 0v2h2z'/%3E%3C/svg%3E">
 <style>
 /* ── Theme Variables ─────────────────────────────────────────── */
@@ -296,6 +296,30 @@ code {
 .badge svg { width: 14px; height: 14px; fill: currentColor; opacity: .7; }
 .badge strong { color: var(--text-primary); }
 
+/* ── Prolog Video ──────────────────────────────────────────── */
+.prolog-section { padding: 48px 0 16px; text-align: center; }
+.prolog-section h2 { color: var(--text-heading); font-size: 1.3rem; margin-bottom: 8px; }
+.prolog-section p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 24px; }
+.prolog-video-wrapper {
+  position: relative; max-width: 720px; margin: 0 auto;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 24px rgba(0,0,0,.25);
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+.prolog-video-wrapper video,
+.prolog-video-wrapper iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+.prolog-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; height: 100%; position: absolute; inset: 0;
+  color: var(--text-secondary); font-size: 0.9rem; gap: 12px;
+}
+.prolog-placeholder svg { width: 48px; height: 48px; fill: var(--accent); opacity: .7; }
+.prolog-placeholder span { opacity: .6; font-size: 0.8rem; }
+
 /* ── Progress ───────────────────────────────────────────────── */
 .progress-section { padding: 32px 0 8px; }
 .progress-bar-wrapper {
@@ -331,6 +355,7 @@ code {
   margin-bottom: 8px; font-size: 0.82rem; color: var(--text-secondary);
 }
 .progress-label strong { color: var(--text-heading); }
+.progress-pct { text-align: center; font-size: 0.85rem; color: var(--accent2); font-weight: 600; margin-top: 6px; min-height: 1.2em; }
 
 /* ── Quick Start ────────────────────────────────────────────── */
 .quickstart {
@@ -848,8 +873,8 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
 <!-- ═══ Hero ══════════════════════════════════════════════════ -->
 <header class="hero">
   <div class="container">
-    <h1>GitHub Copilot Features</h1>
-    <p class="subtitle">Hands-On Tutorial &mdash; <span>WiFi Site-Survey Toolkit</span> Edition</p>
+    <h1>GitHub Copilot in <span style="color:#007ACC;">VS Code</span></h1>
+    <p class="subtitle">Hands-On Tutorial</p>
     <div class="badges">
       <span class="badge">
         <svg viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -857,7 +882,7 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
       </span>
       <span class="badge">
         <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 14.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zM8.5 4H7v5l4.25 2.55.75-1.23-3.5-2.08V4z"/></svg>
-        <strong>60&ndash;90 min</strong>
+        <strong>3&ndash;5 Days</strong>
       </span>
       <span class="badge">
         <svg viewBox="0 0 16 16"><path d="M14.25 1H1.75A.75.75 0 0 0 1 1.75v12.5c0 .414.336.75.75.75h12.5a.75.75 0 0 0 .75-.75V1.75a.75.75 0 0 0-.75-.75zM8 12l-4-4h3V4h2v4h3l-4 4z"/></svg>
@@ -871,11 +896,32 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
   </div>
 </header>
 
+<!-- ═══ Prolog Video ═══════════════════════════════════════ -->
+<div class="container prolog-section" id="prolog">
+  <h2>▶ Watch the Introduction</h2>
+  <p>A quick 2-minute overview of everything you’ll learn in this tutorial.</p>
+  <div class="prolog-video-wrapper" id="prolog-video">
+    <!-- Replace the placeholder below with your HeyGen embed.
+         Option A — HeyGen embed URL:
+           <iframe src="YOUR_HEYGEN_VIDEO_URL" allowfullscreen></iframe>
+         Option B — Self-hosted MP4:
+           <video controls preload="metadata" poster="images/prolog-poster.jpg">
+             <source src="assets/prolog.mp4" type="video/mp4">
+           </video>
+    -->
+    <div class="prolog-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      Prolog video — coming soon
+      <span>Render your HeyGen video, then paste the embed URL here</span>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ Progress Tracker ═════════════════════════════════════ -->
 <div class="container progress-section">
   <div class="progress-label">
     <span>Your Progress</span>
-    <strong id="progress-text">0 / 11 chapters</strong>
+    <strong id="progress-text">0 / 0 exercises</strong>
   </div>
   <div class="progress-bar-wrapper">
     <div class="progress-bar-fill empty" id="progress-bar" style="width:0%"></div>
@@ -887,6 +933,7 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
     <span data-at="75">75%</span>
     <span data-at="100">100%</span>
   </div>
+  <div class="progress-pct" id="progress-pct"></div>
 </div>
 
 <!-- ═══ Quick Start ══════════════════════════════════════════ -->
@@ -902,25 +949,14 @@ html { scrollbar-color: var(--border) var(--bg-primary); scrollbar-width: thin; 
         <h3>Open the project</h3>
         <p>Open this folder in VS Code:</p>
         <code>code copilot-features-demo</code>
-        <br>
-        <button class="copy-btn" onclick="copyText('code copilot-features-demo',this)">Copy</button>
       </div>
       <div class="qs-step">
         <span class="step-num">Step 2</span>
-        <h3>Verify Copilot</h3>
-        <p>Look for the <strong>sparkle icon</strong> in the status bar. Open Chat with <code>Ctrl+Alt+I</code> and type &ldquo;Hello&rdquo;.</p>
-      </div>
-      <div class="qs-step">
-        <span class="step-num">Step 3</span>
-        <h3>Enable agent mode</h3>
-        <p>In VS Code settings, set:</p>
-        <code>"chat.agent.enabled": true</code>
-      </div>
-      <div class="qs-step">
-        <span class="step-num">Step 4</span>
         <h3>Initialize git</h3>
         <p>Create the initial snapshot:</p>
-        <code>git init &amp;&amp; git add . &amp;&amp; git commit -m "Initial commit"</code>
+        <code>git init</code><br>
+        <code>git add .</code><br>
+        <code>git commit -m "Initial commit"</code>
         <br>
         <button class="copy-btn" onclick="copyText('git init && git add . && git commit -m &quot;Initial commit: WiFi site-survey toolkit&quot;',this)">Copy</button>
       </div>
@@ -2470,22 +2506,26 @@ function updateChapterDone(chId, done) {
 /* ── Global progress ──────────────────────────────────────── */
 var progressBar = document.getElementById('progress-bar');
 var progressText = document.getElementById('progress-text');
+var progressPct = document.getElementById('progress-pct');
 
 function updateGlobalProgress() {
   var state = loadState();
-  var done = 0;
+  var totalEx = 0, doneEx = 0;
   CHAPTERS.forEach(function(ch) {
     var key = 'ch' + ch.id;
     var exState = state[key];
-    var totalEx = ch.exercises.length + (ch.bonus ? 1 : 0);
-    var isDone = exState && exState.done && exState.done.length >= totalEx;
+    var chTotal = ch.exercises.length + (ch.bonus ? 1 : 0);
+    totalEx += chTotal;
+    var chDone = exState && exState.done ? exState.done.length : 0;
+    doneEx += Math.min(chDone, chTotal);
+    var isDone = chDone >= chTotal;
     updateChapterDone(ch.id, isDone);
-    if (isDone) done++;
   });
-  var pct = Math.round((done / TOTAL) * 100);
+  var pct = totalEx > 0 ? Math.round((doneEx / totalEx) * 100) : 0;
   progressBar.style.width = pct + '%';
   progressBar.classList.toggle('empty', pct === 0);
-  progressText.textContent = done + ' / ' + TOTAL + ' chapters';
+  progressText.textContent = doneEx + ' / ' + totalEx + ' exercises';
+  progressPct.textContent = pct > 0 ? pct + '% complete' : '';
   var milestones = document.querySelectorAll('#progress-milestones span');
   milestones.forEach(function(ms) {
     var at = parseInt(ms.getAttribute('data-at'));

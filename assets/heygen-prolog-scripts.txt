@@ -1,0 +1,81 @@
+HeyGen Prolog Video Scripts — GitHub Copilot in VS Code Tutorial
+================================================================
+
+Paste each scene script into the corresponding HeyGen scene slot (1–7).
+Recommended: Professional avatar, conversational delivery style.
+Target total length: ~2 minutes.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 1 — Hook
+
+Welcome to the GitHub Copilot in VS Code hands-on tutorial.
+If you think Copilot is just autocomplete — you're about to
+discover how much more it can do. In this guide, you'll learn
+the full customization system that lets you shape how AI
+understands your project, what tools it can use, and how it
+responds.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 2 — The Three Layers
+
+Copilot's power comes from three layers. First, the built-in
+chat interface — slash commands, at-participants, and context
+mentions that are already available. Second, customization
+primitives — instructions, prompts, hooks, agents, and skills
+that you create as files in your project. And third, external
+tools through MCP servers and extensions.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 3 — What You'll Build
+
+This tutorial walks you through all three layers step by step.
+You'll start with Git essentials, then explore every built-in
+chat feature. After that, you'll create your own instruction
+files, prompt templates, automated hooks, custom agents, and
+skills — all version-controlled and ready to share with your
+team.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 4 — The Practice Project
+
+To keep things practical, we use a simple WiFi site-survey
+toolkit as our domain. It includes sample access point data,
+Python utilities, validation scripts, and a data specification.
+The domain is intentionally simple — the focus is entirely on
+the Copilot features, not the application code.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 5 — How It's Structured
+
+The tutorial is organized into eleven chapters across two parts.
+Part A covers the built-in chat interface — slash commands,
+at-participants, and context mentions. Part B covers the
+customization primitives — workspace instructions, file-specific
+instructions, prompt files, hooks, custom agents, skills, and
+MCP integration. Each chapter includes theory and hands-on
+exercises.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 6 — What You Need
+
+To get started, you'll need VS Code version 1.100 or later,
+the GitHub Copilot extension, and an active Copilot subscription.
+The tutorial takes about three to five days to complete all
+chapters — but you can work through them at your own pace, and
+your progress is tracked automatically.
+
+────────────────────────────────────────────────────────────────
+
+SCENE 7 — Let's Begin
+
+Everything you need is already in the project folder. Open it
+in VS Code, initialize Git, and you're ready to go. By the end,
+you'll have a complete set of customization files that demonstrate
+every Copilot primitive — and the confidence to apply them to
+your own projects. Let's get started.
