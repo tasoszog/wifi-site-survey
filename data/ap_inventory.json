@@ -1,0 +1,96 @@
+[
+  {
+    "ap_id": "AP-01",
+    "ssid": "CorpNet-5G",
+    "bssid": "AA:BB:CC:DD:EE:01",
+    "channel": 36,
+    "band": "5 GHz",
+    "tx_power": 17,
+    "location": "Building A, Floor 1, Lobby",
+    "status": "deployed",
+    "signal_quality": "good",
+    "firmware_version": "8.10.0.1"
+  },
+  {
+    "ap_id": "AP-02",
+    "ssid": "CorpNet-2G",
+    "bssid": "AA:BB:CC:DD:EE:02",
+    "channel": 6,
+    "band": "2.4 GHz",
+    "tx_power": 14,
+    "location": "Building A, Floor 1, East Wing",
+    "status": "deployed",
+    "signal_quality": "marginal",
+    "firmware_version": "8.10.0.1"
+  },
+  {
+    "ap_id": "AP-03",
+    "ssid": "CorpNet-5G",
+    "bssid": "AA:BB:CC:DD:EE:03",
+    "channel": 44,
+    "band": "5 GHz",
+    "tx_power": 10,
+    "location": "Building A, Floor 2, Conference Room B",
+    "status": "deployed",
+    "signal_quality": "critical",
+    "firmware_version": "8.9.1.2"
+  },
+  {
+    "ap_id": "AP-04",
+    "ssid": "CorpNet-6E",
+    "bssid": "AA:BB:CC:DD:EE:04",
+    "channel": 1,
+    "band": "6 GHz",
+    "tx_power": 20,
+    "location": "Building B, Floor 1, Open Office",
+    "status": "planned",
+    "firmware_version": "8.10.0.1"
+  },
+  {
+    "ap_id": "AP-05",
+    "ssid": "CorpNet-5G",
+    "bssid": "AA:BB:CC:DD:EE:05",
+    "channel": 149,
+    "band": "5 GHz",
+    "tx_power": 15,
+    "location": "Building A, Floor 3, Server Room",
+    "status": "offline",
+    "signal_quality": "critical",
+    "firmware_version": "8.8.0.5"
+  },
+  {
+    "ap_id": "AP-06",
+    "ssid": "GuestNet",
+    "bssid": "AA:BB:CC:DD:EE:06",
+    "channel": 11,
+    "band": "2.4 GHz",
+    "tx_power": 12,
+    "location": "Building A, Floor 1, Reception",
+    "status": "deployed",
+    "signal_quality": "good",
+    "firmware_version": "8.10.0.1"
+  },
+  {
+    "ap_id": "AP-07",
+    "ssid": "CorpNet-5G",
+    "bssid": "AA:BB:CC:DD:EE:07",
+    "channel": 52,
+    "band": "5 GHz",
+    "tx_power": 8,
+    "location": "Building B, Floor 2, Lab",
+    "status": "deployed",
+    "signal_quality": "marginal",
+    "firmware_version": "8.9.1.2"
+  },
+  {
+    "ap_id": "AP-08",
+    "ssid": "CorpNet-2G",
+    "bssid": "AA:BB:CC:DD:EE:08",
+    "channel": 1,
+    "band": "2.4 GHz",
+    "tx_power": 18,
+    "location": "Building C, Floor 1, Warehouse",
+    "status": "decommissioned",
+    "firmware_version": "8.7.0.3"
+  }
+]

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# enforce-todo-format.sh — PostToolUse hook that validates tasks.json after edits.
+# enforce-todo-format.sh — PostToolUse hook that validates ap_inventory.json after edits.
 #
 # Receives JSON on stdin from the hook system. Checks if the edited file is
-# data/tasks.json; if so, runs validation. Otherwise exits silently.
+# data/ap_inventory.json; if so, runs validation. Otherwise exits silently.
 #
 # Exit codes:
 #   0  — continue (file not relevant, or validation passed)
@@ -22,8 +22,8 @@ case "$TOOL_NAME" in
     *) exit 0 ;;
 esac
 
-# Check if any of the edited files is tasks.json
-IS_TASKS=$(echo "$PAYLOAD" | python3 -c "
+# Check if any of the edited files is ap_inventory.json
+IS_AP_FILE=$(echo "$PAYLOAD" | python3 -c "
 import json, sys
 d = json.load(sys.stdin)
 result = d.get('toolResult', {})
@@ -31,13 +31,13 @@ files = result.get('filePaths', result.get('files', []))
 if isinstance(files, str):
     files = [files]
 for f in files:
-    if 'tasks.json' in str(f):
+    if 'ap_inventory.json' in str(f):
         print('yes')
         sys.exit(0)
 print('no')
 " 2>/dev/null || echo "no")
 
-if [ "$IS_TASKS" != "yes" ]; then
+if [ "$IS_AP_FILE" != "yes" ]; then
     exit 0
 fi
 
@@ -48,6 +48,6 @@ VALIDATE="${SCRIPT_DIR}/../validate.sh"
 if bash "$VALIDATE"; then
     echo '{"decision": "continue"}' 
 else
-    echo "ERROR: tasks.json validation failed after edit." >&2
+    echo "ERROR: ap_inventory.json validation failed after edit." >&2
     exit 2
 fi

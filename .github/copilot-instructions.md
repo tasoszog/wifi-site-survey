@@ -1,16 +1,16 @@
-# Task Tracker — Copilot Features Demo
+# WiFi Site-Survey Toolkit — Copilot Features Demo
 
-This is a minimal task-tracker project used to demonstrate every GitHub Copilot
-customization primitive. See `docs/task-tracker-spec.md` for the domain spec.
+This is a minimal WiFi site-survey toolkit used to demonstrate every GitHub
+Copilot customization primitive. See `docs/wifi-survey-spec.md` for the domain spec.
 
 ## Structure
 
-| Folder     | Purpose                                          |
-|------------|--------------------------------------------------|
-| `data/`    | Task data (`tasks.json`)                         |
-| `docs/`    | Specifications and design documents              |
-| `src/`     | Python utilities for loading and querying tasks  |
-| `scripts/` | Validation and automation scripts                |
+| Folder     | Purpose                                              |
+|------------|------------------------------------------------------|
+| `data/`    | AP inventory data (`ap_inventory.json`)              |
+| `docs/`    | Specifications and design documents                  |
+| `src/`     | Python utilities for loading and analysing AP data   |
+| `scripts/` | Validation and automation scripts                    |
 
 ## Conventions
 
@@ -22,10 +22,10 @@ customization primitive. See `docs/task-tracker-spec.md` for the domain spec.
 ## Quick Start
 
 ```bash
-# Validate the task data
+# Validate the AP inventory data
 bash scripts/validate.sh        # macOS / Linux
 powershell scripts/validate.ps1 # Windows
 
-# Run task utilities
-python src/task_utils.py
+# Run WiFi utilities
+python src/wifi_utils.py
 ```

@@ -1,7 +1,7 @@
-# enforce-todo-format.ps1 — PostToolUse hook that validates tasks.json after edits.
+# enforce-todo-format.ps1 — PostToolUse hook that validates ap_inventory.json after edits.
 #
 # Receives JSON on stdin from the hook system. Checks if the edited file is
-# data/tasks.json; if so, runs validation. Otherwise exits silently.
+# data/ap_inventory.json; if so, runs validation. Otherwise exits silently.
 #
 # Exit codes:
 #   0  — continue (file not relevant, or validation passed)
@@ -23,17 +23,17 @@ try {
 $toolName = $payload.toolName
 if ($toolName -notin @("editFiles", "createFile")) { exit 0 }
 
-# Check if any edited file is tasks.json
+# Check if any edited file is ap_inventory.json
 $result = $payload.toolResult
 $files = @()
 if ($result.filePaths) { $files = $result.filePaths }
 elseif ($result.files)  { $files = $result.files }
 
-$isTasksFile = $false
+$isApFile = $false
 foreach ($f in $files) {
-    if ($f -like "*tasks.json*") { $isTasksFile = $true; break }
+    if ($f -like "*ap_inventory.json*") { $isApFile = $true; break }
 }
-if (-not $isTasksFile) { exit 0 }
+if (-not $isApFile) { exit 0 }
 
 # Run validation
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -43,6 +43,6 @@ try {
     & powershell -ExecutionPolicy Bypass -File $ValidateScript
     Write-Output '{"decision": "continue"}'
 } catch {
-    Write-Error "tasks.json validation failed after edit."
+    Write-Error "ap_inventory.json validation failed after edit."
     exit 2
 }

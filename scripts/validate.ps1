@@ -1,47 +1,56 @@
-# validate.ps1 — Validates data/tasks.json structure (Windows variant).
+# validate.ps1 — Validates data/ap_inventory.json structure (Windows variant).
 # Exit 0 = valid, Exit 1 = invalid.
 
 $ErrorActionPreference = "Stop"
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$DataFile  = Join-Path $ScriptDir "..\data\tasks.json"
+$DataFile  = Join-Path $ScriptDir "..\data\ap_inventory.json"
 
 if (-not (Test-Path $DataFile)) {
-    Write-Error "tasks.json not found at $DataFile"
+    Write-Error "ap_inventory.json not found at $DataFile"
     exit 1
 }
 
 try {
-    $tasks = Get-Content $DataFile -Raw | ConvertFrom-Json
+    $aps = Get-Content $DataFile -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "tasks.json is not valid JSON: $_"
+    Write-Error "ap_inventory.json is not valid JSON: $_"
     exit 1
 }
 
-$Required   = @("id", "title", "status", "priority", "created_at")
-$Statuses   = @("todo", "in-progress", "done")
-$Priorities = @("low", "medium", "high")
+$Required   = @("ap_id", "ssid", "bssid", "channel", "band", "tx_power", "location", "status", "firmware_version")
+$Statuses   = @("planned", "deployed", "offline", "decommissioned")
+$Bands      = @("2.4 GHz", "5 GHz", "6 GHz")
+$Qualities  = @("good", "marginal", "critical")
 
 $ids    = @{}
+$bssids = @{}
 $errors = @()
 
-for ($i = 0; $i -lt $tasks.Count; $i++) {
-    $task = $tasks[$i]
+for ($i = 0; $i -lt $aps.Count; $i++) {
+    $ap = $aps[$i]
     foreach ($field in $Required) {
-        if (-not $task.PSObject.Properties.Name.Contains($field)) {
-            $errors += "Task $i : missing field '$field'"
+        if (-not $ap.PSObject.Properties.Name.Contains($field)) {
+            $errors += "AP $i : missing field '$field'"
         }
     }
-    if ($task.status -notin $Statuses) {
-        $errors += "Task $i : invalid status '$($task.status)'"
+    if ($ap.status -notin $Statuses) {
+        $errors += "AP $i : invalid status '$($ap.status)'"
     }
-    if ($task.priority -notin $Priorities) {
-        $errors += "Task $i : invalid priority '$($task.priority)'"
+    if ($ap.band -notin $Bands) {
+        $errors += "AP $i : invalid band '$($ap.band)'"
     }
-    if ($ids.ContainsKey($task.id)) {
-        $errors += "Task $i : duplicate id '$($task.id)'"
+    if ($ap.PSObject.Properties.Name.Contains("signal_quality") -and $ap.signal_quality -notin $Qualities) {
+        $errors += "AP $i : invalid signal_quality '$($ap.signal_quality)'"
     }
-    $ids[$task.id] = $true
+    if ($ids.ContainsKey($ap.ap_id)) {
+        $errors += "AP $i : duplicate ap_id '$($ap.ap_id)'"
+    }
+    $ids[$ap.ap_id] = $true
+    if ($bssids.ContainsKey($ap.bssid)) {
+        $errors += "AP $i : duplicate bssid '$($ap.bssid)'"
+    }
+    $bssids[$ap.bssid] = $true
 }
 
 if ($errors.Count -gt 0) {
@@ -49,4 +58,4 @@ if ($errors.Count -gt 0) {
     exit 1
 }
 
-Write-Output "OK: $($tasks.Count) tasks validated successfully."
+Write-Output "OK: $($aps.Count) access points validated successfully."
