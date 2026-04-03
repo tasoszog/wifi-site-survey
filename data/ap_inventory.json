@@ -5,7 +5,7 @@
     "bssid": "AA:BB:CC:DD:EE:01",
     "channel": 36,
     "band": "5 GHz",
-    "tx_power": 17,
+    "tx_power": 15,
     "location": "Building A, Floor 1, Lobby",
     "status": "deployed",
     "signal_quality": "good",
