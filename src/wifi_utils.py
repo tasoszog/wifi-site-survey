@@ -5,6 +5,7 @@ from pathlib import Path
 
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "ap_inventory.json"
 
+# Channel planning constants
 VALID_STATUSES = {"planned", "deployed", "offline", "decommissioned"}
 VALID_BANDS = {"2.4 GHz", "5 GHz", "6 GHz"}
 VALID_SIGNAL_QUALITIES = {"good", "marginal", "critical"}
