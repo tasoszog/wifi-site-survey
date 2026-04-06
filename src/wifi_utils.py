@@ -1,5 +1,6 @@
 """WiFi site-survey utilities for the Copilot features demo."""
 
+import itertools
 import json
 from pathlib import Path
 
@@ -28,6 +29,45 @@ def find_weak_signals(aps: list[dict], threshold: int = 12) -> list[dict]:
         A list of AP dicts with tx_power below the threshold.
     """
     return [ap for ap in aps if ap.get("tx_power", 0) < threshold]
+
+
+def _channels_conflict(ch1: int, ch2: int, band: str) -> bool:
+    if band == "2.4 GHz":
+        return abs(ch1 - ch2) < 5
+    return ch1 == ch2
+
+
+def find_channel_conflicts(aps: list[dict]) -> list[dict]:
+    """Return pairs of APs at the same location whose channels conflict.
+
+    For 2.4 GHz, channels are considered conflicting when they are within ±4
+    of each other (i.e. ``abs(ch1 - ch2) < 5``). For 5 GHz and 6 GHz, only
+    identical channel numbers conflict.
+
+    Args:
+        aps: List of AP dicts to inspect.
+
+    Returns:
+        A list of dicts, each with keys ``ap1``, ``ap2``, ``band``,
+        ``channel_ap1``, and ``channel_ap2``.
+    """
+    by_location: dict[str, list[dict]] = {}
+    for ap in aps:
+        loc = ap.get("location", "")
+        by_location.setdefault(loc, []).append(ap)
+
+    conflicts: list[dict] = []
+    for group in by_location.values():
+        for ap1, ap2 in itertools.combinations(group, 2):
+            band = ap1.get("band")
+            if band != ap2.get("band"):
+                continue
+            ch1, ch2 = ap1.get("channel", -1), ap2.get("channel", -2)
+            if _channels_conflict(ch1, ch2, band):
+                conflicts.append(
+                    {"ap1": ap1, "ap2": ap2, "band": band, "channel_ap1": ch1, "channel_ap2": ch2}
+                )
+    return conflicts
 
 
 def filter_aps_by_band(aps: list[dict], band: str) -> list[dict]:
@@ -124,3 +164,11 @@ if __name__ == "__main__":
         print(f"\nWeak Signal APs (tx_power < 12 dBm):")
         for ap in weak:
             print(f"  {ap['ap_id']} — {ap['location']} (tx_power: {ap['tx_power']} dBm)")
+
+    conflicts = find_channel_conflicts(aps)
+    if conflicts:
+        print(f"\nChannel Conflicts ({len(conflicts)} found):")
+        for c in conflicts:
+            print(f"  {c['ap1']['ap_id']} (ch {c['channel_ap1']}) ↔ {c['ap2']['ap_id']} (ch {c['channel_ap2']}) [{c['band']}] — {c['ap1']['location']}")
+    else:
+        print("\nNo channel conflicts found.")
